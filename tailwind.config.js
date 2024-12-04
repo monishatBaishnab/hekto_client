@@ -96,7 +96,8 @@ export default {
   				'900': '#505158',
   				'950': '#333438'
   			},
-  			'sky-blue': 'linear-gradient(90deg, #F3F9FF, #F1F0FF)',
+  			'sky-blue': 'linear-gradient(90deg,_#F3F9FF,_#F1F0FF)',
+			"h-black": "#0D0E43",
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {

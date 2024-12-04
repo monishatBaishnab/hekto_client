@@ -3,7 +3,11 @@ import { PiIcon } from "lucide-react";
 
 const Home = () => {
   return (
-    <div className="">
+    <div className="h-screen">
+      <div className="h-screen"></div>
+      <div className="h-screen"></div>
+      <div className="h-screen"></div>
+      <div className="h-screen"></div>
       <h1 className="text-rose-600 ">This is Home Component</h1>
       <Button variant='rose' className=""><PiIcon /> Button</Button>
     </div>
