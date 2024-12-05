@@ -1,19 +1,18 @@
+import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { Outlet } from "react-router-dom";
 
 const Client = () => {
   return (
-    <div>
+    <div className="relative">
       {/* Navbar */}
-      <div>
-        <Navbar />
-      </div>
+      <Navbar />
 
       {/* Main Contents */}
       <Outlet />
 
       {/* Footer */}
-      <div></div>
+      <Footer />
     </div>
   );
 };
