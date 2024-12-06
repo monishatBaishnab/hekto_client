@@ -1,7 +1,14 @@
+import PageHeader from '@/components/PageHeader';
+import PContainer from '@/components/products/PContainer';
+
 const Products = () => {
   return (
     <div>
-      <h1>This is Products Component</h1>
+      <PageHeader title="Products" />
+
+      <div className="container">
+        <PContainer sidebar />
+      </div>
     </div>
   );
 };

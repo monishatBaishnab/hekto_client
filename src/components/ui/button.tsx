@@ -9,14 +9,14 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        rose: "bg-rose-600 hover:bg-rose-500 active:bg-rose-700 transition-all text-white",
-        light: "bg-white shadow-none border border-athens-gray-100 rounded-none hover:bg-athens-gray-50 text-h-black active:bg-white"
+        rose: "bg-rose-600 text-white transition-all hover:bg-rose-500 active:bg-rose-700",
+        light: "rounded-none border border-athens-gray-100 bg-white text-h-black shadow-none hover:bg-athens-gray-50 active:bg-white"
       },
       size: {
         default: "h-9 px-4 py-2",
         sm: "h-8 rounded-md px-3 text-xs",
         lg: "h-10 rounded-md px-8",
-        icon: "h-9 w-9",
+        icon: "size-9",
       },
     },
     defaultVariants: {

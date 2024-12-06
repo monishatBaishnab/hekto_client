@@ -13,17 +13,17 @@ const Footer = () => {
             <Link to="/" className="flex items-center gap-2">
               <div className="size-8 overflow-hidden">
                 <img
-                  className="w-full h-full object-contain"
+                  className="size-full object-contain"
                   src="/public/hekto-logo.png"
                   alt="Hekto Logo"
                 />
               </div>
-              <h2 className="text-h-black text-3xl font-bold">Hekto</h2>
+              <h2 className="text-3xl font-bold text-h-black">Hekto</h2>
             </Link>
-            <div className="max-w-[370px] flex items-center bg-white/45 p-0.5 rounded-sm">
+            <div className="flex max-w-[370px] items-center rounded-sm bg-white/45 p-0.5">
               <Input
                 placeholder="Enter Email Address"
-                className="hidden sm:flex w-full !outline-none !ring-0 border-0 rounded-none !shadow-none"
+                className="hidden w-full rounded-none border-0 !shadow-none !outline-none !ring-0 sm:flex"
               />
               <Button variant="rose" className="rounded-[3px]">
                 Sign Up
@@ -35,11 +35,11 @@ const Footer = () => {
             </div>
           </div>
           <div className="space-y-7">
-            <h4 className="text-xl text-h-black font-semibold">Categories</h4>
+            <h4 className="text-xl font-semibold text-h-black">Categories</h4>
             <div className="space-y-4">
               {categories?.map((category) => (
                 <Link
-                  className="block text-athens-gray-600 hover:text-rose-600 transition-all"
+                  className="block text-athens-gray-600 transition-all hover:text-rose-600"
                   key={category.key}
                   to="/"
                 >
@@ -49,11 +49,11 @@ const Footer = () => {
             </div>
           </div>
           <div className="space-y-7">
-            <h4 className="text-xl text-h-black font-semibold">Customer Care</h4>
+            <h4 className="text-xl font-semibold text-h-black">Customer Care</h4>
             <div className="space-y-4">
               {customer_cares?.map((care) => (
                 <Link
-                  className="block text-athens-gray-600 hover:text-rose-600 transition-all"
+                  className="block text-athens-gray-600 transition-all hover:text-rose-600"
                   key={care.key}
                   to="/"
                 >
@@ -63,11 +63,11 @@ const Footer = () => {
             </div>
           </div>
           <div className="space-y-7">
-            <h4 className="text-xl text-h-black font-semibold">Pages</h4>
+            <h4 className="text-xl font-semibold text-h-black">Pages</h4>
             <div className="space-y-4">
               {pages?.map((page) => (
                 <Link
-                  className="block text-athens-gray-600 hover:text-rose-600 transition-all"
+                  className="block text-athens-gray-600 transition-all hover:text-rose-600"
                   key={page.kay}
                   to="/"
                 >
@@ -79,14 +79,14 @@ const Footer = () => {
         </div>
       </div>
       <div className="bg-[#E7E4F8]">
-        <div className="container !py-4 flex items-center justify-between">
+        <div className="container flex items-center justify-between !py-4">
           <p className="text-athens-gray-600">
             <span className="text-rose-600">Hekto</span> - All Rights Reserved
           </p>
           <div className="flex items-center gap-1">
-            <Facebook className="size-4 stroke-dark-blue-600 cursor-pointer" />
-            <Instagram className="size-4 stroke-dark-blue-600 cursor-pointer" />
-            <Twitter className="size-4 stroke-dark-blue-600 cursor-pointer" />
+            <Facebook className="size-4 cursor-pointer stroke-dark-blue-600" />
+            <Instagram className="size-4 cursor-pointer stroke-dark-blue-600" />
+            <Twitter className="size-4 cursor-pointer stroke-dark-blue-600" />
           </div>
         </div>
       </div>
