@@ -9,6 +9,7 @@ import {
 import { Grid2X2, List } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import PCard from './PCard';
+import PFilters from './PFilters';
 
 const sort_options = [
   { key: 'createdAt', label: 'Default' },
@@ -23,14 +24,17 @@ type TPContainer = {
 const PContainer = ({ sidebar = false }: TPContainer) => {
   const [mode, setMode] = useState<'grid' | 'list'>('grid');
   return (
-    <div className='space-y-8'>
+    <div className="space-y-8">
       <div className="flex items-center justify-between gap-10">
+        {/* Container Title */}
         <div>
           <h4 className="text-xl font-bold text-h-black">
-            Ecommerce Acceories & Fashion item
+            Your Next Favorite Product Awaits
           </h4>
-          <p className="text-athens-gray-600">About 1,300 Products</p>
+          <p className="text-athens-gray-600">Showing 116 Results</p>
         </div>
+
+        {/* Manage Product Short */}
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-2">
             <span className="text-athens-gray-700">Sort By:</span>
@@ -47,6 +51,8 @@ const PContainer = ({ sidebar = false }: TPContainer) => {
               </SelectContent>
             </Select>
           </div>
+
+          {/* Manage Products View Mode */}
           <div className="flex items-center gap-2">
             <span className="text-athens-gray-700">View:</span>
             <div className="flex items-center gap-1">
@@ -77,12 +83,18 @@ const PContainer = ({ sidebar = false }: TPContainer) => {
         </div>
       </div>
 
+      {/* Product Container Body */}
       <div
         className={cn(
           'grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
         )}
       >
-        <div className={cn(sidebar ? '' : 'hidden')}>sidebar</div>
+        {/* Product Filters */}
+        <div className={cn(sidebar ? '' : 'hidden')}>
+          <PFilters />
+        </div>
+
+        {/* Products */}
         <div
           className={cn(
             mode === 'grid'
