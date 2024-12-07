@@ -75,7 +75,7 @@ const Profile = () => {
       <div className="w-full space-y-8">
         <div className="flex items-center justify-between">
           <h3 className="text-2xl font-bold text-h-black">My Listings</h3>
-          <button className="flex items-center gap-1 text-athens-gray-600 transition-all hover:text-athens-gray-800">
+          <button className="flex items-center gap-1 text-athens-gray-600 hover:text-athens-gray-800">
             Vew all
             <ChevronRight className="mt-1 size-4" />
           </button>

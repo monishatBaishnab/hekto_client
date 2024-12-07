@@ -1,12 +1,21 @@
 import PCard from '@/components/products/PCard';
 import { Button } from '@/components/ui/button';
-import { Copy, FilePen, Trash2 } from 'lucide-react';
+import { Copy, FilePen, Plus, Trash2 } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 const Listing = () => {
   return (
     <div className="w-full space-y-8">
-      <h3 className="text-2xl font-bold text-h-black">My Listings</h3>
+        <h3 className="text-2xl font-bold text-h-black">My Listings</h3>
+      
       <div className="flex items-center gap-2">
+        <Button
+          variant="light"
+          className="rounded-full text-athens-gray-700"
+          size="sm"
+        >
+          <Plus className="size-3" />
+          Create
+        </Button>
         <Button
           variant="light"
           className="rounded-full text-athens-gray-700"
@@ -33,7 +42,7 @@ const Listing = () => {
         </Button>
       </div>
       <div className="space-y-5">
-        <RadioGroup defaultValue='2'>
+        <RadioGroup defaultValue="2">
           {Array.from({ length: 4 }).map((_, id) => (
             <div className="flex items-center gap-3" key={id}>
               <div className="size-5 shrink-0">

@@ -11,6 +11,8 @@ import Listing from '@/pages/user/Listing';
 import Reviews from '@/pages/user/Reviews';
 import Settings from '@/pages/user/Settings';
 import { Layers, Star, User, Settings as SettingsIcon } from 'lucide-react';
+import Login from '@/pages/Login';
+import Register from '@/pages/Register';
 
 export const profile_routes_config = [
   {
@@ -62,6 +64,16 @@ const client_route_config = [
     path: '/shop',
     label: 'Shop',
     element: <Shop />,
+  },
+  {
+    path: '/login',
+    label: 'Login',
+    element: <Login />,
+  },
+  {
+    path: '/register',
+    label: 'Register',
+    element: <Register />,
   },
   {
     path: '/shop/:id',
