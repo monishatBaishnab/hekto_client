@@ -6,6 +6,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { Link } from 'react-router-dom';
 
 const card_icons = [
   {
@@ -49,7 +50,26 @@ const CardAction = ({ variant }: { variant?: 'grid' | 'list' }) => {
   ));
 };
 
-const PCard = ({ varient = 'grid' }: { varient?: 'grid' | 'list' }) => {
+type TClassNames = {
+  imgWrapper?: string;
+  img?: string;
+};
+
+type TPCard = {
+  varient?: 'grid' | 'list';
+  disabledDesc?: boolean;
+  disabledShop?: boolean;
+  disabledAction?: boolean;
+  classNames?: TClassNames;
+};
+
+const PCard = ({
+  varient = 'grid',
+  disabledDesc = false,
+  disabledShop = false,
+  disabledAction,
+  classNames,
+}: TPCard) => {
   return (
     <div
       className={cn(
@@ -63,7 +83,8 @@ const PCard = ({ varient = 'grid' }: { varient?: 'grid' | 'list' }) => {
         className={cn(
           'transition-all relative overflow-hidden',
           varient === 'grid' ? 'h-[280px] w-full' : 'h-full w-[290px] shrink-0',
-          'bg-athens-gray-50 p-7  group-hover:bg-dark-blue-100/70'
+          'bg-athens-gray-50 p-7  group-hover:bg-dark-blue-100/70',
+          classNames?.imgWrapper
         )}
       >
         <img
@@ -81,24 +102,27 @@ const PCard = ({ varient = 'grid' }: { varient?: 'grid' | 'list' }) => {
             'group-hover:bottom-3 group-hover:opacity-100 group-hover:visible'
           )}
         >
-          <CardAction variant={varient} />
+          {!disabledAction && <CardAction variant={varient} />}
         </div>
       </div>
 
       {/* Main Body */}
-      <div className="space-y-2 px-5">
-        <h4
+      <div className="w-full space-y-2 px-5">
+        <Link
+          to="/products/id"
           className={cn(
             'font-bold text-deep-koamaru-900',
             varient === 'grid' ? 'text-lg' : 'text-2xl'
           )}
         >
           Ultricies condimentum imperdiet
-        </h4>
+        </Link>
 
         <p
           className={cn(
-            varient === 'grid' ? 'hidden' : 'block text-athens-gray-600'
+            varient === 'grid' || disabledDesc
+              ? 'hidden'
+              : 'block text-athens-gray-600'
           )}
         >
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur eos
@@ -131,7 +155,7 @@ const PCard = ({ varient = 'grid' }: { varient?: 'grid' | 'list' }) => {
                 />
               </svg>
               <span className="text-sm text-h-black">
-                4.7{' '}
+                4.7
                 <span className="ml-0.5 text-xs text-athens-gray-600">
                   (29)
                 </span>
@@ -146,7 +170,8 @@ const PCard = ({ varient = 'grid' }: { varient?: 'grid' | 'list' }) => {
             'border-t border-dashed border-athens-gray-100',
             varient === 'grid'
               ? 'py-2'
-              : 'flex items-center justify-between pt-2'
+              : 'flex items-center justify-between pt-2',
+            disabledShop && 'hidden'
           )}
         >
           <div className="flex items-center gap-2">
@@ -167,7 +192,7 @@ const PCard = ({ varient = 'grid' }: { varient?: 'grid' | 'list' }) => {
               varient === 'grid' ? 'hidden' : 'flex items-center gap-2'
             )}
           >
-            <CardAction />
+            {!disabledAction && <CardAction />}
           </div>
         </div>
       </div>

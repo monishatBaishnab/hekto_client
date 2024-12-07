@@ -1,6 +1,6 @@
 import client_route_config from '@/constants/routes.constants';
 import nav_links_generator from '@/utils/nav_links_generator';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
@@ -38,6 +38,7 @@ const generate_link_class = (isActive: boolean): string => {
 const nav_links = nav_links_generator(client_route_config);
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [scroll, setScroll] = useState(false);
   const [isScrollTopVisible, setIsScrollTopVisible] = useState(false);
   useEffect(() => {
@@ -78,7 +79,7 @@ const Navbar = () => {
       });
   }, []);
   return (
-    <div className='h-[calc(80px_+_36px)]'>
+    <div className="h-[calc(80px_+_36px)]">
       {/* Top navbar */}
       <div className="bg-electric-violet-600">
         <div className="container flex flex-wrap items-center justify-center gap-2 !py-2 sm:justify-between">
@@ -146,7 +147,7 @@ const Navbar = () => {
             <div className="hidden items-center gap-x-6 lg:flex">
               {nav_links?.map((link) => (
                 <NavLink
-                  key={link?.path}
+                  key={`/${link?.path}`}
                   className={({ isActive }) =>
                     `outline-none ${generate_link_class(isActive)}`
                   }
@@ -204,9 +205,11 @@ const Navbar = () => {
                 </Avatar>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuLabel>My Profile</DropdownMenuLabel>
+                <DropdownMenuLabel>
+                  My Profile
+                </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="cursor-pointer">
+                <DropdownMenuItem  onClick={() => navigate('/user/profile')} className="cursor-pointer">
                   <LayoutDashboard /> Dashboard
                 </DropdownMenuItem>
                 <DropdownMenuItem className="cursor-pointer text-torch-red-600 focus:bg-torch-red-100 focus:text-torch-red-600">
