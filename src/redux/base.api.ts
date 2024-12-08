@@ -2,6 +2,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { RootState } from './store';
 
+const tagTypes = ['courses', 'categories', 'users'];
+
 const baseQuery = fetchBaseQuery({
   baseUrl: 'http://localhost:3000/api/v1',
   credentials: 'include',
@@ -18,6 +20,7 @@ const baseQuery = fetchBaseQuery({
 // Define a service using a base URL and expected endpoints
 export const baseApi = createApi({
   reducerPath: 'hekto-api',
+  tagTypes,
   baseQuery,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   endpoints: (_builder) => ({}),
