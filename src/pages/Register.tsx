@@ -1,23 +1,22 @@
 import HFile from '@/components/form/HFile';
+import HForm from '@/components/form/HForm';
+import HInput from '@/components/form/HInput';
+import HSelect from '@/components/form/HSelect';
 import PageHeader from '@/components/PageHeader';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { FieldValues, SubmitHandler } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
-const sort_options = [
-  { key: 'USER', label: 'User' },
-  { key: 'VENDOR', label: 'Vendor' },
+const use_role_options = [
+  { value: 'USER', label: 'User' },
+  { value: 'VENDOR', label: 'Vendor' },
 ];
 
 const Register = () => {
+  const handleSubmit: SubmitHandler<FieldValues> = (data) => {
+    console.log(data);
+  };
   return (
     <div>
       <PageHeader title="My Account" />
@@ -33,68 +32,34 @@ const Register = () => {
             </p>
           </div>
 
-          <div className="space-y-5">
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-              <Input
-                placeholder="Write your first name"
-                required
-                id="first_name"
-                className="h-12 px-4 outline-none !ring-0 focus:ring-0"
-              />
+          <HForm onSubmit={handleSubmit}>
+            <div className="space-y-5">
+              <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                <HInput placeholder="Write your first name" name="first_name" />
+                <HInput placeholder="Write your last name" name="last_name" />
+              </div>
+              <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                <HInput placeholder="Write your verified email" name="email" />
+                <HInput placeholder="Write your mobile number" name="mobile" />
+              </div>
 
-              <Input
+              <HSelect name="role" options={use_role_options} />
+
+              <HInput placeholder="Write your address" name="address" />
+
+              <Textarea
                 required
-                placeholder="Write your last name"
-                id="last_name"
-                className="h-12 px-4 outline-none !ring-0 focus:ring-0"
+                placeholder="Write about yourself"
+                name="description"
+                rows={7}
+                className="outline-none !ring-0 focus:ring-0"
               />
+              <HFile name="profile" />
+              <Button type="submit" className="w-full" size="lg">
+                Register
+              </Button>
             </div>
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-              <Input
-                placeholder="Write your verified email"
-                required
-                id="email"
-                className="h-12 px-4 outline-none !ring-0 focus:ring-0"
-              />
-              <Input
-                required
-                placeholder="Write your mobile number"
-                id="mobile"
-                className="h-12 px-4 outline-none !ring-0 focus:ring-0"
-              />
-            </div>
-            <Select>
-              <SelectTrigger className="h-12 w-full rounded-md px-4 !text-athens-gray-700 outline-none focus:ring-0">
-                <SelectValue placeholder="Register as" />
-              </SelectTrigger>
-              <SelectContent>
-                {sort_options?.map(({ key, label }) => (
-                  <SelectItem key={key} value={key}>
-                    {label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Input
-              required
-              placeholder="Write your address"
-              id="address"
-              className="h-12 px-4 outline-none !ring-0 focus:ring-0"
-            />
-
-            <Textarea
-              required
-              placeholder="Write about yourself"
-              id="description"
-              rows={7}
-              className="outline-none !ring-0 focus:ring-0"
-            />
-            <HFile name="item" />
-          </div>
-
-          <Button className="w-full" size="lg">
-            Register
-          </Button>
+          </HForm>
           <div className="text-center text-athens-gray-600">
             <span>Already have an Account? </span>
             <Link to={'/login'} className="text-rose-600">

@@ -1,5 +1,6 @@
 import { FolderOpenDot, Image, Trash2 } from 'lucide-react';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 
 type TTFileProps = {
   name: string;
@@ -72,7 +73,7 @@ const File = ({ name, label, onChange, value }: TTFileProps) => {
 
   useEffect(() => {
     onChange(file);
-  }, [file]);
+  }, [file, onChange]);
 
   return (
     <div className="space-y-3">
@@ -141,23 +142,21 @@ const File = ({ name, label, onChange, value }: TTFileProps) => {
 };
 
 const HFile = ({ name, label }: { name: string; label?: string }) => {
-  // const { control } = useFormContext();
+  const { control } = useFormContext();
 
   return (
-    // <Controller
-    //   control={control}
-    //   name={name}
-    //   render={({ field: { onChange, value } }) => (
-    //     <File
-    //       label={label}
-    //       name={name}
-    //       value={value as string}
-    //       onChange={onChange}
-    //     />
-    //   )}
-    // />
-
-    <File label={label} name={name} value="" onChange={() => {}} />
+    <Controller
+      control={control}
+      name={name}
+      render={({ field: { onChange, value } }) => (
+        <File
+          label={label}
+          name={name}
+          value={value as string}
+          onChange={onChange}
+        />
+      )}
+    />
   );
 };
 

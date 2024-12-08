@@ -1,41 +1,44 @@
 import { useFormContext } from 'react-hook-form';
-import { Input } from '../ui/input';
 import { Label } from '../ui/label';
+import { Textarea } from '../ui/textarea';
 
-type THInput = {
+type THTextarea = {
   name: string;
   label?: string;
-  type?: 'text' | 'email' | 'password' | 'number';
+  rows?: number;
+  cols?: number;
   placeholder: string;
   disabled?: boolean;
   required?: boolean;
 };
 
-const HInput = ({
+const HTextarea = ({
   name,
-  type = 'text',
   label,
   placeholder,
   disabled = false,
+  rows = 7,
+  cols,
   required = false,
-}: THInput) => {
+}: THTextarea) => {
   const { register } = useFormContext();
 
   return (
     <div className="space-y-2">
       {label && <Label htmlFor={name}>{label}</Label>}
-      <Input
+      <Textarea
         {...register(name)}
         required={required}
         disabled={disabled}
         id={name}
         name={name}
-        type={type}
         placeholder={placeholder}
-        className="h-12 px-4 outline-none !ring-0 focus:ring-0"
+        rows={rows}
+        cols={cols}
+        className="outline-none !ring-0 focus:ring-0"
       />
     </div>
   );
 };
 
-export default HInput;
+export default HTextarea;

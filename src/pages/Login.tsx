@@ -1,9 +1,30 @@
+import HForm from '@/components/form/HForm';
+import HInput from '@/components/form/HInput';
 import PageHeader from '@/components/PageHeader';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { useLogInMutation } from '@/redux/features/auth/auth.api';
+import { useEffect } from 'react';
+import { FieldValues, SubmitHandler } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
+import { useAppDispatch } from '@/redux/hooks';
+import { login } from '@/redux/features/auth/auth.slice';
 
 const Login = () => {
+  const dispatch = useAppDispatch();
+  const [loginFromServer, { data, isLoading, isSuccess }] = useLogInMutation();
+
+  const handleSubmit: SubmitHandler<FieldValues> = (data) => {
+    loginFromServer(data);
+  };
+
+  useEffect(() => {
+    if (isSuccess && !isLoading) {
+      const user = jwtDecode(data.data.token);
+      dispatch(login({ user, token: data.data.token }));
+    }
+  }, [isSuccess, isLoading, data, dispatch]);
+
   return (
     <div>
       <PageHeader title="My Account" />
@@ -18,32 +39,27 @@ const Login = () => {
               Please login using account detail bellow.
             </p>
           </div>
-          <div className="space-y-4">
-            <Input
-              placeholder="Email Address"
-              required
-              id="email"
-              className="h-12 px-4 outline-none !ring-0 focus:ring-0"
-            />
-            <Input
-              placeholder="Email Address"
-              required
-              id="email"
-              className="h-12 px-4 outline-none !ring-0 focus:ring-0"
-            />
-            <span className="ml-1 block cursor-pointer text-sm font-medium text-athens-gray-900">
-              Forgot Password?
-            </span>
-            <Button className="w-full" size="lg">
-              Login
-            </Button>
-            <div className="text-center text-athens-gray-600">
-              <span>Don’t have an Account? </span>
-              <Link to={'/register'} className="text-rose-600">
-                Create account
-              </Link>
+          <HForm
+            defaultValues={{ email: 'john.tech@example.com', password: '123' }}
+            onSubmit={handleSubmit}
+          >
+            <div className="space-y-4">
+              <HInput placeholder="Email Address" name="email" />
+              <HInput placeholder="Password" name="password" />
+              <span className="ml-1 block cursor-pointer text-sm font-medium text-athens-gray-900">
+                Forgot Password?
+              </span>
+              <Button type="submit" className="w-full" size="lg">
+                Login
+              </Button>
+              <div className="text-center text-athens-gray-600">
+                <span>Don’t have an Account? </span>
+                <Link to={'/register'} className="text-rose-600">
+                  Create account
+                </Link>
+              </div>
             </div>
-          </div>
+          </HForm>
         </div>
       </div>
     </div>
