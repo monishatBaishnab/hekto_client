@@ -13,8 +13,10 @@ import {
 import { useFetchAllCategoriesQuery } from '@/redux/features/categories/categories.api';
 import { TCategory } from '@/types';
 import { CircleCheck } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
+  const navigate = useNavigate();
   const {
     data: categories,
     isLoading: cLoading,
@@ -43,10 +45,11 @@ const Home = () => {
                     </CarouselItem>
                   ))
                 : (categories?.data as TCategory[])?.map(
-                    ({ name, description, image }) => (
+                    ({ name, description, image, id }) => (
                       <CarouselItem
                         className="basis-full sm:basis-1/2 md:basis-1/4 lg:basis-1/6"
-                        key={name}
+                        key={id}
+                        onClick={() => navigate(`/products?category=${id}`)}
                       >
                         <div className="flex size-full cursor-pointer flex-col items-center rounded-lg bg-athens-gray-50 p-4 transition-all hover:bg-athens-gray-100/70 active:bg-athens-gray-50">
                           <div className="size-24">

@@ -3,7 +3,7 @@ import { price_ranges } from '@/constants/products.constants';
 import { Input } from '../ui/input';
 import { useFetchAllCategoriesQuery } from '@/redux/features/categories/categories.api';
 import { TCategory } from '@/types';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 
 type TFilters = {
@@ -11,6 +11,7 @@ type TFilters = {
   setMinPrice: React.Dispatch<React.SetStateAction<number | string>>;
   setMaxPrice: React.Dispatch<React.SetStateAction<number | string>>;
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
+  categories: string[];
 };
 
 const PFilters = ({
@@ -18,14 +19,14 @@ const PFilters = ({
   setMinPrice,
   setMaxPrice,
   setSearchTerm,
+  categories,
 }: TFilters) => {
   const { data: categoriesData } = useFetchAllCategoriesQuery([]);
-
+  const [search, setSearch] = useState('');
   const handleCategoryChange = (
     isChecked: boolean | string,
     categoryId: string
   ) => {
-    console.log(isChecked, categoryId);
     if (isChecked) {
       setCategories((prev) => [...prev, categoryId]);
     } else {
@@ -40,6 +41,13 @@ const PFilters = ({
     setMaxPrice(maxPrice);
   };
 
+  useEffect(() => {
+    setTimeout(() => {
+      setSearchTerm(search);
+    }, 1000);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search]);
+
   return (
     <div className="space-y-10">
       <div className="space-y-5">
@@ -48,7 +56,7 @@ const PFilters = ({
         </h4>
 
         <Input
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => setSearch(e.target.value)}
           className="outline-none !ring-0 focus:ring-0"
           placeholder="Write a keyword"
         />
@@ -61,6 +69,7 @@ const PFilters = ({
           {categoriesData?.data?.map((category: TCategory) => (
             <div key={category.name} className="flex items-center gap-2">
               <Checkbox
+                checked={categories?.includes(category.id)}
                 onCheckedChange={(e) => handleCategoryChange(e, category.id)}
                 className="size-5 rounded-sm border-none bg-rose-100 shadow-none data-[state=checked]:bg-rose-600"
                 id={category.name}

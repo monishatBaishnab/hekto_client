@@ -19,6 +19,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { addToCart } from '@/redux/features/cart/cart.slice';
 import { useAlert } from '@/hooks/useAlert';
 import { toast } from 'sonner';
+import { useSearchParams } from 'react-router-dom';
 
 const sortOptions = [
   { key: 'createdAt', label: 'Default' },
@@ -28,12 +29,15 @@ const sortOptions = [
 
 type PContainerProps = {
   sidebar?: boolean;
+  limit?: number;
 };
 
-const PContainer = ({ sidebar = false }: PContainerProps) => {
+const PContainer = ({ sidebar = false, limit }: PContainerProps) => {
   const dispatch = useAppDispatch();
   const carts = useAppSelector((state) => state.carts);
   const { showAlert, AlertComponent } = useAlert();
+  const [searchParams] = useSearchParams();
+  const searchCategory = searchParams.get('category');
 
   const { ref, inView } = useInView();
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
@@ -54,7 +58,7 @@ const PContainer = ({ sidebar = false }: PContainerProps) => {
     isFetching,
   } = useFetchAllProductsQuery([
     { name: 'page', value: String(page) },
-    { name: 'limit', value: '1' },
+    { name: 'limit', value: limit ? String(limit) : '4' },
     { name: 'sortBy', value: sort },
     { name: 'sortOrder', value: 'desc' },
     { name: 'min_price', value: String(minPrice) },
@@ -96,6 +100,12 @@ const PContainer = ({ sidebar = false }: PContainerProps) => {
     () => products.length < productsData?.meta?.total,
     [products, productsData]
   );
+
+  useEffect(() => {
+    if (searchCategory) {
+      setCategories([searchCategory]);
+    }
+  }, [searchCategory]);
 
   // Effect to refetch products when filter values change
   useEffect(() => {
@@ -203,6 +213,7 @@ const PContainer = ({ sidebar = false }: PContainerProps) => {
             setMaxPrice={setMaxPrice}
             setSearchTerm={setSearchTerm}
             setCategories={setCategories}
+            categories={categories}
           />
         )}
 
@@ -238,7 +249,7 @@ const PContainer = ({ sidebar = false }: PContainerProps) => {
                     <PCard
                       product={product}
                       varient={viewMode}
-                      key={product.name}
+                      key={product.id}
                       actions={
                         <PCard.CardActions
                           actions={user_actions}

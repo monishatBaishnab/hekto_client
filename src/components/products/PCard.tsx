@@ -28,7 +28,7 @@ type TCardActions = {
 
 const CardActions = ({ variant, actions, product, onClick }: TCardActions) => {
   return actions?.map(({ label, icon: Icon, key }) => (
-    <TooltipProvider>
+    <TooltipProvider key={key}>
       <Tooltip delayDuration={100}>
         <TooltipTrigger asChild>
           <button

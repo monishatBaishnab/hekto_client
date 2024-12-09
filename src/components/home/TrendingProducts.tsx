@@ -2,6 +2,11 @@ import { cn } from '@/lib/utils';
 import PCard from '../products/PCard';
 import { useFetchAllProductsQuery } from '@/redux/features/products/products.api';
 import { TProduct } from '@/types/products.types';
+import { user_actions } from '@/constants/products.constants';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { useAlert } from '@/hooks/useAlert';
+import { addToCart } from '@/redux/features/cart/cart.slice';
+import { toast } from 'sonner';
 
 const Skeleton = () => {
   return (
@@ -25,8 +30,35 @@ const Skeleton = () => {
 };
 
 const Card = ({ product }: { product: TProduct }) => {
+  const dispatch = useAppDispatch();
+  const carts = useAppSelector((state) => state.carts);
+  const { showAlert, AlertComponent } = useAlert();
+  const handleAction = (key: string) => {
+    if (key == 'cart') {
+      const cartInfo = { productId: product?.id, shopId: product?.shop_id };
+      carts?.forEach(async (cart) => {
+        if (cart.shopId !== cartInfo.shopId) {
+          const result = await showAlert(
+            'Replace Cart with New Product(s)',
+            'Retain the current cart and cancel the addition.'
+          );
+
+          if (result) {
+            dispatch(addToCart(cartInfo));
+            return;
+          }
+        } else if (cart.productId === cartInfo.productId) {
+          toast.error('Product already added.');
+        }
+      });
+
+      dispatch(addToCart(cartInfo));
+      return;
+    }
+  };
   return (
     <div className="group bg-white p-5 shadow-md">
+      {AlertComponent}
       <div
         className={cn(
           'transition-all relative overflow-hidden h-[280px] w-full mb-5',
@@ -47,7 +79,12 @@ const Card = ({ product }: { product: TProduct }) => {
             'group-hover:bottom-3 group-hover:opacity-100 group-hover:visible'
           )}
         >
-          <PCard.CardAction />
+          <PCard.CardActions
+            actions={user_actions}
+            variant={'grid'}
+            onClick={handleAction}
+            product={product}
+          />
         </div>
       </div>
       <div className="space-y-2">
