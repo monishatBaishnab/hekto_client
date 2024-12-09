@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils';
-import { ExternalLink, GitCompare, ShoppingCart } from 'lucide-react';
+import { LucideProps } from 'lucide-react';
 import {
   Tooltip,
   TooltipContent,
@@ -9,31 +9,30 @@ import {
 import { Link } from 'react-router-dom';
 import { TProduct } from '@/types/products.types';
 import moment from 'moment';
+import { ReactNode } from 'react';
 
-const card_icons = [
-  {
-    key: 'cart',
-    label: 'Add to cart',
-    icon: ShoppingCart,
-  },
-  {
-    key: 'compere',
-    label: 'Compere',
-    icon: GitCompare,
-  },
-  {
-    key: 'details',
-    label: 'View details',
-    icon: ExternalLink,
-  },
-];
+type TAction = {
+  key: string;
+  label: string;
+  icon: React.ForwardRefExoticComponent<
+    Omit<LucideProps, 'ref'> & React.RefAttributes<SVGSVGElement>
+  >;
+};
 
-const CardAction = ({ variant }: { variant?: 'grid' | 'list' }) => {
-  return card_icons?.map(({ label, icon: Icon }) => (
+type TCardActions = {
+  variant?: 'grid' | 'list';
+  actions: TAction[];
+  onClick: (type: string, product: TProduct) => void;
+  product: TProduct;
+};
+
+const CardActions = ({ variant, actions, product, onClick }: TCardActions) => {
+  return actions?.map(({ label, icon: Icon, key }) => (
     <TooltipProvider>
       <Tooltip delayDuration={100}>
         <TooltipTrigger asChild>
           <button
+            onClick={() => onClick(key, product)}
             key={label}
             className="rounded-md border-0 p-2 outline-0 transition-all hover:bg-white/70 active:bg-white"
           >
@@ -61,18 +60,18 @@ type TPCard = {
   varient?: 'grid' | 'list';
   disabledDesc?: boolean;
   disabledShop?: boolean;
-  disabledAction?: boolean;
   classNames?: TClassNames;
   product?: TProduct;
+  actions?: ReactNode;
 };
 
 const PCard = ({
   varient = 'grid',
   disabledDesc = false,
   disabledShop = false,
-  disabledAction,
   classNames,
   product,
+  actions,
 }: TPCard) => {
   const totalReview = Number(product?.review?.length);
   const totalRating = Number(
@@ -81,6 +80,7 @@ const PCard = ({
   const avgRatings = (totalReview > 0 ? totalRating / totalReview : 0).toFixed(
     1
   );
+
   return (
     <div
       className={cn(
@@ -113,7 +113,7 @@ const PCard = ({
             'group-hover:bottom-3 group-hover:opacity-100 group-hover:visible'
           )}
         >
-          {!disabledAction && <CardAction variant={varient} />}
+          {actions ? actions : null}
         </div>
       </div>
 
@@ -208,7 +208,7 @@ const PCard = ({
               varient === 'grid' ? 'hidden' : 'flex items-center gap-2'
             )}
           >
-            {!disabledAction && <CardAction />}
+            {actions ? actions : null}
           </div>
         </div>
       </div>
@@ -216,6 +216,6 @@ const PCard = ({
   );
 };
 
-PCard.CardAction = CardAction;
+PCard.CardActions = CardActions;
 
 export default PCard;

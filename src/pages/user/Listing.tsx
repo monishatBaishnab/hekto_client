@@ -2,11 +2,16 @@ import PCard from '@/components/products/PCard';
 import { Button } from '@/components/ui/button';
 import { Copy, FilePen, Plus, Trash2 } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { vendor_actions } from '@/constants/products.constants';
+import { TProduct } from '@/types/products.types';
 const Listing = () => {
+  const handleAction = (key: string, product: TProduct) => {
+    console.log(key);
+  };
   return (
     <div className="w-full space-y-8">
-        <h3 className="text-2xl font-bold text-h-black">My Listings</h3>
-      
+      <h3 className="text-2xl font-bold text-h-black">My Listings</h3>
+
       <div className="flex items-center gap-2">
         <Button
           variant="light"
@@ -54,6 +59,13 @@ const Listing = () => {
                   disabledShop
                   classNames={{ imgWrapper: 'size-32' }}
                   varient="list"
+                  actions={
+                    <PCard.CardActions
+                      onClick={handleAction}
+                      actions={vendor_actions}
+                      variant="list"
+                    />
+                  }
                 />
               </div>
             </div>

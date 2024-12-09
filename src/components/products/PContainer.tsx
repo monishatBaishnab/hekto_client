@@ -14,6 +14,11 @@ import { TProduct } from '@/types/products.types';
 import { useFetchAllProductsQuery } from '@/redux/features/products/products.api';
 import PCardSkeleton from '../skeletons/PCardSkeleton';
 import { useInView } from 'react-intersection-observer';
+import { user_actions } from '@/constants/products.constants';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { addToCart } from '@/redux/features/cart/cart.slice';
+import { useAlert } from '@/hooks/useAlert';
+import { toast } from 'sonner';
 
 const sortOptions = [
   { key: 'createdAt', label: 'Default' },
@@ -26,6 +31,10 @@ type PContainerProps = {
 };
 
 const PContainer = ({ sidebar = false }: PContainerProps) => {
+  const dispatch = useAppDispatch();
+  const carts = useAppSelector((state) => state.carts);
+  const { showAlert, AlertComponent } = useAlert();
+
   const { ref, inView } = useInView();
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [page, setPage] = useState(1);
@@ -54,6 +63,33 @@ const PContainer = ({ sidebar = false }: PContainerProps) => {
     { name: 'categories', value: categories.join(', ') },
   ]);
 
+  const handleAction = (key: string, product: TProduct) => {
+    if (key == 'cart') {
+      const cartInfo = { productId: product?.id, shopId: product?.shop_id };
+      carts?.forEach(async (cart) => {
+        if (cart.shopId !== cartInfo.shopId) {
+          const result = await showAlert(
+            'Replace Cart with New Product(s)',
+            'Retain the current cart and cancel the addition.'
+          );
+
+          if (result) {
+            dispatch(addToCart(cartInfo));
+            return;
+          }
+        } else if (cart.productId === cartInfo.productId) {
+          toast.error('Product already added.');
+        }
+      });
+
+      dispatch(addToCart(cartInfo));
+      return;
+    } else if (key == 'compere') {
+      console.log('Your are clicked for compere product.');
+      return;
+    }
+  };
+
   // Calculate total pages and check if more products can be fetched
   const totalPage = productsData?.meta?.total ?? 1;
   const canFetchMore = useMemo(
@@ -76,7 +112,7 @@ const PContainer = ({ sidebar = false }: PContainerProps) => {
         setProducts(productsData?.data as TProduct[]);
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess, isLoading, productsData]);
 
   // Effect for infinite scroll: Load more products when the user reaches the bottom
@@ -90,6 +126,7 @@ const PContainer = ({ sidebar = false }: PContainerProps) => {
 
   return (
     <div className="space-y-8">
+      {AlertComponent}
       {/* Header Section */}
       <div className="flex items-center justify-between gap-10">
         <div>
@@ -202,6 +239,14 @@ const PContainer = ({ sidebar = false }: PContainerProps) => {
                       product={product}
                       varient={viewMode}
                       key={product.name}
+                      actions={
+                        <PCard.CardActions
+                          actions={user_actions}
+                          variant={viewMode}
+                          onClick={handleAction}
+                          product={product}
+                        />
+                      }
                     />
                   </div>
                 ))}
