@@ -1,3 +1,4 @@
+import { TCategory } from './categories.types';
 import { TReview } from './review.types';
 import { TShop } from './shop.types';
 
@@ -15,6 +16,6 @@ export type TProduct = {
   createdAt: string;
   updatedAt: string;
   shop: TShop;
-  review: TReview[],
-  categories: string[];
+  review: TReview[];
+  categories: string[] | TCategory[];
 };

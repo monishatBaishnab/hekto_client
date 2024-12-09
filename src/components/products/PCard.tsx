@@ -120,7 +120,7 @@ const PCard = ({
       {/* Main Body */}
       <div className="w-full space-y-2 px-5">
         <Link
-          to="/products/id"
+          to={`/products/${product?.id}`}
           className={cn(
             'font-bold text-deep-koamaru-900',
             varient === 'grid' ? 'text-lg' : 'text-2xl'
