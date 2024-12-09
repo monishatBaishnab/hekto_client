@@ -111,7 +111,7 @@ const Header = () => {
         {slides.map(
           (slide, index) =>
             current === index && (
-              <CarouselSlide key={slide.path} slide={slide as TSlide} />
+              <CarouselSlide key={index} slide={slide as TSlide} />
             )
         )}
       </div>
@@ -140,7 +140,11 @@ const Header = () => {
       </div>
       <div className="absolute inset-x-0 bottom-10 flex items-center justify-center gap-2">
         {slides.map((_, index) => (
-          <button className={cn('rotate-45')} onClick={() => setCurrent(index)}>
+          <button
+            key={index}
+            className={cn('rotate-45')}
+            onClick={() => setCurrent(index)}
+          >
             <Square
               className={cn(
                 'size-3 stroke-athens-gray-600 hover:stroke-rose-600',

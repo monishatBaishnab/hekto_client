@@ -7,6 +7,8 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { Link } from 'react-router-dom';
+import { TProduct } from '@/types/products.types';
+import moment from 'moment';
 
 const card_icons = [
   {
@@ -27,12 +29,12 @@ const card_icons = [
 ];
 
 const CardAction = ({ variant }: { variant?: 'grid' | 'list' }) => {
-  return card_icons?.map(({ key, label, icon: Icon }) => (
+  return card_icons?.map(({ label, icon: Icon }) => (
     <TooltipProvider>
       <Tooltip delayDuration={100}>
         <TooltipTrigger asChild>
           <button
-            key={key}
+            key={label}
             className="rounded-md border-0 p-2 outline-0 transition-all hover:bg-white/70 active:bg-white"
           >
             <Icon className="size-4" />
@@ -61,6 +63,7 @@ type TPCard = {
   disabledShop?: boolean;
   disabledAction?: boolean;
   classNames?: TClassNames;
+  product?: TProduct;
 };
 
 const PCard = ({
@@ -69,7 +72,15 @@ const PCard = ({
   disabledShop = false,
   disabledAction,
   classNames,
+  product,
 }: TPCard) => {
+  const totalReview = Number(product?.review?.length);
+  const totalRating = Number(
+    product?.review?.reduce((sum, current) => sum + current.rating, 0)
+  );
+  const avgRatings = (totalReview > 0 ? totalRating / totalReview : 0).toFixed(
+    1
+  );
   return (
     <div
       className={cn(
@@ -89,8 +100,8 @@ const PCard = ({
       >
         <img
           className="size-full object-contain"
-          src="https://i.ibb.co.com/Pr0DDpz/image-1167.png"
-          alt=""
+          src={product?.images}
+          alt={product?.name}
         />
 
         {/* Card Icons */}
@@ -115,7 +126,9 @@ const PCard = ({
             varient === 'grid' ? 'text-lg' : 'text-2xl'
           )}
         >
-          Ultricies condimentum imperdiet
+          {Number(product?.name?.length) > 30
+            ? product?.name?.slice(0, 30)
+            : product?.name}
         </Link>
 
         <p
@@ -125,10 +138,9 @@ const PCard = ({
               : 'block text-athens-gray-600'
           )}
         >
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur eos
-          veritatis enim incidunt temporibus atque. Lorem ipsum dolor sit amet,
-          consectetur adipisicing elit. Pariatur eos veritatis enim incidunt
-          temporibus atque.
+          {Number(product?.description?.length) > 255
+            ? product?.description?.slice(0, 255)
+            : product?.description}
         </p>
         {/* Card Info */}
         <div>
@@ -136,7 +148,7 @@ const PCard = ({
           <div className="flex items-center gap-2">
             {/* Price */}
             <div className="flex items-center gap-2.5">
-              <span className="text-h-black">$26.00</span>
+              <span className="text-h-black">{product?.price}</span>
               <span className="text-rose-600 line-through">$28.00</span>
             </div>
 
@@ -155,9 +167,9 @@ const PCard = ({
                 />
               </svg>
               <span className="text-sm text-h-black">
-                4.7
+                {avgRatings}
                 <span className="ml-0.5 text-xs text-athens-gray-600">
-                  (29)
+                  ({totalReview})
                 </span>
               </span>
             </div>
@@ -178,13 +190,17 @@ const PCard = ({
             <div className="size-8 overflow-hidden rounded-md">
               <img
                 className="size-full object-cover"
-                src="https://i.ibb.co.com/5G1XTfb/customer.webp"
-                alt=""
+                src={product?.shop?.logo}
+                alt={product?.shop?.name}
               />
             </div>
             <div className="">
-              <h5 className="-mb-1 font-bold text-h-black">Golo's Shop</h5>
-              <span className="text-xs text-athens-gray-600">5K+ Review</span>
+              <h5 className="-mb-1 font-bold text-h-black">
+                {product?.shop?.name}
+              </h5>
+              <span className="text-xs text-athens-gray-600">
+                {moment(product?.shop?.createdAt).format('DD MMM, YYYY')}
+              </span>
             </div>
           </div>
           <div

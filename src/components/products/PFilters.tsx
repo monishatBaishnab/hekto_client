@@ -1,9 +1,45 @@
-import { categories } from '@/constants/home.constants';
 import { Checkbox } from '../ui/checkbox';
 import { price_ranges } from '@/constants/products.constants';
 import { Input } from '../ui/input';
+import { useFetchAllCategoriesQuery } from '@/redux/features/categories/categories.api';
+import { TCategory } from '@/types';
+import React from 'react';
+import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 
-const PFilters = () => {
+type TFilters = {
+  setCategories: React.Dispatch<React.SetStateAction<string[]>>;
+  setMinPrice: React.Dispatch<React.SetStateAction<number | string>>;
+  setMaxPrice: React.Dispatch<React.SetStateAction<number | string>>;
+  setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
+};
+
+const PFilters = ({
+  setCategories,
+  setMinPrice,
+  setMaxPrice,
+  setSearchTerm,
+}: TFilters) => {
+  const { data: categoriesData } = useFetchAllCategoriesQuery([]);
+
+  const handleCategoryChange = (
+    isChecked: boolean | string,
+    categoryId: string
+  ) => {
+    console.log(isChecked, categoryId);
+    if (isChecked) {
+      setCategories((prev) => [...prev, categoryId]);
+    } else {
+      setCategories((prev) => prev.filter((prevId) => prevId !== categoryId));
+    }
+  };
+  const handlePriceRangeChange = (range: string) => {
+    const minPrice = range.split(' - ').map((str) => str.slice(1, -1))[0];
+    const maxPrice = range.split(' - ').map((str) => str.slice(1, -1))[1];
+
+    setMinPrice(minPrice);
+    setMaxPrice(maxPrice);
+  };
+
   return (
     <div className="space-y-10">
       <div className="space-y-5">
@@ -12,6 +48,7 @@ const PFilters = () => {
         </h4>
 
         <Input
+          onChange={(e) => setSearchTerm(e.target.value)}
           className="outline-none !ring-0 focus:ring-0"
           placeholder="Write a keyword"
         />
@@ -21,13 +58,15 @@ const PFilters = () => {
           Categories
         </h4>
         <div className="space-y-1">
-          {categories?.map((category) => (
-            <div key={category.label} className="flex items-center gap-2">
+          {categoriesData?.data?.map((category: TCategory) => (
+            <div key={category.name} className="flex items-center gap-2">
               <Checkbox
+                onCheckedChange={(e) => handleCategoryChange(e, category.id)}
                 className="size-5 rounded-sm border-none bg-rose-100 shadow-none data-[state=checked]:bg-rose-600"
-                id={category.label}
+                id={category.name}
+                value={category.id}
               />
-              <label htmlFor={category?.label}>{category.label}</label>
+              <label htmlFor={category?.name}>{category.name}</label>
             </div>
           ))}
         </div>
@@ -36,29 +75,16 @@ const PFilters = () => {
         <h4 className="border-b-2 border-b-h-black pb-1 text-lg font-bold text-h-black">
           Price Range
         </h4>
-        <div className="space-y-1">
-          {price_ranges?.map((range) => (
-            <div key={range.label} className="flex items-center gap-2">
-              <Checkbox
-                className="size-5 rounded-sm border-none bg-rose-100 shadow-none data-[state=checked]:bg-rose-600"
-                id={range.label}
-              />
-              <label htmlFor={range?.label}>{range.label}</label>
-            </div>
-          ))}
-        </div>
-        <div className="flex items-center gap-2">
-          <Input
-            className="outline-none !ring-0 focus:ring-0"
-            placeholder="Min"
-            type="number"
-          />
-          <Input
-            className="outline-none !ring-0 focus:ring-0"
-            placeholder="Max"
-            type="number"
-          />
-        </div>
+        <RadioGroup onValueChange={handlePriceRangeChange}>
+          <div className="space-y-1">
+            {price_ranges?.map((range) => (
+              <div key={range.label} className="flex items-center gap-2">
+                <RadioGroupItem value={range.label} id={range.label} />
+                <label htmlFor={range?.label}>{range.label}</label>
+              </div>
+            ))}
+          </div>
+        </RadioGroup>
       </div>
     </div>
   );
