@@ -119,8 +119,8 @@ const File = ({ name, label, onChange, value }: TTFileProps) => {
               <h6 className="!text-sm">{formatFileName(file.name)}</h6>
             ) : previewImage ? (
               <h6 className="!text-sm">
-                {(previewImage?.length as number) > 10
-                  ? previewImage?.slice(0, 10)
+                {(previewImage?.length as number) > 40
+                  ? previewImage?.slice(0, 40)+'...'+previewImage?.slice(-4)
                   : previewImage}
               </h6>
             ) : null}

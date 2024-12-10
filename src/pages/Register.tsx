@@ -11,20 +11,21 @@ import { login } from '@/redux/features/auth/auth.slice';
 import { TShop } from '@/types/shop.types';
 import { TUser } from '@/types/user.types';
 import { jwtDecode } from 'jwt-decode';
+import { LoaderCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { FieldValues, SubmitHandler } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
 const use_role_options = [
-  { value: 'USER', label: 'User' },
+  { value: 'CUSTOMER', label: 'Customer' },
   { value: 'VENDOR', label: 'Vendor' },
 ];
 
 const Register = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [register, { isError, isSuccess, data }] = useRegisterMutation();
+  const [register, { isError, isSuccess, isLoading, data }] = useRegisterMutation();
   const [role, setRole] = useState('USER');
 
   const handleSubmit: SubmitHandler<FieldValues> = (data) => {
@@ -138,8 +139,17 @@ const Register = () => {
                   />
                 </>
               ) : null}
-              <Button type="submit" className="w-full" size="lg">
-                Register
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={isLoading}
+                size="lg"
+              >
+                {isLoading ? (
+                  <LoaderCircle className="animate-spin" />
+                ) : (
+                  'Register'
+                )}
               </Button>
             </div>
           </HForm>

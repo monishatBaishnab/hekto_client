@@ -15,9 +15,18 @@ type THSelect = {
   label?: string;
   options: TOption[];
   onValueChange?: (e: string) => void;
+  placeholder?: string;
+  disabled?: boolean;
 };
 
-const HSelect = ({ name, label, options, onValueChange }: THSelect) => {
+const HSelect = ({
+  name,
+  label,
+  options,
+  onValueChange,
+  placeholder,
+  disabled,
+}: THSelect) => {
   return (
     <Controller
       name={name}
@@ -31,6 +40,7 @@ const HSelect = ({ name, label, options, onValueChange }: THSelect) => {
             {label ? <Label htmlFor={name}>{label}</Label> : null}
             <div className="relative">
               <Select
+                disabled={disabled}
                 onValueChange={(e) => {
                   onChange(e);
                   if (onValueChange) {
@@ -40,8 +50,11 @@ const HSelect = ({ name, label, options, onValueChange }: THSelect) => {
                 {...field}
                 defaultValue={value}
               >
-                <SelectTrigger className="h-12 w-full rounded-md px-4 !text-athens-gray-700 outline-none focus:ring-0">
-                  <SelectValue placeholder="Register as" />
+                <SelectTrigger className="h-12 w-full rounded-md px-4 outline-none focus:ring-0">
+                  <SelectValue
+                    className="!text-athens-gray-700"
+                    placeholder={placeholder}
+                  />
                 </SelectTrigger>
                 <SelectContent>
                   {options?.map(({ value, label }) => (

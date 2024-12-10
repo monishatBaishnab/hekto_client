@@ -122,8 +122,8 @@ const PCard = ({
         <Link
           to={`/products/${product?.id}`}
           className={cn(
+            varient === 'grid' ? 'text-lg' : 'text-lg sm:text-2xl',
             'font-bold text-deep-koamaru-900',
-            varient === 'grid' ? 'text-lg' : 'text-2xl'
           )}
         >
           {Number(product?.name?.length) > 30
@@ -177,30 +177,31 @@ const PCard = ({
         </div>
 
         {/* Shop */}
-        <div
-          className={cn(
-            'border-t border-dashed border-athens-gray-100',
-            varient === 'grid'
-              ? 'py-2'
-              : 'flex items-center justify-between pt-2',
-            disabledShop && 'hidden'
-          )}
-        >
-          <div className="flex items-center gap-2">
-            <div className="size-8 overflow-hidden rounded-md">
-              <img
-                className="size-full object-cover"
-                src={product?.shop?.logo}
-                alt={product?.shop?.name}
-              />
-            </div>
-            <div className="">
-              <h5 className="-mb-1 font-bold text-h-black">
-                {product?.shop?.name}
-              </h5>
-              <span className="text-xs text-athens-gray-600">
-                {moment(product?.shop?.createdAt).format('DD MMM, YYYY')}
-              </span>
+        <div className="flex items-center justify-between border-t border-dashed border-athens-gray-100">
+          <div
+            className={cn(
+              varient === 'grid'
+                ? 'py-2'
+                : 'flex items-center justify-between pt-2',
+              disabledShop && 'hidden'
+            )}
+          >
+            <div className="flex items-center gap-2">
+              <div className="size-8 overflow-hidden rounded-md">
+                <img
+                  className="size-full object-cover"
+                  src={product?.shop?.logo}
+                  alt={product?.shop?.name}
+                />
+              </div>
+              <div className="">
+                <h5 className="-mb-1 font-bold text-h-black">
+                  {product?.shop?.name}
+                </h5>
+                <span className="text-xs text-athens-gray-600">
+                  {moment(product?.shop?.createdAt).format('DD MMM, YYYY')}
+                </span>
+              </div>
             </div>
           </div>
           <div

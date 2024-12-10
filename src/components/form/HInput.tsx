@@ -32,7 +32,7 @@ const HInput = ({
         name={name}
         type={type}
         placeholder={placeholder}
-        className="h-12 px-4 outline-none !ring-0 focus:ring-0"
+        className="h-12 px-4 text-athens-gray-950 outline-none !ring-0 focus:ring-0"
       />
     </div>
   );

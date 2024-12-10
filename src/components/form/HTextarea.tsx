@@ -35,7 +35,7 @@ const HTextarea = ({
         placeholder={placeholder}
         rows={rows}
         cols={cols}
-        className="outline-none !ring-0 focus:ring-0"
+        className="text-athens-gray-950 outline-none !ring-0 focus:ring-0"
       />
     </div>
   );

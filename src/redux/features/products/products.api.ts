@@ -27,7 +27,42 @@ const productApi = baseApi.injectEndpoints({
       },
       providesTags: (_, __, id) => [{ type: 'products', id }],
     }),
+    createProduct: builder.mutation({
+      query: (productData) => {
+        return {
+          url: '/products',
+          method: 'POST',
+          body: productData,
+        };
+      },
+      invalidatesTags: ['products'],
+    }),
+    updateProduct: builder.mutation({
+      query: ({ formData, id }) => {
+        return {
+          url: `/products/${id}`,
+          method: 'PUT',
+          body: formData,
+        };
+      },
+      invalidatesTags: ['products'],
+    }),
+    deleteProduct: builder.mutation({
+      query: (id) => {
+        return {
+          url: `/products/${id}`,
+          method: 'DELETE',
+        };
+      },
+      invalidatesTags: ['products'],
+    }),
   }),
 });
 
-export const { useFetchAllProductsQuery, useFetchProductByIdQuery } = productApi;
+export const {
+  useFetchAllProductsQuery,
+  useFetchProductByIdQuery,
+  useCreateProductMutation,
+  useUpdateProductMutation,
+  useDeleteProductMutation
+} = productApi;

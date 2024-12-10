@@ -1,93 +1,81 @@
 import { cn } from '@/lib/utils';
 
-type TPCardSkeleton = {
-  varient?: 'grid' | 'list';
+type TClassNames = {
+  imgWrapper?: string;
+  img?: string;
+  wrapper?:string
 };
 
-const PCardSkeleton = ({ varient = 'grid' }: TPCardSkeleton) => {
+type TCardSkeleton ={
+  variant?: 'grid' | 'list';
+  disabledDesc?: boolean;
+  disabledShop?: boolean;
+  classNames?: TClassNames;
+}
+
+const PCardSkeleton = ({
+  variant = 'grid',
+  disabledDesc = false,
+  disabledShop = false,
+  classNames = {},
+}: TCardSkeleton) => {
   return (
     <div
       className={cn(
-        varient === 'grid' ? 'space-y-5' : 'flex items-center',
+        variant === 'grid' ? 'space-y-5' : 'flex items-center space-x-5',
         'relative overflow-hidden rounded-md bg-athens-gray-50/40',
-        'border border-dashed border-athens-gray-100 animate-pulse'
+        'border border-dashed border-athens-gray-100 animate-pulse',
+        classNames?.wrapper
       )}
     >
-      {/* Skeleton Thumb */}
+      {/* Thumbnail Skeleton */}
       <div
         className={cn(
-          'relative overflow-hidden bg-athens-gray-300',
-          varient === 'grid' ? 'h-[280px] w-full' : 'h-[230px] w-[290px] shrink-0'
+          'bg-athens-gray-200',
+          variant === 'grid' ? 'h-[280px] w-full' : 'h-full w-[290px] shrink-0',
+          classNames?.imgWrapper
         )}
-      >
-        {/* Icons Placeholder */}
-        <div
-          className={cn(
-            varient === 'grid' ? 'flex' : 'hidden',
-            'absolute left-3 bottom-3 items-center flex-col gap-2'
-          )}
-        >
-          {Array.from({ length: 3 }).map((_, index) => (
-            <div
-              key={index}
-              className="size-6 rounded-full bg-athens-gray-400"
-            />
-          ))}
-        </div>
-      </div>
+      ></div>
 
-      {/* Skeleton Main Body */}
-      <div className="w-full space-y-3 px-5">
-        {/* Title Placeholder */}
-        <div
-          className={cn(
-            'h-6 bg-athens-gray-300 rounded-md',
-            varient === 'grid' ? 'w-3/4' : 'w-full'
-          )}
-        />
+      {/* Content Skeleton */}
+      <div className="flex-1 space-y-3 px-5">
+        {/* Title Skeleton */}
+        <div className="h-6 w-3/4 rounded-md bg-athens-gray-200"></div>
 
-        {/* Description Placeholder */}
-        {varient !== 'grid' && (
+        {/* Description Skeleton */}
+        {!disabledDesc && (
           <div className="space-y-2">
-            <div className="h-4 w-full rounded-md bg-athens-gray-300" />
-            <div className="h-4 w-5/6 rounded-md bg-athens-gray-300" />
+            <div className="h-4 w-full rounded-md bg-athens-gray-200"></div>
+            <div className="h-4 w-5/6 rounded-md bg-athens-gray-200"></div>
           </div>
         )}
 
-        {/* Price & Rating Placeholder */}
-        <div className="flex items-center gap-4">
-          {/* Price Placeholder */}
-          <div className="h-6 w-1/3 rounded-md bg-athens-gray-300" />
-          {/* Rating Placeholder */}
-          <div className="h-6 w-1/4 rounded-md bg-athens-gray-300" />
+        {/* Price & Rating Skeleton */}
+        <div className="flex items-center gap-3">
+          <div className="h-5 w-20 rounded-md bg-athens-gray-200"></div>
+          <div className="h-5 w-16 rounded-md bg-athens-gray-200"></div>
         </div>
 
-        {/* Shop Placeholder */}
-        <div
-          className={cn(
-            'border-t border-dashed border-athens-gray-100 pt-2',
-            varient === 'grid' ? 'py-2' : 'flex items-center justify-between'
-          )}
-        >
-          <div className="flex items-center gap-2">
-            <div className="size-8 rounded-md bg-athens-gray-300" />
-            <div className="space-y-1">
-              <div className="h-4 w-24 rounded-md bg-athens-gray-300" />
-              <div className="h-3 w-16 rounded-md bg-athens-gray-300" />
+        {/* Shop Skeleton */}
+        {!disabledShop && (
+          <div className="flex items-center gap-3 border-t border-athens-gray-100 pt-3">
+            <div className="size-8 rounded-md bg-athens-gray-200"></div>
+            <div>
+              <div className="h-5 w-24 rounded-md bg-athens-gray-200"></div>
+              <div className="h-4 w-16 rounded-md bg-athens-gray-200"></div>
             </div>
           </div>
-          {varient !== 'grid' && (
-            <div className="flex items-center gap-2">
-              {Array.from({ length: 3 }).map((_, index) => (
-                <div
-                  key={index}
-                  className="size-6 rounded-full bg-athens-gray-400"
-                />
-              ))}
-            </div>
-          )}
-        </div>
+        )}
       </div>
+
+      {/* Actions Skeleton */}
+      {variant === 'grid' && (
+        <div className="absolute bottom-3 left-3 flex flex-col gap-2 opacity-50">
+          <div className="size-8 rounded-full bg-athens-gray-200"></div>
+          <div className="size-8 rounded-full bg-athens-gray-200"></div>
+          <div className="size-8 rounded-full bg-athens-gray-200"></div>
+        </div>
+      )}
     </div>
   );
 };

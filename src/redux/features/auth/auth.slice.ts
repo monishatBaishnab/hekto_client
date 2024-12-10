@@ -1,3 +1,4 @@
+import { tagTypes, baseApi } from '@/redux/base.api';
 import { createSlice } from '@reduxjs/toolkit';
 
 type TUser = {
@@ -31,6 +32,12 @@ const authSlice = createSlice({
       state.token = null;
       state.user = null;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(logout, () => {
+      console.log('logout');
+      baseApi.util.invalidateTags(tagTypes);
+    });
   },
 });
 

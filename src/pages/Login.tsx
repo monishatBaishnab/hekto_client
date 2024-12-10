@@ -5,12 +5,14 @@ import { Button } from '@/components/ui/button';
 import { useLogInMutation } from '@/redux/features/auth/auth.api';
 import { useEffect } from 'react';
 import { FieldValues, SubmitHandler } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import { useAppDispatch } from '@/redux/hooks';
 import { login } from '@/redux/features/auth/auth.slice';
+import { LoaderCircle } from 'lucide-react';
 
 const Login = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [loginFromServer, { data, isLoading, isSuccess }] = useLogInMutation();
 
@@ -22,8 +24,9 @@ const Login = () => {
     if (isSuccess && !isLoading) {
       const user = jwtDecode(data.data.token);
       dispatch(login({ user, token: data.data.token }));
+      navigate('/');
     }
-  }, [isSuccess, isLoading, data, dispatch]);
+  }, [isSuccess, isLoading, data, dispatch, navigate]);
 
   return (
     <div>
@@ -49,8 +52,17 @@ const Login = () => {
               <span className="ml-1 block cursor-pointer text-sm font-medium text-athens-gray-900">
                 Forgot Password?
               </span>
-              <Button type="submit" className="w-full" size="lg">
-                Login
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={isLoading}
+                size="lg"
+              >
+                {isLoading ? (
+                  <LoaderCircle className="animate-spin" />
+                ) : (
+                  'Login'
+                )}
               </Button>
               <div className="text-center text-athens-gray-600">
                 <span>Don’t have an Account? </span>

@@ -67,6 +67,14 @@
 
 @layer utilities {
   .container {
-    @apply max-w-screen-xl mx-auto px-10 py-24;
+    @apply max-w-screen-xl mx-auto px-5 sm:px-10 py-24;
+  }
+  .scrollbar-hidden {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+  }
+
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge, and Opera */
   }
 }

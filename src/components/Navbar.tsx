@@ -26,6 +26,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import useUser from '@/hooks/useUser';
+import { useAppDispatch } from '@/redux/hooks';
+import { logout } from '@/redux/features/auth/auth.slice';
 
 // Generate the class names of nav links based on "isActive"
 const generate_link_class = (isActive: boolean): string => {
@@ -35,12 +38,36 @@ const generate_link_class = (isActive: boolean): string => {
 };
 
 // Generate The nav links from config
-const nav_links = nav_links_generator(client_route_config);
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const userData = useUser();
+  const { name, profilePhoto, role } = userData;
+  let nav_links: {
+    label: string;
+    path: string;
+  }[] = [];
+
+  if (client_route_config) {
+    nav_links = nav_links_generator(client_route_config);
+  }
+
   const [scroll, setScroll] = useState(false);
   const [isScrollTopVisible, setIsScrollTopVisible] = useState(false);
+
+  const handleLogout = () => {
+    if (!role) {
+      return navigate('/login');
+    } else if (role) {
+      // Then, log out the user after invalidating the cache
+      dispatch(logout());
+
+      // Optionally, redirect to another page after logout
+      navigate('/login');
+    }
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       setScroll(window.scrollY > 500);
@@ -103,18 +130,22 @@ const Navbar = () => {
             >
               <GitCompare className="size-4" /> Compere
             </Link>
+
             <Link
               className="flex items-center gap-1 text-sm text-white"
               to="/login"
             >
               <ShoppingCart className="size-4" /> Cart
             </Link>
-            <Link
-              className="flex items-center gap-1 text-sm text-white"
-              to="/login"
-            >
-              <User className="size-4" /> Login
-            </Link>
+
+            {!role && (
+              <Link
+                className="flex items-center gap-1 text-sm text-white"
+                to="/login"
+              >
+                <User className="size-4" /> Login
+              </Link>
+            )}
           </div>
         </div>
       </div>
@@ -145,17 +176,19 @@ const Navbar = () => {
 
             {/* Navbar links */}
             <div className="hidden items-center gap-x-6 lg:flex">
-              {nav_links?.map((link) => (
-                <NavLink
-                  key={`/${link?.path}`}
-                  className={({ isActive }) =>
-                    `outline-none ${generate_link_class(isActive)}`
-                  }
-                  to={link.path}
-                >
-                  {link.label}
-                </NavLink>
-              ))}
+              {nav_links
+                ? nav_links?.map((link) => (
+                    <NavLink
+                      key={`/${link?.path}`}
+                      className={({ isActive }) =>
+                        `outline-none ${generate_link_class(isActive)}`
+                      }
+                      to={link.path}
+                    >
+                      {link.label}
+                    </NavLink>
+                  ))
+                : null}
             </div>
           </div>
 
@@ -193,30 +226,36 @@ const Navbar = () => {
             </div>
 
             {/* Profile Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger className="outline-none">
-                <Avatar className="block size-9 cursor-pointer overflow-hidden rounded-full">
-                  <AvatarImage
-                    className="size-full object-cover"
-                    src="https://github.com/shadcn.png"
-                    alt="@shadcn"
-                  />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuLabel>
-                  My Profile
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem  onClick={() => navigate('/user/profile')} className="cursor-pointer">
-                  <LayoutDashboard /> Dashboard
-                </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer text-torch-red-600 focus:bg-torch-red-100 focus:text-torch-red-600">
-                  <LogOut /> Logout
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {role && (
+              <DropdownMenu>
+                <DropdownMenuTrigger className="outline-none">
+                  <Avatar className="block size-9 cursor-pointer overflow-hidden rounded-full">
+                    <AvatarImage
+                      className="size-full object-cover"
+                      src={profilePhoto ?? 'CN'}
+                      alt={name}
+                    />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuLabel>My Profile</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={() => navigate('/user/profile')}
+                    className="cursor-pointer"
+                  >
+                    <LayoutDashboard /> Dashboard
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={handleLogout}
+                    className="cursor-pointer text-torch-red-600 focus:bg-torch-red-100 focus:text-torch-red-600"
+                  >
+                    <LogOut /> Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
           </div>
         </div>
       </div>

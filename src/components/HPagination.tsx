@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   PaginationContent,
   PaginationItem,
@@ -7,11 +6,17 @@ import {
 } from './ui/pagination';
 import { Button } from './ui/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Dispatch } from 'react';
 
-const HPagination = () => {
-  const [page, setPage] = useState(1);
-  const totalPage = 3;
-
+const HPagination = ({
+  page,
+  setPage,
+  totalPage,
+}: {
+  page: number;
+  setPage: Dispatch<React.SetStateAction<number>>;
+  totalPage: number;
+}) => {
   const incrementPage = () => {
     setPage((currentPage) => {
       return currentPage < totalPage ? page + 1 : page;

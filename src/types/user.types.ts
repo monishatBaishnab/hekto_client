@@ -1,3 +1,5 @@
+import { TShop } from './shop.types';
+
 export type TUser = {
   id?: string;
   name: string;
@@ -8,4 +10,5 @@ export type TUser = {
   password: string;
   address: string | null;
   profilePhoto?: string | null;
+  shop?: TShop|null;
 };

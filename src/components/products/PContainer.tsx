@@ -242,7 +242,7 @@ const PContainer = ({ sidebar = false, limit }: PContainerProps) => {
           >
             {isLoading
               ? Array.from({ length: 4 }).map((_, index) => (
-                  <PCardSkeleton varient={viewMode} key={index} />
+                  <PCardSkeleton variant={viewMode} key={index} />
                 ))
               : (products as TProduct[])?.map((product) => (
                   <div>

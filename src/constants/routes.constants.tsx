@@ -14,7 +14,7 @@ import { Layers, Star, User, Settings as SettingsIcon } from 'lucide-react';
 import Login from '@/pages/Login';
 import Register from '@/pages/Register';
 
-export const profile_routes_config = [
+export const vendor_profile_config = [
   {
     path: '/',
     element: <Profile />,
@@ -36,6 +36,24 @@ export const profile_routes_config = [
     label: 'Reviews',
     element: <Reviews />,
     icon: Star,
+  },
+  {
+    path: '/settings',
+    label: 'Settings',
+    element: <Settings />,
+    icon: SettingsIcon,
+  },
+];
+export const user_profile_config = [
+  {
+    path: '/',
+    element: <Profile />,
+  },
+  {
+    path: '/profile',
+    label: 'Profile',
+    element: <Profile />,
+    icon: User,
   },
   {
     path: '/settings',
@@ -67,12 +85,10 @@ const client_route_config = [
   },
   {
     path: '/login',
-    label: 'Login',
     element: <Login />,
   },
   {
     path: '/register',
-    label: 'Register',
     element: <Register />,
   },
   {
