@@ -14,9 +14,10 @@ type THSelect = {
   name: string;
   label?: string;
   options: TOption[];
+  onValueChange?: (e: string) => void;
 };
 
-const HSelect = ({ name, label, options }: THSelect) => {
+const HSelect = ({ name, label, options, onValueChange }: THSelect) => {
   return (
     <Controller
       name={name}
@@ -29,7 +30,16 @@ const HSelect = ({ name, label, options }: THSelect) => {
           <fieldset className="space-y-1">
             {label ? <Label htmlFor={name}>{label}</Label> : null}
             <div className="relative">
-              <Select onValueChange={onChange} {...field} defaultValue={value}>
+              <Select
+                onValueChange={(e) => {
+                  onChange(e);
+                  if (onValueChange) {
+                    onValueChange(e);
+                  }
+                }}
+                {...field}
+                defaultValue={value}
+              >
                 <SelectTrigger className="h-12 w-full rounded-md px-4 !text-athens-gray-700 outline-none focus:ring-0">
                   <SelectValue placeholder="Register as" />
                 </SelectTrigger>

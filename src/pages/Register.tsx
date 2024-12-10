@@ -2,11 +2,19 @@ import HFile from '@/components/form/HFile';
 import HForm from '@/components/form/HForm';
 import HInput from '@/components/form/HInput';
 import HSelect from '@/components/form/HSelect';
+import HTextarea from '@/components/form/HTextarea';
 import PageHeader from '@/components/PageHeader';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import { useRegisterMutation } from '@/redux/features/auth/auth.api';
+import { login } from '@/redux/features/auth/auth.slice';
+import { TShop } from '@/types/shop.types';
+import { TUser } from '@/types/user.types';
+import { jwtDecode } from 'jwt-decode';
+import { useEffect, useState } from 'react';
 import { FieldValues, SubmitHandler } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 
 const use_role_options = [
   { value: 'USER', label: 'User' },
@@ -14,9 +22,59 @@ const use_role_options = [
 ];
 
 const Register = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [register, { isError, isSuccess, data }] = useRegisterMutation();
+  const [role, setRole] = useState('USER');
+
   const handleSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
+    const userData: TUser = {
+      name: '',
+      role: '',
+      email: '',
+      password: '',
+      address: null,
+    };
+    const shopData: TShop = {
+      name: '',
+      description: '',
+    };
+
+    if (data) {
+      userData.name = data.first_name + ' ' + data.last_name;
+      userData.address = data.address;
+      userData.email = data.email;
+      userData.password = data.password;
+      userData.role = data.role;
+      shopData.name = data.shop_name;
+      shopData.description = data.shop_description;
+    }
+
+    const formData = new FormData();
+
+    if (data.profile) {
+      formData.append('file', data.profile);
+    }
+
+    // Append userData and shopData as JSON strings
+    formData.append('data', JSON.stringify({ user: userData, shop: shopData }));
+
+    register(formData);
   };
+
+  const handleChangeRole = (role: string) => {
+    setRole(role);
+  };
+
+  useEffect(() => {
+    if (!isError && isSuccess) {
+      const user = jwtDecode(data.data.token);
+      dispatch(login({ user, token: data.data.token }));
+      navigate('/');
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isError, isSuccess, data, dispatch]);
+
   return (
     <div>
       <PageHeader title="My Account" />
@@ -43,9 +101,18 @@ const Register = () => {
                 <HInput placeholder="Write your mobile number" name="mobile" />
               </div>
 
-              <HSelect name="role" options={use_role_options} />
+              <HSelect
+                onValueChange={handleChangeRole}
+                name="role"
+                options={use_role_options}
+              />
 
               <HInput placeholder="Write your address" name="address" />
+              <HInput
+                placeholder="Write your password"
+                type="password"
+                name="password"
+              />
 
               <Textarea
                 required
@@ -55,6 +122,22 @@ const Register = () => {
                 className="outline-none !ring-0 focus:ring-0"
               />
               <HFile name="profile" />
+              {role === 'VENDOR' ? (
+                <>
+                  <div className="relative my-5 w-full border-b border-b-athens-gray-100">
+                    <div className="absolute inset-0 m-auto flex items-center justify-center">
+                      <span className="block bg-white font-medium text-athens-gray-800">
+                        Shop info
+                      </span>
+                    </div>
+                  </div>{' '}
+                  <HInput placeholder="Write your shop name" name="shop_name" />
+                  <HTextarea
+                    placeholder="Write your shop description"
+                    name="shop_description"
+                  />
+                </>
+              ) : null}
               <Button type="submit" className="w-full" size="lg">
                 Register
               </Button>
