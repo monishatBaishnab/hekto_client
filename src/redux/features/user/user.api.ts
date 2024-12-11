@@ -27,7 +27,20 @@ const productApi = baseApi.injectEndpoints({
       },
       providesTags: (_, __, id) => [{ type: 'users', id }],
     }),
+    updateProfile: builder.mutation({
+      query: ({ formData, id }) => {
+        return {
+          url: `/users/${id}`,
+          method: 'PUT',
+          body: formData,
+        };
+      },
+      invalidatesTags: (_, __, {id}) => {
+        
+        return ['users', id]
+      },
+    }),
   }),
 });
 
-export const { useFetchAllUserQuery, useFetchProfileInfoQuery } = productApi;
+export const { useFetchAllUserQuery, useFetchProfileInfoQuery, useUpdateProfileMutation } = productApi;

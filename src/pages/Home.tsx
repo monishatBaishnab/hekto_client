@@ -78,15 +78,15 @@ const Home = () => {
         <TrendingProducts />
 
         <div className="bg-athens-gray-50">
-          <div className="container flex items-center justify-center gap-7 !py-5">
-            <div className="h-96 w-[calc(50%_-_14px)] shrink-0 overflow-hidden">
+          <div className="container flex flex-wrap items-center justify-center gap-7 !py-5">
+            <div className="h-96 w-full shrink-0 overflow-hidden md:w-[calc(50%_-_14px)]">
               <img
                 className="size-full object-contain"
                 src="https://i.ibb.co.com/bX9bvBH/Group-153.png"
                 alt=""
               />
             </div>
-            <div className="w-[calc(50%_-_14px)] shrink-0 space-y-5">
+            <div className="w-full shrink-0 space-y-5 md:w-[calc(50%_-_14px)]">
               <h2 className="text-3xl font-bold text-h-black">
                 Unique Features Of leatest & <br />
                 Trending Poducts

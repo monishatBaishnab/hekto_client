@@ -13,7 +13,7 @@ const ProductEmpty = ({ action }: { action: ReactNode }) => {
       </div>
       <div className="space-y-2 text-center">
         <h4 className="text-lg font-semibold text-dark-blue-900">
-          Oops! No product found from your shop.
+          Oops! No product found.
         </h4>
         {action}
       </div>

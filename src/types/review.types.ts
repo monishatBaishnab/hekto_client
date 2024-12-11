@@ -1,10 +1,16 @@
 export interface TReview {
   id: string;
-  product_id: string;
-  user_id: string;
   rating: number;
   comment: string;
-  isDeleted: boolean;
-  createdAt: string;
-  updatedAt: string;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    address: string;
+    profilePhoto: string;
+    createdAt:string;
+  };
+  product: {
+    name: string;
+  };
 }

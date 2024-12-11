@@ -93,7 +93,9 @@ const PCard = ({
       <div
         className={cn(
           'transition-all relative overflow-hidden',
-          varient === 'grid' ? 'h-[280px] w-full' : 'h-full w-[290px] shrink-0',
+          varient === 'grid'
+            ? 'h-[280px] w-full'
+            : 'h-full w-24 md:w-[290px] shrink-0',
           'bg-athens-gray-50 p-7  group-hover:bg-dark-blue-100/70',
           classNames?.imgWrapper
         )}
@@ -123,7 +125,7 @@ const PCard = ({
           to={`/products/${product?.id}`}
           className={cn(
             varient === 'grid' ? 'text-lg' : 'text-lg sm:text-2xl',
-            'font-bold text-deep-koamaru-900',
+            'font-bold text-deep-koamaru-900'
           )}
         >
           {Number(product?.name?.length) > 30
@@ -135,7 +137,7 @@ const PCard = ({
           className={cn(
             varient === 'grid' || disabledDesc
               ? 'hidden'
-              : 'block text-athens-gray-600'
+              : 'hidden sm:block text-athens-gray-600'
           )}
         >
           {Number(product?.description?.length) > 255
@@ -186,7 +188,12 @@ const PCard = ({
               disabledShop && 'hidden'
             )}
           >
-            <div className="flex items-center gap-2">
+            <div
+              className={cn(
+                'items-center gap-2',
+                varient === 'list' ? 'hidden sm:flex' : 'flex'
+              )}
+            >
               <div className="size-8 overflow-hidden rounded-md">
                 <img
                   className="size-full object-cover"

@@ -20,7 +20,7 @@ import { addToCart } from '@/redux/features/cart/cart.slice';
 import { useAlert } from '@/hooks/useAlert';
 import { toast } from 'sonner';
 import { useSearchParams } from 'react-router-dom';
-
+import ProductEmpty from '../empty/ProductEmpty';
 const sortOptions = [
   { key: 'createdAt', label: 'Default' },
   { key: 'name', label: 'Name' },
@@ -138,7 +138,7 @@ const PContainer = ({ sidebar = false, limit }: PContainerProps) => {
     <div className="space-y-8">
       {AlertComponent}
       {/* Header Section */}
-      <div className="flex items-center justify-between gap-10">
+      <div className="flex flex-wrap items-center justify-between gap-10">
         <div>
           <h4 className="text-xl font-bold text-h-black">
             Your Next Favorite Product Awaits
@@ -240,27 +240,33 @@ const PContainer = ({ sidebar = false, limit }: PContainerProps) => {
                   : 'space-y-5 col-span-4'
             )}
           >
-            {isLoading
-              ? Array.from({ length: 4 }).map((_, index) => (
-                  <PCardSkeleton variant={viewMode} key={index} />
-                ))
-              : (products as TProduct[])?.map((product) => (
-                  <div>
-                    <PCard
-                      product={product}
-                      varient={viewMode}
-                      key={product.id}
-                      actions={
-                        <PCard.CardActions
-                          actions={user_actions}
-                          variant={viewMode}
-                          onClick={handleAction}
-                          product={product}
-                        />
-                      }
-                    />
-                  </div>
-                ))}
+            {isLoading ? (
+              Array.from({ length: 4 }).map((_, index) => (
+                <PCardSkeleton variant={viewMode} key={index} />
+              ))
+            ) : !products || products?.length < 1 ? (
+              <div className="col-span-1 md:col-span-2 lg:col-span-3">
+                <ProductEmpty action={<></>} />
+              </div>
+            ) : (
+              (products as TProduct[])?.map((product) => (
+                <div>
+                  <PCard
+                    product={product}
+                    varient={viewMode}
+                    key={product.id}
+                    actions={
+                      <PCard.CardActions
+                        actions={user_actions}
+                        variant={viewMode}
+                        onClick={handleAction}
+                        product={product}
+                      />
+                    }
+                  />
+                </div>
+              ))
+            )}
           </div>
           {/* Loader for Infinite Scroll */}
           {isFetching || canFetchMore ? (

@@ -1,18 +1,15 @@
 import HForm from '@/components/form/HForm';
 import HInput from '@/components/form/HInput';
-import HSelect from '@/components/form/HSelect';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { useRegisterMutation } from '@/redux/features/auth/auth.api';
-import { login } from '@/redux/features/auth/auth.slice';
+import useUser from '@/hooks/useUser';
+import { useUpdateProfileMutation } from '@/redux/features/user/user.api';
 import { TUser } from '@/types/user.types';
 import { motion } from 'framer-motion';
-import { jwtDecode } from 'jwt-decode';
 import { Image, RefreshCcw, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, FieldValues } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 const slideVariants = {
   initial: { opacity: 0, y: 5 },
@@ -20,48 +17,79 @@ const slideVariants = {
   exit: { opacity: 0, y: 10 },
 };
 
-const use_role_options = [
-  { value: 'CUSTOMER', label: 'Customer' },
-  { value: 'VENDOR', label: 'Vendor' },
-];
-
 const UserForm = () => {
-  const navigate = useNavigate();
+  const userData = useUser();
   const [file, setFile] = useState<File | null>(null);
   const dispatch = useDispatch();
-  const [register, { isError, isSuccess, data }] = useRegisterMutation();
+  const [updateProfile, { isError, isSuccess, data }] =
+    useUpdateProfileMutation();
+
+  let user = {};
+
+  if (userData?.name && userData?.address) {
+    user = {
+      name: userData.name,
+      address: userData.address,
+    };
+  }
 
   const handleSubmit: SubmitHandler<FieldValues> = (data) => {
-    const userData: Partial<TUser> = {};
+    const userInfo: Partial<TUser> = {};
 
     if (data) {
-      userData.name = data.first_name + ' ' + data.last_name;
-      userData.address = data.address;
-      userData.email = data.email;
-      userData.password = data.password;
-      userData.role = data.role;
+      userInfo.name = data.name;
+      userInfo.address = data.address;
+      userInfo.email = data.email;
     }
 
     const formData = new FormData();
 
-    if (data.profile) {
-      formData.append('file', data.profile);
+    if (file) {
+      formData.append('file', file);
     }
 
-    // Append userData and shopData as JSON strings
-    formData.append('data', JSON.stringify({ userData }));
-    console.log(data, file);
-    // register(formData);
+    // Append userInfo and shopData as JSON strings
+    formData.append('data', JSON.stringify({ ...userInfo }));
+
+    updateProfile({ formData, id: userData?.id });
   };
 
   useEffect(() => {
     if (!isError && isSuccess) {
-      const user = jwtDecode(data.data.token);
-      dispatch(login({ user, token: data.data.token }));
-      navigate('/');
+      toast.success('Profile Updated.');
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isError, isSuccess, data, dispatch]);
+
+  
+  if (userData.isLoading || userData?.isFetching) {
+    return (
+      <div className="space-y-7">
+        <div className="space-y-5">
+          {/* Profile Photo Skeleton */}
+          <div className="flex items-center gap-8">
+            <div className="size-32 shrink-0 animate-pulse overflow-hidden rounded-md bg-gray-200"></div>
+            <div className="w-full space-y-3">
+              <div className="h-4 w-3/4 animate-pulse rounded-md bg-gray-200"></div>
+              <div className="h-8 w-40 animate-pulse rounded-md bg-gray-200"></div>
+            </div>
+          </div>
+
+          {/* Input Skeletons */}
+          <div className="space-y-5">
+            <div className="h-10 animate-pulse rounded-md bg-gray-200"></div>
+            <div className="h-10 animate-pulse rounded-md bg-gray-200"></div>
+          </div>
+
+          {/* Button Skeletons */}
+          <div className="flex items-center gap-2">
+            <div className="h-10 w-24 animate-pulse rounded-md bg-gray-200"></div>
+            <div className="h-10 w-32 animate-pulse rounded-md bg-gray-200"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
 
   return (
     <motion.div
@@ -71,14 +99,14 @@ const UserForm = () => {
       transition={{ duration: 0.3 }}
     >
       <div className="space-y-7">
-        <HForm onSubmit={handleSubmit}>
+        <HForm defaultValues={user ? user : {}} onSubmit={handleSubmit}>
           <div className="space-y-5">
             <div className="flex items-center gap-8">
               <div className="size-32 shrink-0 overflow-hidden rounded-md">
                 <img
                   className="size-full object-cover"
-                  src="https://i.ibb.co.com/5G1XTfb/customer.webp"
-                  alt=""
+                  src={userData?.profilePhoto}
+                  alt={userData?.name}
                 />
               </div>
               <div className="space-y-3">
@@ -114,31 +142,9 @@ const UserForm = () => {
               </div>
             </div>
             <div className="space-y-5">
-              <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-                <HInput placeholder="Write your first name" name="first_name" />
-                <HInput placeholder="Write your last name" name="last_name" />
-              </div>
-              <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-                <HInput placeholder="Write your verified email" name="email" />
-                <HInput placeholder="Write your mobile number" name="mobile" />
-              </div>
-
-              <HSelect name="role" options={use_role_options} />
+              <HInput placeholder="Write your name" name="name" />
 
               <HInput placeholder="Write your address" name="address" />
-              <HInput
-                placeholder="Write your password"
-                type="password"
-                name="password"
-              />
-
-              <Textarea
-                required
-                placeholder="Write about yourself"
-                name="description"
-                rows={7}
-                className="outline-none !ring-0 focus:ring-0"
-              />
             </div>
             <div className="flex items-center gap-2">
               <Button

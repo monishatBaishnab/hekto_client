@@ -1,14 +1,20 @@
-import { Info, Reply, Star } from 'lucide-react';
-import { Button } from '../ui/button';
+import { Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ReactNode } from 'react';
+import { TReview } from '@/types/review.types';
+import moment from 'moment';
 
 type TRCard = {
   varient?: 'reply' | 'default';
   reply?: ReactNode | undefined;
+  review: TReview;
 };
 
-const RCard = ({ varient = 'default', reply: RReply = undefined }: TRCard) => {
+const RCard = ({
+  review,
+  varient = 'default',
+  reply: RReply = undefined,
+}: TRCard) => {
   return (
     <div
       className={cn(
@@ -30,8 +36,12 @@ const RCard = ({ varient = 'default', reply: RReply = undefined }: TRCard) => {
             </div>
 
             <div>
-              <h6 className="-mb-1 font-bold text-h-black">Randy Walker</h6>
-              <span className="text-sm text-athens-gray-600">Nov 12, 2024</span>
+              <h6 className="-mb-1 font-bold text-h-black">
+                {review?.user?.name}
+              </h6>
+              <span className="text-sm text-athens-gray-600">
+                {moment(review?.user?.createdAt).format('DD MMM, YYYY')}
+              </span>
             </div>
           </div>
           {varient !== 'reply' && (
@@ -50,20 +60,16 @@ const RCard = ({ varient = 'default', reply: RReply = undefined }: TRCard) => {
           <div className="flex items-center gap-2">
             <span className="text-athens-gray-600">Review On: </span>
             <span className="text-athens-gray-950">
-              67-04 Myrtle Ave Glendale, NY 11385
+              {review?.product?.name}
             </span>
           </div>
         )}
 
         {/* Review */}
-        <p className="text-athens-gray-700">
-          Excellent apartment in the very center of the city, attractions and
-          entertainment venues are located 50m from the flat. The flat was
-          perfectly clean and had basic slippers, gel-shampoo, clean towels.
-        </p>
+        <p className="text-athens-gray-700">{review?.comment}</p>
 
         {/* Reply & Report */}
-        {varient !== 'reply' && !RReply && (
+        {/* {varient !== 'reply' && !RReply && (
           <div className="flex items-center justify-between">
             <Button variant="light" className="rounded-lg" size="sm">
               <Reply /> Reply
@@ -73,7 +79,7 @@ const RCard = ({ varient = 'default', reply: RReply = undefined }: TRCard) => {
               Report
             </button>
           </div>
-        )}
+        )} */}
       </div>
       {RReply}
     </div>

@@ -2,6 +2,7 @@ import HForm from '@/components/form/HForm';
 import HInput from '@/components/form/HInput';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import useUser from '@/hooks/useUser';
 import { TUser } from '@/types/user.types';
 import { motion } from 'framer-motion';
 import { Image, RefreshCcw, X } from 'lucide-react';
@@ -15,6 +16,7 @@ const slideVariants = {
 };
 
 const ShopForm = () => {
+  const userData = useUser();
   const [file, setFile] = useState<File | null>(null);
 
   const handleSubmit: SubmitHandler<FieldValues> = (data) => {

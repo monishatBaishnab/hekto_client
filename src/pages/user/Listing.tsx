@@ -64,7 +64,7 @@ const Listing = () => {
       }
     }
   };
-  console.log(products);
+  
   const handleSubmit: SubmitHandler<FieldValues> = async (data) => {
     const categories = [];
     const previousCategories = product?.categories?.[0] as TCategory;
@@ -111,7 +111,7 @@ const Listing = () => {
   useEffect(() => {
     if (!userData.isFetching && !userData?.isLoading && !userData.shop) {
       toast.error('Please create a shop for create product.');
-      navigate('/user/settings?mode=shop');
+      navigate('/user/settings');
       return;
     }
   }, [userData, navigate]);

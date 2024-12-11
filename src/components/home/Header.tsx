@@ -35,14 +35,14 @@ const CarouselSlide = ({ slide }: { slide: TSlide }) => {
   };
   return (
     <motion.div
-      className="container absolute inset-x-0 top-0 flex h-full items-center justify-between gap-10 px-10"
+      className="container absolute inset-x-0 top-0 flex h-full flex-wrap items-center justify-between gap-10 px-10"
       initial="initial"
       animate="animate"
       exit="exit"
       transition={{ duration: 1 }}
     >
       {/* Left Content */}
-      <div className="w-[calc(50%_-_20px)] shrink-0 space-y-4">
+      <div className="w-full shrink-0 space-y-4 md:w-[calc(50%_-_20px)]">
         {/* Subtitle */}
         <motion.h5
           className="text-base font-medium text-rose-600"
@@ -78,7 +78,7 @@ const CarouselSlide = ({ slide }: { slide: TSlide }) => {
         </motion.div>
       </div>
       {/* Right Content */}
-      <div className="flex w-[calc(50%_-_20px)] shrink-0 items-center justify-center">
+      <div className="flex w-full shrink-0 items-center justify-center md:w-[calc(50%_-_20px)]">
         <motion.div
           className="size-3/4 rounded-full bg-rose-300/10"
           variants={scaleVariants}
