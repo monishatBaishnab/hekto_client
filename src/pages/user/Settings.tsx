@@ -6,6 +6,7 @@ import UserForm from '../../components/dashboard/UserForm';
 import ShopForm from '../../components/dashboard/ShopForm';
 import PasswordResetForm from '../../components/dashboard/PasswordResetForm';
 import { useSearchParams } from 'react-router-dom';
+import useUser from '@/hooks/useUser';
 
 const settingContent = {
   personal: <UserForm />,
@@ -14,6 +15,7 @@ const settingContent = {
 };
 
 const Settings = () => {
+  const userData = useUser();
   const [mode, setMode] = useState<'personal' | 'shop' | 'password'>(
     'personal'
   );
@@ -42,22 +44,20 @@ const Settings = () => {
         >
           Personal Info
         </Button>
-        {
-          // userData?.role !== 'CUSTOMER' ? (
-          //   <Button
-          //     variant="light"
-          //     onClick={() => setMode('shop')}
-          //     className={cn(
-          //       'rounded-full',
-          //       mode === 'shop'
-          //         ? 'bg-athens-gray-50 active:bg-athens-gray-50'
-          //         : ''
-          //     )}
-          //   >
-          //     Shop Info
-          //   </Button>
-          // ) : null
-        }
+        {userData?.role !== 'CUSTOMER' ? (
+          <Button
+            variant="light"
+            onClick={() => setMode('shop')}
+            className={cn(
+              'rounded-full',
+              mode === 'shop'
+                ? 'bg-athens-gray-50 active:bg-athens-gray-50'
+                : ''
+            )}
+          >
+            Shop Info
+          </Button>
+        ) : null}
         <Button
           variant="light"
           onClick={() => setMode('password')}

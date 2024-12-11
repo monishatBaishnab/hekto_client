@@ -1,13 +1,18 @@
 import HForm from '@/components/form/HForm';
 import HInput from '@/components/form/HInput';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
 import useUser from '@/hooks/useUser';
-import { TUser } from '@/types/user.types';
 import { motion } from 'framer-motion';
 import { Image, RefreshCcw, X } from 'lucide-react';
 import { useState } from 'react';
 import { SubmitHandler, FieldValues } from 'react-hook-form';
+import HTextarea from '../form/HTextarea';
+import { TShop } from '@/types/shop.types';
+import {
+  useCreateShopMutation,
+  useUpdateShopMutation,
+} from '@/redux/features/shops/shops.api';
+import { toast } from 'sonner';
 
 const slideVariants = {
   initial: { opacity: 0, y: 5 },
@@ -18,29 +23,76 @@ const slideVariants = {
 const ShopForm = () => {
   const userData = useUser();
   const [file, setFile] = useState<File | null>(null);
+  const [updateShop] = useUpdateShopMutation();
+  const [createShop] = useCreateShopMutation();
+  let shopData = {};
 
-  const handleSubmit: SubmitHandler<FieldValues> = (data) => {
-    const userData: Partial<TUser> = {};
+  if (userData?.shop) {
+    shopData = {
+      name: userData?.shop?.name,
+      description: userData?.shop?.description,
+    };
+  }
+
+  if (userData?.isLoading) {
+    return (
+      <div className="space-y-7">
+        <div className="space-y-5">
+          <div className="flex items-center gap-8">
+            <div className="size-32 shrink-0 animate-pulse overflow-hidden rounded-md bg-gray-200"></div>
+            <div className="space-y-3">
+              <div className="h-4 w-3/4 animate-pulse rounded bg-gray-200"></div>
+              <div className="h-4 w-1/2 animate-pulse rounded bg-gray-200"></div>
+              <div className="inline-flex items-center gap-2 rounded-md border border-gray-300 bg-gray-100 px-4 py-2">
+                <div className="size-4 animate-pulse rounded bg-gray-200"></div>
+                <div className="h-4 w-20 animate-pulse rounded bg-gray-200"></div>
+              </div>
+              <div className="h-4 w-full animate-pulse rounded bg-gray-200"></div>
+            </div>
+          </div>
+          <div className="space-y-5">
+            <div className="h-12 w-full animate-pulse rounded bg-gray-200"></div>
+            <div className="h-28 w-full animate-pulse rounded bg-gray-200"></div>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="h-12 w-24 animate-pulse rounded bg-gray-200"></div>
+            <div className="h-12 w-32 animate-pulse rounded bg-gray-200"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const handleSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const shopData: Partial<TShop> = {};
 
     if (data) {
-      userData.name = data.first_name + ' ' + data.last_name;
-      userData.address = data.address;
-      userData.email = data.email;
-      userData.password = data.password;
-      userData.role = data.role;
+      shopData.name = data.name;
+      shopData.description = data.description;
     }
 
     const formData = new FormData();
 
-    if (data.profile) {
-      formData.append('file', data.profile);
+    if (file) {
+      formData.append('file', file);
     }
 
-    // Append userData and shopData as JSON strings
-    formData.append('data', JSON.stringify({ userData }));
-    console.log(data, file);
-    // register(formData);
+    // Append formData and shopData as JSON strings
+    formData.append('data', JSON.stringify({ ...formData }));
+
+    if (userData?.shop) {
+      const result = await updateShop({ formData, id: userData?.shop?.id });
+      if (result?.data?.success) {
+        toast.success('Shop Updated.');
+      }
+    } else {
+      const result = await createShop({ formData, id: userData?.shop?.id });
+      if (result?.data?.success) {
+        toast.success('Shop Updated.');
+      }
+    }
   };
+
   return (
     <motion.div
       initial="initial"
@@ -49,14 +101,17 @@ const ShopForm = () => {
       transition={{ duration: 0.3 }}
     >
       <div className="space-y-7">
-        <HForm onSubmit={handleSubmit}>
+        <HForm onSubmit={handleSubmit} defaultValues={shopData}>
           <div className="space-y-5">
             <div className="flex items-center gap-8">
               <div className="size-32 shrink-0 overflow-hidden rounded-md">
                 <img
                   className="size-full object-cover"
-                  src="https://i.ibb.co.com/5G1XTfb/customer.webp"
-                  alt=""
+                  src={
+                    userData?.shop?.logo ||
+                    'https://i.ibb.co.com/5G1XTfb/customer.webp'
+                  }
+                  alt={userData?.shop?.name}
                 />
               </div>
               <div className="space-y-3">
@@ -93,14 +148,13 @@ const ShopForm = () => {
               </div>
             </div>
             <div className="space-y-5">
-              <HInput placeholder="Write your first name" name="name" />
+              <HInput placeholder="Write your shop name" name="name" />
 
-              <Textarea
+              <HTextarea
                 required
-                placeholder="Write about yourself"
+                placeholder="Write about your shop"
                 name="description"
                 rows={7}
-                className="outline-none !ring-0 focus:ring-0"
               />
             </div>
             <div className="flex items-center gap-2">

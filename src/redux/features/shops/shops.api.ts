@@ -45,7 +45,7 @@ const productApi = baseApi.injectEndpoints({
           body: formData,
         };
       },
-      invalidatesTags: ['shops'],
+      invalidatesTags: ['shops', 'users'],
     }),
   }),
 });
