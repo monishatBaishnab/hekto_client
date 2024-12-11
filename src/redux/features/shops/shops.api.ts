@@ -3,7 +3,7 @@ import { TQueries } from '@/types';
 
 const productApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    fetchAllUser: builder.query({
+    fetchAllShops: builder.query({
       query: (queries: TQueries) => {
         const params = new URLSearchParams();
         if (queries?.length) {
@@ -11,50 +11,48 @@ const productApi = baseApi.injectEndpoints({
         }
 
         return {
-          url: '/users',
+          url: '/shops',
           method: 'GET',
           params,
         };
       },
-      providesTags: ['users'],
+      providesTags: ['shops'],
     }),
-    fetchProfileInfo: builder.query({
+    fetchSingleShop: builder.query({
       query: (id: string) => {
         return {
-          url: `/users/${id}`,
+          url: `/shops/${id}`,
           method: 'GET',
         };
       },
-      providesTags: (_, __, id) => [{ type: 'users', id }],
+      providesTags: ['shops'],
     }),
-    updateProfile: builder.mutation({
+    createShop: builder.mutation({
+      query: ({ formData }) => {
+        return {
+          url: `/shops/`,
+          method: 'POST',
+          body: formData,
+        };
+      },
+      invalidatesTags: ['shops'],
+    }),
+    updateShop: builder.mutation({
       query: ({ formData, id }) => {
         return {
-          url: `/users/${id}`,
+          url: `/shops/${id}`,
           method: 'PUT',
           body: formData,
         };
       },
-      invalidatesTags: (_, __, { id }) => {
-        return ['users', id];
-      },
-    }),
-    updateUserStatus: builder.mutation({
-      query: ({ payload, id }) => {
-        return {
-          url: `/users/status/${id}`,
-          method: 'PUT',
-          body: payload,
-        };
-      },
-      invalidatesTags: ['users'],
+      invalidatesTags: ['shops'],
     }),
   }),
 });
 
 export const {
-  useFetchAllUserQuery,
-  useFetchProfileInfoQuery,
-  useUpdateProfileMutation,
-  useUpdateUserStatusMutation
+  useFetchAllShopsQuery,
+  useFetchSingleShopQuery,
+  useCreateShopMutation,
+  useUpdateShopMutation,
 } = productApi;

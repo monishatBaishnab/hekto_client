@@ -1,11 +1,30 @@
 import { admin_route_config } from '@/constants/routes.constants';
+import useUser from '@/hooks/useUser';
 import { cn } from '@/lib/utils';
+import { logout } from '@/redux/features/auth/auth.slice';
+import { useAppDispatch } from '@/redux/hooks';
 import { LogOut } from 'lucide-react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 
 const AdminSidebar = () => {
   const sidebar_links = admin_route_config;
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const userData = useUser();
 
+  const { role } = userData;
+
+  const handleLogout = () => {
+    if (!role) {
+      return navigate('/login');
+    } else if (role) {
+      // Then, log out the user after invalidating the cache
+      dispatch(logout());
+
+      // Optionally, redirect to another page after logout
+      navigate('/login');
+    }
+  };
   return (
     <div>
       <div className="border-b border-b-athens-gray-100 p-4">
@@ -44,6 +63,7 @@ const AdminSidebar = () => {
 
         {/* Button for logout */}
         <button
+          onClick={handleLogout}
           className="group flex w-full items-center gap-2 rounded-md px-3 py-2.5 text-athens-gray-600 transition-all hover:bg-rose-50 hover:text-rose-600 active:bg-athens-gray-100/70"
         >
           <LogOut className="size-5" />

@@ -7,19 +7,18 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Fullscreen, Trash2 } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 import TableAction from '@/components/dashboard/admin/TableAction';
 import HPagination from '@/components/HPagination';
 import { useState } from 'react';
-import { useFetchAllReviewQuery } from '@/redux/features/review/review.api';
+import {
+  useDeleteReviewMutation,
+  useFetchAllReviewQuery,
+} from '@/redux/features/review/review.api';
 import { TReview } from '@/types/review.types';
+import { toast } from 'sonner';
 
 const actions = [
-  {
-    key: 'comment',
-    label: 'Comment',
-    icon: Fullscreen,
-  },
   {
     key: 'delete',
     label: 'Delete',
@@ -37,10 +36,15 @@ const AReviews = () => {
     { name: 'page', value: String(page) },
     { name: 'limit', value: '10' },
   ]);
-  console.log(reviews);
-  const handleAction = (key: string, user: TReview) => {
-    console.log(key);
-    console.log(user);
+  const [deleteReview] = useDeleteReviewMutation();
+
+  const handleAction = async (key: string, review: TReview) => {
+    if (key === 'delete') {
+      const result = await deleteReview(review.id);
+      if (result?.data?.success) {
+        toast.success('Review Deleted.');
+      }
+    }
   };
 
   return (

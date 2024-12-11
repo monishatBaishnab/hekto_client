@@ -13,3 +13,4 @@ export type TUser = {
   shop?: TShop | null;
   status: string;
 };
+

@@ -6,8 +6,9 @@ import { Input } from './ui/input';
 import { Button } from './ui/button';
 import {
   ArrowUp,
+  CircleGauge,
+  FileUser,
   GitCompare,
-  LayoutDashboard,
   LogOut,
   Mail,
   Menu,
@@ -241,11 +242,19 @@ const Navbar = () => {
                 <DropdownMenuContent>
                   <DropdownMenuLabel>My Profile</DropdownMenuLabel>
                   <DropdownMenuSeparator />
+                  {role === 'ADMIN' && (
+                    <DropdownMenuItem
+                      onClick={() => navigate('/admin/users')}
+                      className="cursor-pointer"
+                    >
+                      <CircleGauge /> Dashboard
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuItem
                     onClick={() => navigate('/user/profile')}
                     className="cursor-pointer"
                   >
-                    <LayoutDashboard /> Dashboard
+                    <FileUser /> Profile
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={handleLogout}

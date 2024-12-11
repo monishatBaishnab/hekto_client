@@ -2,7 +2,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { RootState } from './store';
 
-export const tagTypes = ['courses', 'categories', 'users'];
+export const tagTypes = ['courses', 'categories', 'users', 'shops'];
 
 const baseQuery = fetchBaseQuery({
   baseUrl: 'http://localhost:3000/api/v1',

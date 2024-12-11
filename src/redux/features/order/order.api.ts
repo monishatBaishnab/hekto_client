@@ -3,7 +3,7 @@ import { TQueries } from '@/types';
 
 const productApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    fetchAllReview: builder.query({
+    fetchAllOrders: builder.query({
       query: (queries: TQueries) => {
         const params = new URLSearchParams();
         if (queries?.length) {
@@ -11,23 +11,14 @@ const productApi = baseApi.injectEndpoints({
         }
 
         return {
-          url: '/reviews',
+          url: '/orders',
           method: 'GET',
           params,
         };
       },
-      providesTags: ['reviews'],
-    }),
-    deleteReview: builder.mutation({
-      query: (id) => {
-        return {
-          url: `/reviews/${id}`,
-          method: 'DELETE',
-        };
-      },
-      invalidatesTags: ['reviews'],
+      providesTags: ['orders'],
     }),
   }),
 });
 
-export const { useFetchAllReviewQuery, useDeleteReviewMutation } = productApi;
+export const { useFetchAllOrdersQuery } = productApi;

@@ -25,6 +25,7 @@ import AUsers from '@/pages/admin/AUsers';
 import AProducts from '@/pages/admin/AProducts';
 import AReviews from '@/pages/admin/AReviews';
 import AOrders from '@/pages/admin/AOrders';
+import AShops from '@/pages/admin/AShops';
 
 export const vendor_profile_config = [
   {
@@ -88,10 +89,16 @@ export const admin_route_config = [
     icon: UsersIcon,
   },
   {
+    path: '/shops',
+    label: 'Shops',
+    element: <AShops />,
+    icon: UsersIcon,
+  },
+  {
     path: '/products',
     label: 'Products',
     element: <AProducts />,
-    icon: MessagesSquare,
+    icon: ListOrdered,
   },
   {
     path: '/reviews',

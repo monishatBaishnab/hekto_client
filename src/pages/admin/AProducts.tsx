@@ -7,20 +7,19 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Fullscreen, Trash2 } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 import TableAction from '@/components/dashboard/admin/TableAction';
 import HPagination from '@/components/HPagination';
 import { useState } from 'react';
-import { useFetchAllProductsQuery } from '@/redux/features/products/products.api';
+import {
+  useDeleteProductMutation,
+  useFetchAllProductsQuery,
+} from '@/redux/features/products/products.api';
 import { TProduct } from '@/types/products.types';
 import { TCategory } from '@/types';
+import { toast } from 'sonner';
 
 const actions = [
-  {
-    key: 'details',
-    label: 'Details',
-    icon: Fullscreen,
-  },
   {
     key: 'delete',
     label: 'Delete',
@@ -38,10 +37,15 @@ const AProducts = () => {
     { name: 'page', value: String(page) },
     { name: 'limit', value: '10' },
   ]);
+  const [deleteProduct] = useDeleteProductMutation();
 
-  const handleAction = (key: string, user: TProduct) => {
-    console.log(key);
-    console.log(user);
+  const handleAction = async (key: string, product: TProduct) => {
+    if (key === 'delete') {
+      const result = await deleteProduct(product.id);
+      if (result.data?.success) {
+        toast.error('Product Deleted.');
+      }
+    }
   };
 
   return (
