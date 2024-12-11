@@ -78,7 +78,7 @@ const Listing = () => {
     } else if (!product) {
       categories?.push({ isDeleted: false, id: data?.categories });
     }
-    console.log(categories);
+    
     const productData = {
       name: data?.name,
       price: data?.price,

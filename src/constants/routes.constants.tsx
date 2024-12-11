@@ -10,9 +10,21 @@ import ShopDetails from '@/pages/ShopDetails';
 import Listing from '@/pages/user/Listing';
 import Reviews from '@/pages/user/Reviews';
 import Settings from '@/pages/user/Settings';
-import { Layers, Star, User, Settings as SettingsIcon } from 'lucide-react';
+import {
+  Layers,
+  Star,
+  User,
+  Settings as SettingsIcon,
+  Users as UsersIcon,
+  MessagesSquare,
+  ListOrdered,
+} from 'lucide-react';
 import Login from '@/pages/Login';
 import Register from '@/pages/Register';
+import AUsers from '@/pages/admin/AUsers';
+import AProducts from '@/pages/admin/AProducts';
+import AReviews from '@/pages/admin/AReviews';
+import AOrders from '@/pages/admin/AOrders';
 
 export const vendor_profile_config = [
   {
@@ -44,6 +56,7 @@ export const vendor_profile_config = [
     icon: SettingsIcon,
   },
 ];
+
 export const user_profile_config = [
   {
     path: '/',
@@ -60,6 +73,37 @@ export const user_profile_config = [
     label: 'Settings',
     element: <Settings />,
     icon: SettingsIcon,
+  },
+];
+
+export const admin_route_config = [
+  {
+    path: '/',
+    element: <AUsers />,
+  },
+  {
+    path: '/users',
+    label: 'Users',
+    element: <AUsers />,
+    icon: UsersIcon,
+  },
+  {
+    path: '/products',
+    label: 'Products',
+    element: <AProducts />,
+    icon: MessagesSquare,
+  },
+  {
+    path: '/reviews',
+    label: 'Reviews',
+    element: <AReviews />,
+    icon: MessagesSquare,
+  },
+  {
+    path: '/orders',
+    label: 'Orders',
+    element: <AOrders />,
+    icon: ListOrdered,
   },
 ];
 

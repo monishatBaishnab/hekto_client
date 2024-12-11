@@ -10,5 +10,6 @@ export type TUser = {
   password: string;
   address: string | null;
   profilePhoto?: string | null;
-  shop?: TShop|null;
+  shop?: TShop | null;
+  status: string;
 };

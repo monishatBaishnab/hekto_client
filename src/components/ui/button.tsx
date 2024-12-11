@@ -10,7 +10,8 @@ const buttonVariants = cva(
     variants: {
       variant: {
         rose: 'bg-rose-600 text-white transition-all hover:bg-rose-500 active:bg-rose-700',
-        light:'rounded-none border border-athens-gray-100 bg-white text-h-black shadow-none hover:bg-athens-gray-50 active:bg-white',
+        light:
+          'rounded-none border border-athens-gray-100 bg-white text-h-black shadow-none outline-0 hover:bg-athens-gray-50 focus:outline-0 active:bg-white',
         dark: 'rounded-none bg-[#1D2735] px-5 text-white hover:bg-[#2b3b4f] active:bg-[#1D2735]',
       },
       size: {

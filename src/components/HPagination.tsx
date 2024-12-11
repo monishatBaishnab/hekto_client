@@ -30,7 +30,7 @@ const HPagination = ({
   };
 
   return (
-    <Pagination>
+    <Pagination aria-label="pagination">
       <PaginationContent>
         <PaginationItem>
           <Button
