@@ -14,30 +14,40 @@ import {
   REGISTER,
 } from 'redux-persist';
 
-const persistConfig = {
+// Persist configuration for authentication
+const authPersistConfig = {
   key: 'hekto_auth',
   storage,
 };
 
-const persistedReducer = persistReducer(persistConfig, authReducer);
+// Persist configuration for cart
+const cartPersistConfig = {
+  key: 'hekto_cart',
+  storage,
+};
 
+// Apply persist configurations to reducers
+const authPersistedReducer = persistReducer(authPersistConfig, authReducer);
+const cartPersistedReducer = persistReducer(cartPersistConfig, cartReducer);
+
+// Configure the Redux store
 export const store = configureStore({
   reducer: {
-    [baseApi.reducerPath]: baseApi.reducer,
-    auth: persistedReducer,
-    carts: cartReducer,
+    [baseApi.reducerPath]: baseApi.reducer, // Base API slice
+    auth: authPersistedReducer,           // Persisted auth reducer
+    cart: cartPersistedReducer,           // Persisted cart reducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER], // Ignore redux-persist actions
       },
-    }).concat(baseApi.middleware),
+    }).concat(baseApi.middleware), // Add API middleware
 });
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
+// Infer the RootState and AppDispatch types
 export type RootState = ReturnType<typeof store.getState>;
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch;
 
+// Create the persistor for redux-persist
 export const persistor = persistStore(store);

@@ -1,6 +1,5 @@
 import { tagTypes, baseApi } from '@/redux/base.api';
 import { createSlice } from '@reduxjs/toolkit';
-
 type TUser = {
   id: string;
   email: string;

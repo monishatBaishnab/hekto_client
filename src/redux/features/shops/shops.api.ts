@@ -1,7 +1,7 @@
 import { baseApi } from '@/redux/base.api';
 import { TQueries } from '@/types';
 
-const productApi = baseApi.injectEndpoints({
+const shopApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     fetchAllShops: builder.query({
       query: (queries: TQueries) => {
@@ -55,4 +55,4 @@ export const {
   useFetchSingleShopQuery,
   useCreateShopMutation,
   useUpdateShopMutation,
-} = productApi;
+} = shopApi;

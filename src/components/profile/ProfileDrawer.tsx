@@ -10,6 +10,7 @@ import { useAppDispatch } from '@/redux/hooks';
 import { NavLink } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { LogOut } from 'lucide-react';
+import { clearCart } from '@/redux/features/cart/cart.slice';
 
 const ProfileDrawer = ({
   open,
@@ -25,6 +26,7 @@ const ProfileDrawer = ({
   const { role } = userData;
 
   const handleLogout = () => {
+    dispatch(clearCart());
     if (!role) {
       return navigate('/login');
     } else if (role) {

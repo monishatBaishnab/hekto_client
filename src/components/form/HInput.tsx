@@ -20,7 +20,6 @@ const HInput = ({
   required = false,
 }: THInput) => {
   const { register } = useFormContext();
-
   return (
     <div className="space-y-2">
       {label && <Label htmlFor={name}>{label}</Label>}

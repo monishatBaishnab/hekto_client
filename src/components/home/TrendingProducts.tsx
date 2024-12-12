@@ -33,32 +33,54 @@ export const CardSkeleton = () => {
 
 export const Card = ({ product }: { product: TProduct }) => {
   const dispatch = useAppDispatch();
-  const carts = useAppSelector((state) => state.carts);
+  const carts = useAppSelector((state) => state.cart.carts);
+
+  const user = useAppSelector((state) => state.auth.user);
   const { showAlert, AlertComponent } = useAlert();
-  const handleAction = (key: string) => {
-    if (key == 'cart') {
-      const cartInfo = { productId: product?.id, shopId: product?.shop_id };
-      carts?.forEach(async (cart) => {
-        if (cart.shopId !== cartInfo.shopId) {
-          const result = await showAlert(
-            'Replace Cart with New Product(s)',
-            'Retain the current cart and cancel the addition.'
-          );
-
-          if (result) {
-            dispatch(addToCart(cartInfo));
-            return;
-          }
-        } else if (cart.productId === cartInfo.productId) {
-          toast.error('Product already added.');
-        }
-      });
-
-      dispatch(addToCart(cartInfo));
+  const handleAction = async (key: string, product: TProduct) => {
+    if (!user) {
+      toast.error('Please login first.');
       return;
     }
+
+    if (key === 'cart') {
+      const cartInfo = {
+        productId: product.id,
+        shopId: product.shop_id,
+        product,
+      };
+
+      if (carts && carts.length > 0) {
+        for (const cart of carts) {
+          if (cart.shopId !== cartInfo.shopId) {
+            const result = await showAlert(
+              'Replace Cart with New Product(s)',
+              'Retain the current cart and cancel the addition.'
+            );
+
+            if (result === true) {
+              dispatch(addToCart(cartInfo));
+              toast.success('Product added to the cart.');
+              return;
+            } else {
+              toast.info('Current cart retained.');
+              return;
+            }
+          } else if (cart.productId === cartInfo.productId) {
+            toast.error('Product already added.');
+            return;
+          }
+        }
+      }
+
+      // Add product if no conflicts
+      dispatch(addToCart(cartInfo));
+      toast.success('Product added to the cart.');
+    } else if (key === 'compare') {
+      console.log('You clicked to compare the product.');
+    }
   };
-  
+
   return (
     <div className="group bg-white p-5 shadow-md">
       {AlertComponent}

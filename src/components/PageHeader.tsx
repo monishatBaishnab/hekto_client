@@ -8,6 +8,7 @@ import {
 } from './ui/breadcrumb';
 import { useLocation } from 'react-router-dom';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const PageHeader = ({ title }: { title: string }) => {
   const { pathname } = useLocation();
@@ -19,18 +20,18 @@ const PageHeader = ({ title }: { title: string }) => {
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/">Home</BreadcrumbLink>
+              <Link to="/">Home</Link>
             </BreadcrumbItem>
-              <React.Fragment>
-                <BreadcrumbSeparator>
-                  <Slash />
-                </BreadcrumbSeparator>
-                <BreadcrumbItem>
-                  <BreadcrumbLink href={`/${paths?.[0]}`}>
-                    {paths?.[0]?.slice(0, 1).toUpperCase() + paths?.[0].slice(1)}
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-              </React.Fragment>
+            <React.Fragment>
+              <BreadcrumbSeparator>
+                <Slash />
+              </BreadcrumbSeparator>
+              <BreadcrumbItem>
+                <Link to={`/${paths?.[0]}`}>
+                  {paths?.[0]?.slice(0, 1).toUpperCase() + paths?.[0].slice(1)}
+                </Link>
+              </BreadcrumbItem>
+            </React.Fragment>
           </BreadcrumbList>
         </Breadcrumb>
       </div>

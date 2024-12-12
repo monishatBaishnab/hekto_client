@@ -1,7 +1,7 @@
 import { baseApi } from '@/redux/base.api';
 import { TQueries } from '@/types';
 
-const productApi = baseApi.injectEndpoints({
+const reviewApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     fetchAllReview: builder.query({
       query: (queries: TQueries) => {
@@ -18,6 +18,16 @@ const productApi = baseApi.injectEndpoints({
       },
       providesTags: ['reviews'],
     }),
+    createReview: builder.mutation({
+      query: (payload) => {
+        return {
+          url: `/reviews`,
+          method: 'POST',
+          body: payload,
+        };
+      },
+      invalidatesTags: ['reviews', 'products'],
+    }),
     deleteReview: builder.mutation({
       query: (id) => {
         return {
@@ -30,4 +40,8 @@ const productApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useFetchAllReviewQuery, useDeleteReviewMutation } = productApi;
+export const {
+  useFetchAllReviewQuery,
+  useCreateReviewMutation,
+  useDeleteReviewMutation,
+} = reviewApi;

@@ -30,6 +30,7 @@ import {
 import useUser from '@/hooks/useUser';
 import { useAppDispatch } from '@/redux/hooks';
 import { logout } from '@/redux/features/auth/auth.slice';
+import { clearCart } from '@/redux/features/cart/cart.slice';
 
 // Generate the class names of nav links based on "isActive"
 const generate_link_class = (isActive: boolean): string => {
@@ -58,6 +59,7 @@ const Navbar = () => {
   const [isScrollTopVisible, setIsScrollTopVisible] = useState(false);
 
   const handleLogout = () => {
+    dispatch(clearCart());
     if (!role) {
       return navigate('/login');
     } else if (role) {
@@ -134,7 +136,7 @@ const Navbar = () => {
 
             <Link
               className="flex items-center gap-1 text-sm text-white"
-              to="/login"
+              to="/cart"
             >
               <ShoppingCart className="size-4" /> Cart
             </Link>

@@ -32,7 +32,7 @@ const RCard = ({
         <div className="flex justify-between">
           <div className="flex items-center gap-2">
             <div className="size-10 overflow-hidden rounded-full">
-              <img src="https://i.ibb.co.com/5G1XTfb/customer.webp" alt="" />
+              <img src={review?.user?.profilePhoto} alt={review?.user?.name} />
             </div>
 
             <div>
@@ -44,7 +44,7 @@ const RCard = ({
               </span>
             </div>
           </div>
-          {varient !== 'reply' && (
+          {/* {varient !== 'reply' && (
             <div className="flex items-center gap-0.5">
               <Star className="size-4 stroke-orange-400" />
               <Star className="size-4 stroke-orange-400" />
@@ -52,7 +52,10 @@ const RCard = ({
               <Star className="size-4 stroke-orange-400" />
               <Star className="size-4 stroke-orange-400" />
             </div>
-          )}
+          )} */}
+          <div className="flex items-center gap-2">
+            <Star className="size-4 stroke-orange-400" /> {review.rating}
+          </div>
         </div>
 
         {/* Reviews Product Info */}

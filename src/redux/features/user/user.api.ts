@@ -1,7 +1,7 @@
 import { baseApi } from '@/redux/base.api';
 import { TQueries } from '@/types';
 
-const productApi = baseApi.injectEndpoints({
+const userApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     fetchAllUser: builder.query({
       query: (queries: TQueries) => {
@@ -57,4 +57,4 @@ export const {
   useFetchProfileInfoQuery,
   useUpdateProfileMutation,
   useUpdateUserStatusMutation
-} = productApi;
+} = userApi;

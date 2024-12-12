@@ -2,6 +2,7 @@ import { admin_route_config } from '@/constants/routes.constants';
 import useUser from '@/hooks/useUser';
 import { cn } from '@/lib/utils';
 import { logout } from '@/redux/features/auth/auth.slice';
+import { clearCart } from '@/redux/features/cart/cart.slice';
 import { useAppDispatch } from '@/redux/hooks';
 import { LogOut } from 'lucide-react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
@@ -15,6 +16,7 @@ const AdminSidebar = () => {
   const { role } = userData;
 
   const handleLogout = () => {
+    dispatch(clearCart());
     if (!role) {
       return navigate('/login');
     } else if (role) {

@@ -119,7 +119,7 @@ const Home = () => {
             Only for you
           </h2>
 
-          <PContainer />
+          <PContainer sidebar />
         </div>
 
         <div className="bg-[url(https://i.ibb.co.com/bHVHjfW/Rectangle-102.png)]">
