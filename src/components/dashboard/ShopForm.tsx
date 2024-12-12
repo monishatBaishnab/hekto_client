@@ -77,15 +77,17 @@ const ShopForm = () => {
       formData.append('file', file);
     }
 
-    // Append formData and shopData as JSON strings
-    formData.append('data', JSON.stringify({ ...formData }));
-
     if (userData?.shop) {
+      formData.append('data', JSON.stringify({ ...shopData }));
       const result = await updateShop({ formData, id: userData?.shop?.id });
       if (result?.data?.success) {
         toast.success('Shop Updated.');
       }
     } else {
+      formData.append(
+        'data',
+        JSON.stringify({ ...shopData, user_id: userData.id })
+      );
       const result = await createShop({ formData, id: userData?.shop?.id });
       if (result?.data?.success) {
         toast.success('Shop Updated.');

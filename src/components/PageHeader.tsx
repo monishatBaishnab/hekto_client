@@ -21,18 +21,16 @@ const PageHeader = ({ title }: { title: string }) => {
             <BreadcrumbItem>
               <BreadcrumbLink href="/">Home</BreadcrumbLink>
             </BreadcrumbItem>
-            {paths?.map((path) => (
-              <React.Fragment key={path}>
+              <React.Fragment>
                 <BreadcrumbSeparator>
                   <Slash />
                 </BreadcrumbSeparator>
                 <BreadcrumbItem>
-                  <BreadcrumbLink href={`/${path}`}>
-                    {path?.slice(0, 1).toUpperCase() + path.slice(1)}
+                  <BreadcrumbLink href={`/${paths?.[0]}`}>
+                    {paths?.[0]?.slice(0, 1).toUpperCase() + paths?.[0].slice(1)}
                   </BreadcrumbLink>
                 </BreadcrumbItem>
               </React.Fragment>
-            ))}
           </BreadcrumbList>
         </Breadcrumb>
       </div>

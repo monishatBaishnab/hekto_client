@@ -1,4 +1,5 @@
 import DTitle from '@/components/dashboard/DTitle';
+import ProductEmpty from '@/components/empty/ProductEmpty';
 import HPagination from '@/components/HPagination';
 import RCard from '@/components/reviews/RCard';
 import useUser from '@/hooks/useUser';
@@ -13,7 +14,7 @@ const Reviews = () => {
     [
       { name: 'limit', value: String(limit) },
       { name: 'page', value: String(page) },
-      { name: 'ship_id', value: userData?.shop?.id },
+      { name: 'shop_id', value: userData?.shop?.id },
     ],
     { skip: !userData?.shop?.id }
   );
@@ -23,13 +24,21 @@ const Reviews = () => {
       <DTitle title="Reviews" />
 
       <div className="space-y-8">
-        {isLoading || isFetching
-          ? null
-          : data?.data?.map((review: TReview) => (
-              <RCard key={review.id} review={review} />
-            ))}
+        {isLoading || isFetching ? null : !data || data?.data?.length < 1 ? (
+          <ProductEmpty action={<></>} />
+        ) : (
+          data?.data?.map((review: TReview) => (
+            <RCard key={review.id} review={review} />
+          ))
+        )}
       </div>
-      <HPagination page={page} setPage={setPage} totalPage={2} />
+      <HPagination
+        page={page}
+        setPage={setPage}
+        totalPage={Math.ceil(
+          Number(data?.meta?.total) / Number(data?.meta?.limit)
+        )}
+      />
     </div>
   );
 };

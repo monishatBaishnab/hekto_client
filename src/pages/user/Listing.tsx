@@ -50,7 +50,7 @@ const Listing = () => {
     if (key === 'edit') {
       setProduct(product);
       setOpenModal(true);
-    } else {
+    } else if (key === 'delete') {
       const isConfirmed = await showAlert(
         'Are you sure.',
         'You have not access this after delete.'
@@ -62,9 +62,11 @@ const Listing = () => {
           toast.success('Product Deleted.');
         }
       }
+    } else if (key === 'duplicate') {
+      console.log('Duplicate Product');
     }
   };
-  
+
   const handleSubmit: SubmitHandler<FieldValues> = async (data) => {
     const categories = [];
     const previousCategories = product?.categories?.[0] as TCategory;
@@ -78,12 +80,13 @@ const Listing = () => {
     } else if (!product) {
       categories?.push({ isDeleted: false, id: data?.categories });
     }
-    
+
     const productData = {
       name: data?.name,
       price: data?.price,
       quantity: data?.quantity,
       description: data?.description,
+      discount: data?.discount,
       categories: categories,
     };
 

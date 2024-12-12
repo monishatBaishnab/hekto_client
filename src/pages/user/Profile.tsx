@@ -64,17 +64,6 @@ const Profile = () => {
               />
             </div>
           ) : null}
-          {/* Profile completion states */}
-          <div className="min-w-80 space-y-2 rounded-md bg-rose-50 p-5">
-            <span className="block text-athens-gray-600">
-              Total Order Amount
-            </span>
-            <h4 className="text-lg font-bold text-h-black">$0.00</h4>
-            <button className="flex items-center gap-2 text-rose-600">
-              Brows Products
-              <ChevronRight className="size-4" />
-            </button>
-          </div>
         </div>
 
         {/* Profile Info */}

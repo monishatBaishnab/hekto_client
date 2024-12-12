@@ -49,9 +49,10 @@ const CreateProduct = ({
     images: product?.images,
     quantity: product?.quantity,
     description: product?.description,
+    discount: product?.discount,
     categories: (product?.categories as TCategory[])?.[0]?.id,
   };
-  
+
   return (
     <Dialog open={open}>
       <DialogContent className="max-w-screen-md">

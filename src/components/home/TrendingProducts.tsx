@@ -7,8 +7,10 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useAlert } from '@/hooks/useAlert';
 import { addToCart } from '@/redux/features/cart/cart.slice';
 import { toast } from 'sonner';
+import ProductEmpty from '../empty/ProductEmpty';
+import { Link } from 'react-router-dom';
 
-const Skeleton = () => {
+export const CardSkeleton = () => {
   return (
     <div className="group bg-white p-5 shadow-md">
       {/* Skeleton Image Container */}
@@ -29,7 +31,7 @@ const Skeleton = () => {
   );
 };
 
-const Card = ({ product }: { product: TProduct }) => {
+export const Card = ({ product }: { product: TProduct }) => {
   const dispatch = useAppDispatch();
   const carts = useAppSelector((state) => state.carts);
   const { showAlert, AlertComponent } = useAlert();
@@ -56,6 +58,7 @@ const Card = ({ product }: { product: TProduct }) => {
       return;
     }
   };
+  
   return (
     <div className="group bg-white p-5 shadow-md">
       {AlertComponent}
@@ -88,14 +91,21 @@ const Card = ({ product }: { product: TProduct }) => {
         </div>
       </div>
       <div className="space-y-2">
-        <h4
-          className={cn('font-bold text-deep-koamaru-900 text-lg text-center')}
+        <Link
+          to={`/products/${product.id}`}
+          className={cn(
+            'font-bold block text-deep-koamaru-900 text-lg text-center'
+          )}
         >
           {product.name}
-        </h4>
+        </Link>
         <div className="flex items-center justify-center gap-2.5">
-          <span className="text-h-black">{product.price}</span>
-          <span className="text-rose-600 line-through">$28.00</span>
+          <span className="text-h-black">${product.price}</span>
+          {product?.discount ? (
+            <span className="text-rose-600 line-through">
+              ${product?.discount + product.price}
+            </span>
+          ) : null}
         </div>
       </div>
     </div>
@@ -119,13 +129,19 @@ const TrendingProducts = () => {
       </h2>
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {pLoading || pFetching
-          ? Array.from({ length: 4 }).map((_, index) => (
-              <Skeleton key={index} />
-            ))
-          : (trendingProducts?.data as TProduct[])?.map((product) => (
-              <Card key={product?.id} product={product} />
-            ))}
+        {pLoading || pFetching ? (
+          Array.from({ length: 4 }).map((_, index) => (
+            <CardSkeleton key={index} />
+          ))
+        ) : !trendingProducts || trendingProducts?.length < 1 ? (
+          <div className="col-span-1 md:col-span-2 lg:col-span-3">
+            <ProductEmpty action={<></>} />
+          </div>
+        ) : (
+          (trendingProducts?.data as TProduct[])?.map((product) => (
+            <Card key={product?.id} product={product} />
+          ))
+        )}
       </div>
     </div>
   );

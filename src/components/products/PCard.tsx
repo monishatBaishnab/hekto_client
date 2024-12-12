@@ -151,7 +151,11 @@ const PCard = ({
             {/* Price */}
             <div className="flex items-center gap-2.5">
               <span className="text-h-black">{product?.price}</span>
-              <span className="text-rose-600 line-through">$28.00</span>
+              {product?.discount ? (
+                <span className="text-rose-600 line-through">
+                  ${product?.discount + product.price}
+                </span>
+              ) : null}
             </div>
 
             {/* Rating */}
