@@ -29,6 +29,7 @@ import AShops from '@/pages/admin/AShops';
 import Recent from '@/pages/Recent';
 import Flash from '@/pages/Flash';
 import Orders from '@/pages/user/Orders';
+import ACategories from '@/pages/admin/ACategories';
 
 export const vendor_profile_config = [
   {
@@ -108,6 +109,12 @@ export const admin_route_config = [
     label: 'Shops',
     element: <AShops />,
     icon: UsersIcon,
+  },
+  {
+    path: '/categories',
+    label: 'Categories',
+    element: <ACategories />,
+    icon: ListOrdered,
   },
   {
     path: '/products',

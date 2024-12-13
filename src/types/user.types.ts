@@ -11,6 +11,6 @@ export type TUser = {
   address: string | null;
   profilePhoto?: string | null;
   shop?: TShop | null;
-  status: string;
+  status?: string;
 };
 

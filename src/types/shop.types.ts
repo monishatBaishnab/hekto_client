@@ -5,7 +5,7 @@ export type TShop = {
   name: string;
   logo?: string;
   status?:string;
-  user: TUser | string;
+  user?: TUser | string;
   createdAt?: string;
   description: string;
 };

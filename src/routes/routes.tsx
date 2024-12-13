@@ -11,6 +11,7 @@ import routeGenerator from '@/utils/route_generator';
 import { useMemo } from 'react';
 import ProtectedRoute from './ProtectedRoute';
 import AdminDashboard from '@/layouts/AdminDashboard';
+import Empty from '@/pages/Empty';
 
 const Routes = () => {
   const user = useAppSelector((state) => state.auth.user);
@@ -28,6 +29,7 @@ const Routes = () => {
           path: '/',
           element: <Client />,
           children: routeGenerator(client_route_config),
+          errorElement: <Empty />
         },
         {
           path: '/user',
@@ -37,6 +39,7 @@ const Routes = () => {
             </ProtectedRoute>
           ),
           children: routeGenerator(profile_config),
+          errorElement: <Empty />
         },
         {
           ...(user?.role === 'ADMIN'
@@ -48,6 +51,7 @@ const Routes = () => {
                   </ProtectedRoute>
                 ),
                 children: routeGenerator(admin_route_config),
+                errorElement: <Empty />
               }
             : {}),
         },

@@ -3,7 +3,6 @@ import {
   Breadcrumb,
   BreadcrumbList,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbSeparator,
 } from './ui/breadcrumb';
 import { useLocation } from 'react-router-dom';

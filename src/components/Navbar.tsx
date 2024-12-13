@@ -172,7 +172,7 @@ const Navbar = () => {
               <div className="size-8 overflow-hidden">
                 <img
                   className="size-full object-contain"
-                  src="/public/hekto-logo.png"
+                  src="https://i.ibb.co.com/PTSxVm0/hekto-logo.png"
                   alt="Hekto Logo"
                 />
               </div>

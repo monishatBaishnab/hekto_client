@@ -5,5 +5,6 @@ export type TCategory = {
   image: string;
   isDeleted: boolean;
   createdAt: string;
+  categoryProduct?: { _count: number };
   updatedAt: string;
 };

@@ -1,50 +1,95 @@
-# React + TypeScript + Vite
+# Hekto (E-Commerce Application)  
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Live Link**  
 
-Currently, two official plugins are available:
+**Admin Credentials**  
+- **Email:** abdul@gmail.com  
+- **Password:** 123
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+### **Project Description**  
+**Hekto** is a comprehensive full-stack web application built to deliver a complete online shopping experience. It serves as a robust platform catering to three primary user roles: customers, vendors, and administrators. Users can explore and purchase products seamlessly, vendors can manage their shops and inventories effectively, and administrators oversee the entire system for smooth operations. This project emphasizes scalability, responsiveness, and secure transactions, creating a feature-rich ecosystem for e-commerce interactions.  
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+---
 
-- Configure the top-level `parserOptions` property like this:
+### **Technology Stack**  
+**Frontend**  
+- **React.js:** Framework for building responsive and scalable UI.  
+- **TypeScript:** Ensures type safety and robust development practices.  
+- **Redux:** Manages global state efficiently.  
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+**Backend**  
+- **Node.js with Express:** Handles server-side logic and RESTful APIs.  
+- **Prisma:** Simplifies database interactions with PostgreSQL.  
+- **Cloudinary:** Manages product image uploads and storage.  
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+**Database**  
+- **PostgreSQL:** For storing user data, products, orders, and reviews.  
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+**Additional Tools**  
+- **JWT (JSON Web Tokens):** Secures authentication and session management.  
+- **Aamarpay:** Enables secure payment processing for purchases.  
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+---
+
+### **Project Features**  
+
+#### **Admin Features**  
+- Manage users (suspend/delete accounts).  
+- Moderate vendor shops (approve/blacklist).  
+- Dynamically handle product categories.  
+- Monitor platform metrics, payments, and activities.  
+
+#### **Vendor Features**  
+- Create and manage shop profiles.  
+- Add, edit, duplicate, or delete products.  
+- Monitor product inventory and order history.  
+- Respond to customer reviews.  
+
+#### **User Features**  
+- **Product Browsing:** Explore products with advanced filtering and search.  
+- **Cart Management:** Add items to the cart with vendor-specific restrictions.  
+- **Checkout:** Secure payments with discount coupon integration.  
+- **Order History:** View past purchases with detailed breakdowns.  
+- **Social Features:** Follow shops and leave product reviews and ratings.  
+<!-- - **Product Comparison:** Compare up to three products within the same category.   -->
+
+---
+
+### **Setup Instructions**  
+
+1. **Clone the repository:**  
+   ```bash  
+   git clone https://github.com/monishatBaishnab/hekto_client  
+   ```  
+
+2. **Navigate to the directory:**  
+   ```bash  
+   cd hekto_client  
+   ```  
+
+3. **Install dependencies:**  
+   ```bash  
+   npm install  
+   ```  
+
+4. **Set up environment variables:**  
+   - Create a `.env` file.  
+   - Add required keys for database connection, JWT secret, payment gateway, etc.  
+
+5. **Run the application:**  
+   ```bash  
+   npm run dev  
+   ```  
+
+6. **Access the application:**  
+   - Open your browser and navigate to `http://localhost:3000`.  
+
+---
+
+### **Key Highlights**  
+- **Mobile-First Design:** Fully responsive for all devices.  
+- **Scalable Architecture:** Paginated APIs and efficient data handling for large datasets.  
+- **Robust Authentication:** Secure JWT-based login and registration.  
+- **Dynamic Content:** Infinite scrolling and live updates for product listings.  

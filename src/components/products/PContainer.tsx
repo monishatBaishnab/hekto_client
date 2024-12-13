@@ -72,14 +72,14 @@ const PContainer = ({ sidebar = false, limit }: PContainerProps) => {
       toast.error('Please login first.');
       return;
     }
-  
+
     if (key === 'cart') {
       const cartInfo = {
         productId: product.id,
         shopId: product.shop_id,
         product,
       };
-      
+
       if (carts && carts.length > 0) {
         for (const cart of carts) {
           if (cart.shopId !== cartInfo.shopId) {
@@ -87,7 +87,7 @@ const PContainer = ({ sidebar = false, limit }: PContainerProps) => {
               'Replace Cart with New Product(s)',
               'Retain the current cart and cancel the addition.'
             );
-  
+
             if (result === true) {
               dispatch(addToCart(cartInfo));
               toast.success('Product added to the cart.');
@@ -102,7 +102,7 @@ const PContainer = ({ sidebar = false, limit }: PContainerProps) => {
           }
         }
       }
-  
+
       // Add product if no conflicts
       dispatch(addToCart(cartInfo));
       toast.success('Product added to the cart.');
@@ -110,10 +110,13 @@ const PContainer = ({ sidebar = false, limit }: PContainerProps) => {
       console.log('You clicked to compare the product.');
     }
   };
-  
 
   // Calculate total pages and check if more products can be fetched
-  const totalPage = productsData?.meta?.total ?? 1;
+  const totalPage =
+    Math.ceil(
+      Number(productsData?.meta?.total) / Number(productsData?.meta?.limit)
+    ) ?? 1;
+
   const canFetchMore = useMemo(
     () => products.length < productsData?.meta?.total,
     [products, productsData]
@@ -142,15 +145,17 @@ const PContainer = ({ sidebar = false, limit }: PContainerProps) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess, isLoading, productsData]);
-
+  
   // Effect for infinite scroll: Load more products when the user reaches the bottom
   useEffect(() => {
-    if (inView && page < totalPage) {
+    if (page < totalPage) {
       setTimeout(() => {
-        setPage((prevPage) => prevPage + 1);
-      }, 2000);
+        if (inView && isSuccess && !isFetching && !isLoading) {
+          setPage((prevPage) => prevPage + 1);
+        }
+      }, 1000);
     }
-  }, [inView, page, totalPage]);
+  }, [inView, page, totalPage, isSuccess, isLoading, isFetching]);
 
   return (
     <div className="space-y-8">
@@ -259,7 +264,7 @@ const PContainer = ({ sidebar = false, limit }: PContainerProps) => {
             )}
           >
             {isLoading ? (
-              Array.from({ length: 4 }).map((_, index) => (
+              Array.from({ length: 3 }).map((_, index) => (
                 <PCardSkeleton variant={viewMode} key={index} />
               ))
             ) : !products || products?.length < 1 ? (

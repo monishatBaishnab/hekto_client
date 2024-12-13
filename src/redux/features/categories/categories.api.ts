@@ -19,7 +19,17 @@ const categoryApi = baseApi.injectEndpoints({
       },
       providesTags: ['categories'],
     }),
+    createCategory: builder.mutation({
+      query: (categoryData) => {
+        return {
+          url: '/categories',
+          method: 'POST',
+          body: categoryData,
+        };
+      },
+      invalidatesTags: ['categories'],
+    }),
   }),
 });
 
-export const { useFetchAllCategoriesQuery } = categoryApi;
+export const { useFetchAllCategoriesQuery, useCreateCategoryMutation } = categoryApi;

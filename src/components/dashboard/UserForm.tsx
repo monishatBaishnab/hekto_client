@@ -33,7 +33,7 @@ const UserForm = () => {
     };
   }
 
-  const handleSubmit: SubmitHandler<FieldValues> = (data) => {
+  const handleSubmit: SubmitHandler<FieldValues> = async (data) => {
     const userInfo: Partial<TUser> = {};
 
     if (data) {
@@ -47,11 +47,12 @@ const UserForm = () => {
     if (file) {
       formData.append('file', file);
     }
-
+    
     // Append userInfo and shopData as JSON strings
     formData.append('data', JSON.stringify({ ...userInfo }));
 
-    updateProfile({ formData, id: userData?.id });
+    await updateProfile({ formData, id: userData?.id });
+    setFile(null);
   };
 
   useEffect(() => {
@@ -60,7 +61,6 @@ const UserForm = () => {
     }
   }, [isError, isSuccess, data, dispatch]);
 
-  
   if (userData.isLoading || userData?.isFetching) {
     return (
       <div className="space-y-7">
@@ -89,7 +89,6 @@ const UserForm = () => {
       </div>
     );
   }
-
 
   return (
     <motion.div

@@ -11,14 +11,20 @@ import { useAppDispatch } from '@/redux/hooks';
 import { login } from '@/redux/features/auth/auth.slice';
 import { LoaderCircle } from 'lucide-react';
 import { clearRecent } from '@/redux/features/recent/recent.slice';
+import { toast } from 'sonner';
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [loginFromServer, { data, isLoading, isSuccess }] = useLogInMutation();
 
-  const handleSubmit: SubmitHandler<FieldValues> = (data) => {
-    loginFromServer(data);
+  const handleSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const result = await loginFromServer(data);
+    if (result?.error) {
+      toast.error(
+        (result?.error as { data: { message: string } })?.data?.message
+      );
+    }
   };
 
   useEffect(() => {
@@ -44,10 +50,7 @@ const Login = () => {
               Please login using account detail bellow.
             </p>
           </div>
-          <HForm
-            defaultValues={{ email: 'john.tech@example.com', password: '123' }}
-            onSubmit={handleSubmit}
-          >
+          <HForm onSubmit={handleSubmit}>
             <div className="space-y-4">
               <HInput placeholder="Email Address" name="email" />
               <HInput placeholder="Password" name="password" />
