@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from '../redux/features/auth/auth.slice';
 import cartReducer from '../redux/features/cart/cart.slice';
+import recentReducer from '../redux/features/recent/recent.slice';
 import storage from 'redux-persist/lib/storage';
 import { baseApi } from './base.api';
 import {
@@ -26,16 +27,27 @@ const cartPersistConfig = {
   storage,
 };
 
+// Persist configuration for cart
+const recentPersistConfig = {
+  key: 'hekto_recent_products',
+  storage,
+};
+
 // Apply persist configurations to reducers
 const authPersistedReducer = persistReducer(authPersistConfig, authReducer);
 const cartPersistedReducer = persistReducer(cartPersistConfig, cartReducer);
+const recentPersistedReducer = persistReducer(
+  recentPersistConfig,
+  recentReducer
+);
 
 // Configure the Redux store
 export const store = configureStore({
   reducer: {
     [baseApi.reducerPath]: baseApi.reducer, // Base API slice
-    auth: authPersistedReducer,           // Persisted auth reducer
-    cart: cartPersistedReducer,           // Persisted cart reducer
+    auth: authPersistedReducer, // Persisted auth reducer
+    cart: cartPersistedReducer, // Persisted cart reducer
+    recent: recentPersistedReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

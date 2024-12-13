@@ -6,6 +6,7 @@ import useUser from '@/hooks/useUser';
 import { cn } from '@/lib/utils';
 import { logout } from '@/redux/features/auth/auth.slice';
 import { clearCart } from '@/redux/features/cart/cart.slice';
+import { clearRecent } from '@/redux/features/recent/recent.slice';
 import { useAppDispatch } from '@/redux/hooks';
 import { LogOut } from 'lucide-react';
 import { NavLink, useNavigate } from 'react-router-dom';
@@ -19,6 +20,7 @@ const ProfileSidebar = () => {
 
   const handleLogout = () => {
     dispatch(clearCart());
+    dispatch(clearRecent());
     if (!role) {
       return navigate('/login');
     } else if (role) {

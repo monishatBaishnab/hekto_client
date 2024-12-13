@@ -2,7 +2,7 @@ import ProductEmpty from '@/components/empty/ProductEmpty';
 import HForm from '@/components/form/HForm';
 import HInput from '@/components/form/HInput';
 import HTextarea from '@/components/form/HTextarea';
-import { Card, CardSkeleton } from '@/components/home/TrendingProducts';
+import { Card, CardSkeleton } from '@/components/home/FPContainer';
 import RCard from '@/components/reviews/RCard';
 import PDetailsSkeleton from '@/components/skeletons/PDetailsSkeleton';
 import { Button } from '@/components/ui/button';

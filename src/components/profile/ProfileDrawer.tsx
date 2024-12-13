@@ -11,6 +11,7 @@ import { NavLink } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { LogOut } from 'lucide-react';
 import { clearCart } from '@/redux/features/cart/cart.slice';
+import { clearRecent } from '@/redux/features/recent/recent.slice';
 
 const ProfileDrawer = ({
   open,
@@ -27,6 +28,7 @@ const ProfileDrawer = ({
 
   const handleLogout = () => {
     dispatch(clearCart());
+    dispatch(clearRecent());
     if (!role) {
       return navigate('/login');
     } else if (role) {

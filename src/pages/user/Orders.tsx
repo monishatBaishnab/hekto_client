@@ -1,4 +1,3 @@
-import AdminTitle from '@/components/dashboard/admin/AdminTitle';
 import {
   Table,
   TableBody,
@@ -9,24 +8,34 @@ import {
 } from '@/components/ui/table';
 import HPagination from '@/components/HPagination';
 import { useState } from 'react';
-import { useFetchAllOrdersQuery } from '@/redux/features/order/order.api';
+import { useFetchMyOrdersQuery } from '@/redux/features/order/order.api';
 import { TOrder } from '@/types/order.types';
 
 import moment from 'moment';
-const AOrder = () => {
+import DTitle from '@/components/dashboard/DTitle';
+import useUser from '@/hooks/useUser';
+const Orders = () => {
   const [page, setPage] = useState(1);
+  const user = useUser();
+
+  const queries = [
+    { name: 'page', value: String(page) },
+    { name: 'limit', value: '10' },
+  ];
+
+  if (user?.shop && (user.role === 'VENDOR' || user.role === 'ADMIN')) {
+    queries?.push({ name: 'shop_id', value: user?.shop?.id as string });
+  }
+
   const {
     data: orders,
     isLoading,
     isFetching,
-  } = useFetchAllOrdersQuery([
-    { name: 'page', value: String(page) },
-    { name: 'limit', value: '10' },
-  ]);
-
+  } = useFetchMyOrdersQuery(queries, { skip: user?.isLoading });
+  console.log(orders);
   return (
-    <div className="space-y-7">
-      <AdminTitle title="Users" />
+    <div className="w-full space-y-8">
+      <DTitle title="My Orders" />
       <div className="block">
         <Table>
           <TableHeader>
@@ -55,7 +64,9 @@ const AOrder = () => {
                         {order?.orderProduct?.length}
                       </TableCell>
                       <TableCell className="text-center">
-                        {moment(order?.createdAt).format('DD MMM, YYYY - HH:MM:SS A')}
+                        {moment(order?.createdAt).format(
+                          'DD MMM, YYYY - HH:MM:SS A'
+                        )}
                       </TableCell>
                     </TableRow>
                   );
@@ -74,4 +85,4 @@ const AOrder = () => {
   );
 };
 
-export default AOrder;
+export default Orders;

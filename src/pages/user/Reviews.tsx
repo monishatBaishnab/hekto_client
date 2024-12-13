@@ -18,7 +18,7 @@ const Reviews = () => {
     ],
     { skip: !userData?.shop?.id }
   );
-  console.log(data);
+  
   return (
     <div className="w-full space-y-8">
       <DTitle title="Reviews" />

@@ -34,7 +34,6 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(logout, () => {
-      console.log('logout');
       baseApi.util.invalidateTags(tagTypes);
     });
   },

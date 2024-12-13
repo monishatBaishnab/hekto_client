@@ -26,6 +26,9 @@ import AProducts from '@/pages/admin/AProducts';
 import AReviews from '@/pages/admin/AReviews';
 import AOrders from '@/pages/admin/AOrders';
 import AShops from '@/pages/admin/AShops';
+import Recent from '@/pages/Recent';
+import Flash from '@/pages/Flash';
+import Orders from '@/pages/user/Orders';
 
 export const vendor_profile_config = [
   {
@@ -51,6 +54,12 @@ export const vendor_profile_config = [
     icon: Star,
   },
   {
+    path: '/orders',
+    label: 'Orders',
+    element: <Orders />,
+    icon: ListOrdered,
+  },
+  {
     path: '/settings',
     label: 'Settings',
     element: <Settings />,
@@ -68,6 +77,12 @@ export const user_profile_config = [
     label: 'Profile',
     element: <Profile />,
     icon: User,
+  },
+  {
+    path: '/orders',
+    label: 'Orders',
+    element: <Orders />,
+    icon: ListOrdered,
   },
   {
     path: '/settings',
@@ -124,6 +139,16 @@ const client_route_config = [
     path: '/products',
     label: 'Products',
     element: <Products />,
+  },
+  {
+    path: '/recent',
+    label: 'Recent',
+    element: <Recent />,
+  },
+  {
+    path: '/flash',
+    label: 'Flash',
+    element: <Flash />,
   },
   {
     path: '/products/:id',

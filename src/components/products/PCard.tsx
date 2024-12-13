@@ -10,6 +10,8 @@ import { Link } from 'react-router-dom';
 import { TProduct } from '@/types/products.types';
 import moment from 'moment';
 import { ReactNode } from 'react';
+import { useAppDispatch } from '@/redux/hooks';
+import { addToRecent } from '@/redux/features/recent/recent.slice';
 
 type TAction = {
   key: string;
@@ -80,6 +82,10 @@ const PCard = ({
   const avgRatings = (totalReview > 0 ? totalRating / totalReview : 0).toFixed(
     1
   );
+  const dispatch = useAppDispatch();
+  const handleAddToRecent = () => {
+    dispatch(addToRecent({ product } as { product: TProduct }));
+  };
 
   return (
     <div
@@ -122,6 +128,7 @@ const PCard = ({
       {/* Main Body */}
       <div className="w-full space-y-2 px-5">
         <Link
+          onClick={handleAddToRecent}
           to={`/products/${product?.id}`}
           className={cn(
             varient === 'grid' ? 'text-lg' : 'text-lg sm:text-2xl',

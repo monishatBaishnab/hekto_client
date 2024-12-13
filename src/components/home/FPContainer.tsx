@@ -8,7 +8,9 @@ import { useAlert } from '@/hooks/useAlert';
 import { addToCart } from '@/redux/features/cart/cart.slice';
 import { toast } from 'sonner';
 import ProductEmpty from '../empty/ProductEmpty';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { addToRecent } from '@/redux/features/recent/recent.slice';
+import { Button } from '../ui/button';
 
 export const CardSkeleton = () => {
   return (
@@ -37,6 +39,10 @@ export const Card = ({ product }: { product: TProduct }) => {
 
   const user = useAppSelector((state) => state.auth.user);
   const { showAlert, AlertComponent } = useAlert();
+  const handleAddToRecent = () => {
+    dispatch(addToRecent({ product } as { product: TProduct }));
+  };
+
   const handleAction = async (key: string, product: TProduct) => {
     if (!user) {
       toast.error('Please login first.');
@@ -114,6 +120,7 @@ export const Card = ({ product }: { product: TProduct }) => {
       </div>
       <div className="space-y-2">
         <Link
+          onClick={handleAddToRecent}
           to={`/products/${product.id}`}
           className={cn(
             'font-bold block text-deep-koamaru-900 text-lg text-center'
@@ -134,7 +141,8 @@ export const Card = ({ product }: { product: TProduct }) => {
   );
 };
 
-const TrendingProducts = () => {
+const FPContainer = () => {
+  const navigate = useNavigate();
   const {
     data: trendingProducts,
     isLoading: pLoading,
@@ -146,9 +154,17 @@ const TrendingProducts = () => {
 
   return (
     <div className="container !pt-0">
-      <h2 className="mb-8 text-center text-4xl font-bold text-h-black">
-        Trending Products
-      </h2>
+      <div className="flex items-center justify-between">
+        <h2 className="mb-8 text-4xl font-bold text-h-black">Flash Sale</h2>
+        <Button
+          onClick={() => navigate('/flash')}
+          variant="light"
+          size="lg"
+          className="rounded-md"
+        >
+          See All
+        </Button>
+      </div>
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {pLoading || pFetching ? (
@@ -169,4 +185,4 @@ const TrendingProducts = () => {
   );
 };
 
-export default TrendingProducts;
+export default FPContainer;

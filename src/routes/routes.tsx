@@ -20,7 +20,7 @@ const Routes = () => {
   if (user?.role !== 'CUSTOMER') {
     profile_config = vendor_profile_config;
   }
-
+  
   const routes = useMemo(
     () =>
       createBrowserRouter([

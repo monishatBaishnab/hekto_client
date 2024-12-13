@@ -1,6 +1,7 @@
 import ProductEmpty from '@/components/empty/ProductEmpty';
 import PageHeader from '@/components/PageHeader';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Table,
   TableBody,
@@ -14,7 +15,14 @@ import { clearCart, removeFromCart } from '@/redux/features/cart/cart.slice';
 import { useCreateOrderMutation } from '@/redux/features/order/order.api';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { TCategory } from '@/types';
-import { CircleCheck, CircleX, LoaderCircle, X } from 'lucide-react';
+import {
+  CircleCheck,
+  CircleX,
+  LoaderCircle,
+  TicketPercent,
+  X,
+} from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
@@ -24,10 +32,8 @@ const Cart = () => {
   const { AlertComponent, showAlert } = useAlert();
   const carts = useAppSelector((state) => state.cart.carts);
   const [creteOrder, { isLoading }] = useCreateOrderMutation();
-
-  const totalPrice = carts?.reduce((price, cart) => {
-    return price + Number(1) * Number(cart.product.price);
-  }, 0);
+  const [coupon, setCoupon] = useState('');
+  const [totalPrice, setTotalPrice] = useState(0);
 
   const handleClearCart = async () => {
     if (!carts?.length) {
@@ -51,16 +57,40 @@ const Cart = () => {
       quantity: 1,
       price: product?.price,
     }));
-    const result = await creteOrder({ products: orderData }).unwrap();
+    const result = await creteOrder({
+      products: orderData,
+      total_price: totalPrice,
+    }).unwrap();
     if (result?.success) {
       dispatch(clearCart());
       window.location.href = result?.data?.payment_url;
     }
   };
 
+  const handleCouponApply = () => {
+    if (coupon === 'HEKTO24') {
+      const price = carts?.reduce((price, cart) => {
+        return price + Number(cart.product.price);
+      }, 0);
+
+      const discount = price * 0.1;
+      setTotalPrice(price - discount);
+    } else {
+      toast.error('Enter valid coupon.');
+    }
+  };
+
   const handleRemoveFromCart = (productId: string) => {
     dispatch(removeFromCart({ productId }));
   };
+
+  useEffect(() => {
+    const price = carts?.reduce((price, cart) => {
+      return price + Number(1) * Number(cart.product.price);
+    }, 0);
+    setTotalPrice(price);
+  }, [carts]);
+
   return (
     <div>
       {AlertComponent}
@@ -199,6 +229,28 @@ const Cart = () => {
               <span className="text-sm text-athens-gray-700">
                 Shipping & taxes calculated at checkout
               </span>
+            </div>
+            <div className="flex items-center gap-1">
+              <TicketPercent className="size-3 text-rose-600" />
+              <span className="text-sm text-athens-gray-700">
+                User Coupon{' '}
+                <span className="font-medium text-rose-600">HEKTO24</span> for
+                10% Discount.
+              </span>
+            </div>
+            <div className="flex items-center gap-5">
+              <Input
+                onChange={(e) => setCoupon(e.target.value)}
+                className="h-10 rounded-none focus:outline-none focus:!ring-0"
+              />
+              <Button
+                onClick={handleCouponApply}
+                variant="light"
+                className="w-full rounded-none"
+                size="lg"
+              >
+                Apply Coupon
+              </Button>
             </div>
             <Button
               onClick={handleCreateOrder}

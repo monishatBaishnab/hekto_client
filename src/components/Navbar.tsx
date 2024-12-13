@@ -31,6 +31,7 @@ import useUser from '@/hooks/useUser';
 import { useAppDispatch } from '@/redux/hooks';
 import { logout } from '@/redux/features/auth/auth.slice';
 import { clearCart } from '@/redux/features/cart/cart.slice';
+import { clearRecent } from '@/redux/features/recent/recent.slice';
 
 // Generate the class names of nav links based on "isActive"
 const generate_link_class = (isActive: boolean): string => {
@@ -60,6 +61,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     dispatch(clearCart());
+    dispatch(clearRecent());
     if (!role) {
       return navigate('/login');
     } else if (role) {

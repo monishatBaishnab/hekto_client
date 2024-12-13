@@ -79,7 +79,7 @@ const PContainer = ({ sidebar = false, limit }: PContainerProps) => {
         shopId: product.shop_id,
         product,
       };
-  
+      
       if (carts && carts.length > 0) {
         for (const cart of carts) {
           if (cart.shopId !== cartInfo.shopId) {

@@ -10,6 +10,7 @@ import { jwtDecode } from 'jwt-decode';
 import { useAppDispatch } from '@/redux/hooks';
 import { login } from '@/redux/features/auth/auth.slice';
 import { LoaderCircle } from 'lucide-react';
+import { clearRecent } from '@/redux/features/recent/recent.slice';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ const Login = () => {
     if (isSuccess && !isLoading) {
       const user = jwtDecode(data.data.token);
       dispatch(login({ user, token: data.data.token }));
+      dispatch(clearRecent());
       navigate('/');
     }
   }, [isSuccess, isLoading, data, dispatch, navigate]);

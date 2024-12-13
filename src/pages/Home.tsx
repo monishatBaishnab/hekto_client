@@ -1,5 +1,5 @@
 import Header from '@/components/home/Header';
-import TrendingProducts from '@/components/home/TrendingProducts';
+import FPContainer from '@/components/home/FPContainer';
 import PContainer from '@/components/products/PContainer';
 import CategorySkeleton from '@/components/skeletons/CategorySkeleton';
 import { Button } from '@/components/ui/button';
@@ -75,7 +75,7 @@ const Home = () => {
           </Carousel>
         </div>
 
-        <TrendingProducts />
+        <FPContainer />
 
         <div className="bg-athens-gray-50">
           <div className="container flex flex-wrap items-center justify-center gap-7 !py-5">
