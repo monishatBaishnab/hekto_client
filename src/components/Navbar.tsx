@@ -46,6 +46,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const userData = useUser();
+
   const { name, profilePhoto, role } = userData;
   let nav_links: {
     label: string;
@@ -62,6 +63,7 @@ const Navbar = () => {
   const handleLogout = () => {
     dispatch(clearCart());
     dispatch(clearRecent());
+    
     if (!role) {
       return navigate('/login');
     } else if (role) {

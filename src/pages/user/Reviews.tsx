@@ -14,7 +14,7 @@ const Reviews = () => {
     [
       { name: 'limit', value: String(limit) },
       { name: 'page', value: String(page) },
-      { name: 'shop_id', value: userData?.shop?.id },
+      { name: 'shop_id', value: userData?.shop?.id as string },
     ],
     { skip: !userData?.shop?.id }
   );

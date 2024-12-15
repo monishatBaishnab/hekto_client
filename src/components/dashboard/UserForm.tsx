@@ -106,7 +106,7 @@ const UserForm = () => {
               <div className="size-32 shrink-0 overflow-hidden rounded-md">
                 <img
                   className="size-full object-cover"
-                  src={userData?.profilePhoto}
+                  src={userData?.profilePhoto || ""}
                   alt={userData?.name}
                 />
               </div>
