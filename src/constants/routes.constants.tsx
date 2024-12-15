@@ -30,6 +30,7 @@ import Recent from '@/pages/Recent';
 import Flash from '@/pages/Flash';
 import Orders from '@/pages/user/Orders';
 import ACategories from '@/pages/admin/ACategories';
+import PasswordRecovery from '@/pages/PasswordRecovery';
 
 export const vendor_profile_config = [
   {
@@ -169,6 +170,14 @@ const client_route_config = [
   {
     path: '/login',
     element: <Login />,
+  },
+  {
+    path: '/forgot-password',
+    element: <PasswordRecovery />,
+  },
+  {
+    path: '/password-recovery',
+    element: <PasswordRecovery />,
   },
   {
     path: '/register',

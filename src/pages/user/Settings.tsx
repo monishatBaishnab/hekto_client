@@ -14,17 +14,17 @@ const settingContent = {
   password: <PasswordResetForm />,
 };
 
+type TMode = 'personal' | 'shop' | 'password';
+
 const Settings = () => {
   const userData = useUser();
-  const [mode, setMode] = useState<'personal' | 'shop' | 'password'>(
-    'personal'
-  );
+  const [mode, setMode] = useState<TMode>('personal');
   const [searchQueries] = useSearchParams();
   const modeFromQuery = searchQueries.get('mode');
 
   useEffect(() => {
     if (modeFromQuery) {
-      setMode(modeFromQuery as 'shop');
+      setMode(modeFromQuery as TMode);
     }
   }, [modeFromQuery]);
 

@@ -54,9 +54,12 @@ const Login = () => {
             <div className="space-y-4">
               <HInput placeholder="Email Address" name="email" />
               <HInput placeholder="Password" name="password" />
-              <span className="ml-1 block cursor-pointer text-sm font-medium text-athens-gray-900">
+              <Link
+                to="/password-recovery"
+                className="ml-1 block cursor-pointer text-sm font-medium text-athens-gray-900"
+              >
                 Forgot Password?
-              </span>
+              </Link>
               <Button
                 type="submit"
                 className="w-full"

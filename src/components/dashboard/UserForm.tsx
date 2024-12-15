@@ -9,6 +9,7 @@ import { Image, RefreshCcw, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, FieldValues } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 const slideVariants = {
@@ -18,6 +19,7 @@ const slideVariants = {
 };
 
 const UserForm = () => {
+  const navigate = useNavigate();
   const userData = useUser();
   const [file, setFile] = useState<File | null>(null);
   const dispatch = useDispatch();
@@ -147,6 +149,7 @@ const UserForm = () => {
             </div>
             <div className="flex items-center gap-2">
               <Button
+              onClick={() => navigate('/user/profile')}
                 type="button"
                 size="lg"
                 variant="light"

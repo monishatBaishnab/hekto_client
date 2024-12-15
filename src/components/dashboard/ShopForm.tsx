@@ -13,6 +13,7 @@ import {
   useUpdateShopMutation,
 } from '@/redux/features/shops/shops.api';
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 const slideVariants = {
   initial: { opacity: 0, y: 5 },
@@ -21,6 +22,7 @@ const slideVariants = {
 };
 
 const ShopForm = () => {
+  const navigate = useNavigate();
   const userData = useUser();
   const [file, setFile] = useState<File | null>(null);
   const [updateShop] = useUpdateShopMutation();
@@ -161,6 +163,7 @@ const ShopForm = () => {
             </div>
             <div className="flex items-center gap-2">
               <Button
+                onClick={() => navigate('/user/profile')}
                 type="button"
                 size="lg"
                 variant="light"

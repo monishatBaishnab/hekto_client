@@ -11,7 +11,6 @@ const authApi = baseApi.injectEndpoints({
     }),
     register: builder.mutation({
       query: (userInfo) => {
-        
         return {
           url: '/auth/register',
           method: 'POST',
@@ -19,7 +18,31 @@ const authApi = baseApi.injectEndpoints({
         };
       },
     }),
+    forgot: builder.mutation({
+      query: (userInfo) => {
+        return {
+          url: '/auth/forgot-password',
+          method: 'POST',
+          body: userInfo,
+        };
+      },
+    }),
+    reset: builder.mutation({
+      query: ({ password, token }) => {
+        return {
+          url: '/auth/reset-password',
+          method: 'POST',
+          body: { password },
+          headers: { Authorization: token },
+        };
+      },
+    }),
   }),
 });
 
-export const { useLogInMutation, useRegisterMutation } = authApi;
+export const {
+  useLogInMutation,
+  useRegisterMutation,
+  useForgotMutation,
+  useResetMutation,
+} = authApi;

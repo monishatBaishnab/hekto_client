@@ -153,7 +153,7 @@ const PContainer = ({ sidebar = false, limit }: PContainerProps) => {
         if (inView && isSuccess && !isFetching && !isLoading) {
           setPage((prevPage) => prevPage + 1);
         }
-      }, 1000);
+      }, 500);
     }
   }, [inView, page, totalPage, isSuccess, isLoading, isFetching]);
 
