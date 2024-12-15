@@ -1,10 +1,10 @@
-# Hekto (E-Commerce Application)  
-
-**Live Link**  
+# [Hekto (E-Commerce Application)](https://hekto-1a747.web.app/)  
+ 
+**[Live Link](https://hekto-1a747.web.app/)**
 
 **Admin Credentials**  
 - **Email:** abdul@gmail.com  
-- **Password:** 123
+- **Password:** 1234
 
 ---
 
