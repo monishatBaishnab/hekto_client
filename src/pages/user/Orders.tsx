@@ -44,12 +44,38 @@ const Orders = () => {
               <TableHead className="text-center">Total Price</TableHead>
               <TableHead className="text-center">Transaction Id</TableHead>
               <TableHead className="text-center">Product Count</TableHead>
-              <TableHead className="text-center">Order Date</TableHead>
+              <TableHead className="text-end">Order Date</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {isLoading || isFetching
-              ? null
+            {user?.isLoading || isLoading || isFetching
+              ? Array.from({ length: 5 }).map((_, rowIndex) => (
+                  <TableRow key={rowIndex}>
+                    <TableCell>
+                      <div className="h-4 w-24 animate-pulse rounded bg-athens-gray-300"></div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex w-full items-center justify-center">
+                        <div className="h-4 w-32 animate-pulse rounded bg-athens-gray-300"></div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex w-full items-center justify-center">
+                        <div className="h-4 w-20 animate-pulse rounded bg-athens-gray-300"></div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex w-full items-center justify-center">
+                        <div className="h-4 w-16 animate-pulse rounded bg-athens-gray-300"></div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex w-full items-center justify-end">
+                        <div className="h-8 w-20 animate-pulse rounded bg-athens-gray-300"></div>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
               : orders?.data?.map((order: TOrder) => {
                   return (
                     <TableRow key={order.id}>

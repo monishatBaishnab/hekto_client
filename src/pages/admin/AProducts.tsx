@@ -65,7 +65,38 @@ const AProducts = () => {
           </TableHeader>
           <TableBody>
             {isLoading || isFetching
-              ? null
+              ? Array.from({ length: 5 }).map((_, rowIndex) => (
+                  <TableRow key={rowIndex}>
+                    <TableCell>
+                      <div className="h-4 w-24 animate-pulse rounded bg-athens-gray-300"></div>
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <div className="flex w-full items-center justify-center">
+                        <div className="h-4 w-16 animate-pulse rounded bg-athens-gray-300"></div>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <div className="flex w-full items-center justify-center">
+                        <div className="h-4 w-16 animate-pulse rounded bg-athens-gray-300"></div>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <div className="flex w-full items-center justify-center">
+                        <div className="h-4 w-16 animate-pulse rounded bg-athens-gray-300"></div>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex w-full items-center justify-center">
+                        <div className="h-4 w-16 animate-pulse rounded bg-athens-gray-300"></div>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex w-full items-center justify-end">
+                        <div className="h-4 w-16 animate-pulse rounded bg-athens-gray-300"></div>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
               : products?.data?.map((product: TProduct) => (
                   <TableRow key={product.id}>
                     <TableCell>{product.name}</TableCell>

@@ -79,12 +79,28 @@ const ACategories = () => {
             <TableRow>
               <TableHead>Category Name</TableHead>
               <TableHead className="text-center">Total Product</TableHead>
-              <TableHead className="text-center">Created At</TableHead>
+              <TableHead className="text-end">Created At</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {isLoading
-              ? null
+              ? Array.from({ length: 5 }).map((_, rowIndex) => (
+                  <TableRow key={rowIndex}>
+                    <TableCell>
+                      <div className="h-4 w-24 animate-pulse rounded bg-athens-gray-300"></div>
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <div className="flex w-full items-center justify-center">
+                        <div className="h-4 w-16 animate-pulse rounded bg-athens-gray-300"></div>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <div className="flex w-full items-center justify-end">
+                        <div className="h-4 w-16 animate-pulse rounded bg-athens-gray-300"></div>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
               : categories?.data?.map((category: TCategory) => {
                   return (
                     <TableRow key={category.id}>

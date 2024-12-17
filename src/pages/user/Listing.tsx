@@ -111,8 +111,14 @@ const Listing = () => {
       }
     }
   };
+  
   useEffect(() => {
-    if (!userData.isFetching && !userData?.isLoading && !userData.shop) {
+    if (
+      !userData.isFetching &&
+      !userData?.isLoading &&
+      !userData.shop &&
+      userData.name
+    ) {
       toast.error('Please create a shop for create product.');
       navigate('/user/settings');
       return;

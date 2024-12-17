@@ -15,7 +15,11 @@ import { toast } from 'sonner';
 const ShopDetails = () => {
   const user = useAppSelector((state) => state.auth.user);
   const { id: paramsId } = useParams();
-  const { data: shopDetails } = useFetchSingleShopQuery(paramsId as string, {
+  const {
+    data: shopDetails,
+    isLoading: sLoading,
+    isFetching: sFetching,
+  } = useFetchSingleShopQuery(paramsId as string, {
     skip: !paramsId,
   });
   const { name, logo, description, id, createdAt, follow } =
@@ -43,41 +47,65 @@ const ShopDetails = () => {
     <div>
       <PageHeader title={`${name}`} />
       <div className="container">
-        <div>
-          <div className="mb-5 flex items-center gap-5 border-b pb-5">
-            <div className="flex shrink-0 flex-wrap items-center gap-8">
-              {logo ? (
-                <div className="size-24 shrink-0 overflow-hidden rounded-md">
-                  <img
-                    className="size-full object-cover"
-                    src={logo}
-                    alt={name}
-                  />
+        {sLoading || sFetching ? (
+          <div className="animate-pulse">
+            <div>
+              <div className="mb-5 flex items-center gap-5 border-b pb-5">
+                {/* Logo Skeleton */}
+                <div className="flex shrink-0 flex-wrap items-center gap-8">
+                  <div className="size-24 shrink-0 overflow-hidden rounded-md bg-athens-gray-300"></div>
                 </div>
-              ) : null}
-            </div>
 
-            {/* Profile Info */}
-            <div className="space-y-2">
-              <div>
-                <h4 className="text-xl font-bold text-h-black">{name}</h4>
-                <p className="text-sm text-athens-gray-800">
-                  Join on: {moment(createdAt).format('DD MMM, YYYY')}
-                </p>
+                {/* Profile Info Skeleton */}
+                <div className="space-y-2">
+                  <div>
+                    <div className="h-6 w-48 rounded bg-athens-gray-300"></div>
+                    <div className="mt-2 h-4 w-36 rounded bg-athens-gray-300"></div>
+                  </div>
+                  <div className="mt-3 h-4 w-full rounded bg-athens-gray-300"></div>
+                  <div className="h-4 w-3/4 rounded bg-athens-gray-300"></div>
+                  <div className="mt-4 h-10 w-32 rounded-md bg-athens-gray-300"></div>
+                </div>
               </div>
-              <p className="!mb-3 text-athens-gray-600">{description}</p>
-              <Button
-                disabled={isFollowed?.user_id}
-                onClick={handleFollow}
-                variant="light"
-                className="rounded-md"
-              >
-                <Rss />
-                {isFollowed ? 'Following' : 'Follow Shop'}
-              </Button>
             </div>
           </div>
-        </div>
+        ) : (
+          <div>
+            <div className="mb-5 flex items-center gap-5 border-b pb-5">
+              <div className="flex shrink-0 flex-wrap items-center gap-8">
+                {logo ? (
+                  <div className="size-24 shrink-0 overflow-hidden rounded-md">
+                    <img
+                      className="size-full object-cover"
+                      src={logo}
+                      alt={name}
+                    />
+                  </div>
+                ) : null}
+              </div>
+
+              {/* Profile Info */}
+              <div className="space-y-2">
+                <div>
+                  <h4 className="text-xl font-bold text-h-black">{name}</h4>
+                  <p className="text-sm text-athens-gray-800">
+                    Join on: {moment(createdAt).format('DD MMM, YYYY')}
+                  </p>
+                </div>
+                <p className="!mb-3 text-athens-gray-600">{description}</p>
+                <Button
+                  disabled={isFollowed?.user_id}
+                  onClick={handleFollow}
+                  variant="light"
+                  className="rounded-md"
+                >
+                  <Rss />
+                  {isFollowed ? 'Following' : 'Follow Shop'}
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="space-y-7">
           <h4 className="text-xl font-bold text-h-black">

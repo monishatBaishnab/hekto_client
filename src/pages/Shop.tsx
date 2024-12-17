@@ -21,7 +21,13 @@ const Shop = () => {
       <div className="container space-y-7">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {isLoading || isFetching
-            ? null
+            ? Array.from({ length: 4 }).map((_, id) => (
+                <div key={id} className="flex size-full animate-pulse flex-col items-center space-y-1 rounded-lg bg-athens-gray-50 p-4">
+                  <div className="size-24 rounded-full bg-athens-gray-300"></div>
+                  <div className="h-4 w-3/4 rounded bg-athens-gray-300"></div>
+                  <div className="h-3 w-1/2 rounded bg-athens-gray-300"></div>
+                </div>
+              ))
             : shops?.data?.map((shop: TShop) => (
                 <div className="flex size-full flex-col items-center space-y-1 rounded-lg bg-athens-gray-50 p-4">
                   <div className="size-24">
