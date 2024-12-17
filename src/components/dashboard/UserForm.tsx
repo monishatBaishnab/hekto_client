@@ -49,7 +49,7 @@ const UserForm = () => {
     if (file) {
       formData.append('file', file);
     }
-    
+
     // Append userInfo and shopData as JSON strings
     formData.append('data', JSON.stringify({ ...userInfo }));
 
@@ -63,7 +63,7 @@ const UserForm = () => {
     }
   }, [isError, isSuccess, data, dispatch]);
 
-  if (userData.isLoading || userData?.isFetching) {
+  if (!userData?.name || userData.isLoading || userData?.isFetching) {
     return (
       <div className="space-y-7">
         <div className="space-y-5">
@@ -106,7 +106,7 @@ const UserForm = () => {
               <div className="size-32 shrink-0 overflow-hidden rounded-md">
                 <img
                   className="size-full object-cover"
-                  src={userData?.profilePhoto || ""}
+                  src={userData?.profilePhoto || ''}
                   alt={userData?.name}
                 />
               </div>
@@ -149,7 +149,7 @@ const UserForm = () => {
             </div>
             <div className="flex items-center gap-2">
               <Button
-              onClick={() => navigate('/user/profile')}
+                onClick={() => navigate('/user/profile')}
                 type="button"
                 size="lg"
                 variant="light"

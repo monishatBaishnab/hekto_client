@@ -97,6 +97,35 @@ const ShopForm = () => {
     }
   };
 
+  if (!userData?.shop || userData.isLoading || userData?.isFetching) {
+    return (
+      <div className="space-y-7">
+        <div className="space-y-5">
+          {/* Profile Photo Skeleton */}
+          <div className="flex items-center gap-8">
+            <div className="size-32 shrink-0 animate-pulse overflow-hidden rounded-md bg-gray-200"></div>
+            <div className="w-full space-y-3">
+              <div className="h-4 w-3/4 animate-pulse rounded-md bg-gray-200"></div>
+              <div className="h-8 w-40 animate-pulse rounded-md bg-gray-200"></div>
+            </div>
+          </div>
+
+          {/* Input Skeletons */}
+          <div className="space-y-5">
+            <div className="h-10 animate-pulse rounded-md bg-gray-200"></div>
+            <div className="h-10 animate-pulse rounded-md bg-gray-200"></div>
+          </div>
+
+          {/* Button Skeletons */}
+          <div className="flex items-center gap-2">
+            <div className="h-10 w-24 animate-pulse rounded-md bg-gray-200"></div>
+            <div className="h-10 w-32 animate-pulse rounded-md bg-gray-200"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <motion.div
       initial="initial"

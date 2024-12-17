@@ -26,6 +26,7 @@ const Listing = () => {
   const { AlertComponent, showAlert } = useAlert();
   const [openModal, setOpenModal] = useState(false);
   const [product, setProduct] = useState<TProduct>();
+  const [isDuplicate, setIsDuplicate] = useState<boolean>(false);
   const [createProduct] = useCreateProductMutation();
   const [updateProduct] = useUpdateProductMutation();
   const [deleteProduct] = useDeleteProductMutation();
@@ -45,6 +46,14 @@ const Listing = () => {
     { skip: !userData?.shop?.id }
   );
 
+  let modalTitle = 'Create Product';
+
+  if (product && isDuplicate) {
+    modalTitle = 'Duplicate Product';
+  } else if (product && !isDuplicate) {
+    modalTitle = 'Update Product';
+  }
+
   // Function for handle Product Action
   const handleAction = async (key: string, product: TProduct) => {
     if (key === 'edit') {
@@ -63,7 +72,9 @@ const Listing = () => {
         }
       }
     } else if (key === 'duplicate') {
-      console.log('Duplicate Product');
+      setProduct(product);
+      setOpenModal(true);
+      setIsDuplicate(true);
     }
   };
 
@@ -77,7 +88,7 @@ const Listing = () => {
       } else {
         categories?.push({ isDeleted: false, id: data?.categories });
       }
-    } else if (!product) {
+    } else if (!product || isDuplicate) {
       categories?.push({ isDeleted: false, id: data?.categories });
     }
 
@@ -88,6 +99,7 @@ const Listing = () => {
       description: data?.description,
       discount: data?.discount,
       categories: categories,
+      ...(product?.images ? { images: product?.images } : {}),
     };
 
     const formData = new FormData();
@@ -97,21 +109,23 @@ const Listing = () => {
     if (data.images) {
       formData.append('file', data.images);
     }
-    if (product) {
+
+    if (product && !isDuplicate) {
       const updatedData = await updateProduct({ formData, id: product.id });
       if (updatedData?.data?.success) {
         setOpenModal(false);
         toast.success('Product Updated.');
       }
-    } else {
+    } else if (!product || isDuplicate) {
       const createdData = await createProduct(formData);
+      console.log(createdData);
       if (createdData?.data?.success) {
         setOpenModal(false);
         toast.success('Product Created.');
       }
     }
   };
-  
+
   useEffect(() => {
     if (
       !userData.isFetching &&
@@ -206,7 +220,7 @@ const Listing = () => {
 
       <CreateProduct
         onSubmit={handleSubmit}
-        title="Create Product"
+        title={modalTitle}
         setOpen={setOpenModal}
         open={openModal}
         product={product}
