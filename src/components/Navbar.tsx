@@ -1,15 +1,12 @@
 import client_route_config from '@/constants/routes.constants';
 import nav_links_generator from '@/utils/nav_links_generator';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import {
   ArrowUp,
-  CircleGauge,
-  FileUser,
   GitCompare,
-  LogOut,
   Mail,
   Menu,
   Phone,
@@ -17,21 +14,15 @@ import {
   ShoppingCart,
   User,
 } from 'lucide-react';
-import { Avatar, AvatarImage, AvatarFallback } from '@radix-ui/react-avatar';
 import { useEffect, useState } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import useUser from '@/hooks/useUser';
-import { useAppDispatch } from '@/redux/hooks';
-import { logout } from '@/redux/features/auth/auth.slice';
-import { clearCart } from '@/redux/features/cart/cart.slice';
-import { clearRecent } from '@/redux/features/recent/recent.slice';
+import NavbarProfile from './NavbarProfile';
 
 // Generate the class names of nav links based on "isActive"
 const generate_link_class = (isActive: boolean): string => {
@@ -43,11 +34,9 @@ const generate_link_class = (isActive: boolean): string => {
 // Generate The nav links from config
 
 const Navbar = () => {
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
   const userData = useUser();
 
-  const { name, profilePhoto, role } = userData;
+  const { role, isLoading, isFetching } = userData;
   let nav_links: {
     label: string;
     path: string;
@@ -59,21 +48,6 @@ const Navbar = () => {
 
   const [scroll, setScroll] = useState(false);
   const [isScrollTopVisible, setIsScrollTopVisible] = useState(false);
-
-  const handleLogout = () => {
-    dispatch(clearCart());
-    dispatch(clearRecent());
-    
-    if (!role) {
-      return navigate('/login');
-    } else if (role) {
-      // Then, log out the user after invalidating the cache
-      dispatch(logout());
-
-      // Optionally, redirect to another page after logout
-      navigate('/login');
-    }
-  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -233,43 +207,10 @@ const Navbar = () => {
             </div>
 
             {/* Profile Dropdown */}
-            {role && (
-              <DropdownMenu>
-                <DropdownMenuTrigger className="outline-none">
-                  <Avatar className="block size-9 cursor-pointer overflow-hidden rounded-full">
-                    <AvatarImage
-                      className="size-full object-cover"
-                      src={profilePhoto ?? 'CN'}
-                      alt={name}
-                    />
-                    <AvatarFallback>CN</AvatarFallback>
-                  </Avatar>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuLabel>My Profile</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  {role === 'ADMIN' && (
-                    <DropdownMenuItem
-                      onClick={() => navigate('/admin/users')}
-                      className="cursor-pointer"
-                    >
-                      <CircleGauge /> Dashboard
-                    </DropdownMenuItem>
-                  )}
-                  <DropdownMenuItem
-                    onClick={() => navigate('/user/profile')}
-                    className="cursor-pointer"
-                  >
-                    <FileUser /> Profile
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={handleLogout}
-                    className="cursor-pointer text-torch-red-600 focus:bg-torch-red-100 focus:text-torch-red-600"
-                  >
-                    <LogOut /> Logout
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+            {isLoading || isFetching ? (
+              <div className="size-9 animate-pulse rounded-full bg-athens-gray-200"></div>
+            ) : (
+              role && <NavbarProfile />
             )}
           </div>
         </div>
