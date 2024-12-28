@@ -23,6 +23,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import useUser from '@/hooks/useUser';
 import NavbarProfile from './NavbarProfile';
+import NavCategories from './NavCategories';
 
 // Generate the class names of nav links based on "isActive"
 const generate_link_class = (isActive: boolean): string => {
@@ -35,7 +36,6 @@ const generate_link_class = (isActive: boolean): string => {
 
 const Navbar = () => {
   const userData = useUser();
-
   const { role, isLoading, isFetching } = userData;
   let nav_links: {
     label: string;
@@ -143,17 +143,22 @@ const Navbar = () => {
           className={`container flex h-20 items-center justify-between !py-0`}
         >
           <div className="flex items-center gap-20">
-            {/* Logo */}
-            <Link to="/" className="flex items-center gap-2">
-              <div className="size-8 overflow-hidden">
-                <img
-                  className="size-full object-contain"
-                  src="https://i.ibb.co.com/PTSxVm0/hekto-logo.png"
-                  alt="Hekto Logo"
-                />
+            <div className="flex items-center gap-3">
+              <div>
+                <NavCategories />
               </div>
-              <h2 className="text-3xl font-bold text-h-black">Hekto</h2>
-            </Link>
+              {/* Logo */}
+              <Link to="/" className="flex items-center gap-2">
+                <div className="size-8 overflow-hidden">
+                  <img
+                    className="size-full object-contain"
+                    src="https://i.ibb.co.com/PTSxVm0/hekto-logo.png"
+                    alt="Hekto Logo"
+                  />
+                </div>
+                <h2 className="text-3xl font-bold text-h-black">Hekto</h2>
+              </Link>
+            </div>
 
             {/* Navbar links */}
             <div className="hidden items-center gap-x-6 lg:flex">
