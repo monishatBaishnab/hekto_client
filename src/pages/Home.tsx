@@ -1,22 +1,14 @@
 import Header from '@/components/home/Header';
 import FPContainer from '@/components/home/FPContainer';
 import PContainer from '@/components/products/PContainer';
-import CategorySkeleton from '@/components/skeletons/CategorySkeleton';
 import { Button } from '@/components/ui/button';
-import { useFetchAllCategoriesQuery } from '@/redux/features/categories/categories.api';
-import { TCategory } from '@/types';
-import { CircleCheck, MoveRight } from 'lucide-react';
+import { CircleCheck } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
+import Categories from '@/components/home/Categories';
 
 const Home = () => {
   const navigate = useNavigate();
-  const {
-    data: categories,
-    isLoading: cLoading,
-    isFetching: cFetching,
-  } = useFetchAllCategoriesQuery([{ name: 'limit', value: '6' }]);
-
   return (
     <div>
       <div>
@@ -24,48 +16,11 @@ const Home = () => {
 
         {/* Categories */}
         <div className="container">
-          <div className="mb-8 flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-h-black sm:text-4xl">
-              Popular Categories
-            </h2>
-            <button
-              // onClick={() => navigate('/flash')}
-              className="flex items-center gap-3 rounded-md text-athens-gray-700 transition-all hover:text-athens-gray-900"
-            >
-              See All <MoveRight className="size-5" />
-            </button>
-          </div>
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-            {cLoading || cFetching
-              ? Array.from({ length: 5 }).map((_, index) => (
-                  <CategorySkeleton key={index} />
-                ))
-              : (categories?.data as TCategory[])?.map(
-                  ({ name, description, image, id }) => (
-                    <div
-                      key={id}
-                      onClick={() => navigate(`/products?category=${id}`)}
-                      className="flex size-full cursor-pointer items-center gap-3 rounded-lg bg-athens-gray-50 p-4 transition-all hover:bg-athens-gray-100/70 active:bg-athens-gray-50 sm:flex-col sm:gap-0"
-                    >
-                      <div className="size-16">
-                        <img
-                          className="size-full object-contain"
-                          src={image}
-                          alt={name}
-                        />
-                      </div>
-                      <div className="space-y-1">
-                        <h4 className="text-lg font-bold text-h-black">
-                          {name}
-                        </h4>
-                        <h5 className="text-sm text-athens-gray-700">
-                          {description}
-                        </h5>
-                      </div>
-                    </div>
-                  )
-                )}
-          </div>
+          <h2 className="mb-8 text-2xl font-bold text-h-black sm:text-4xl">
+            Popular Categories
+          </h2>
+
+          <Categories />
         </div>
 
         <FPContainer />
@@ -108,7 +63,7 @@ const Home = () => {
         </div>
 
         <div className="container space-y-14">
-          <h2 className="text-center text-4xl font-bold text-h-black">
+          <h2 className="text-center text-2xl font-bold text-h-black sm:text-4xl">
             Only for you
           </h2>
 
@@ -139,6 +94,8 @@ const Home = () => {
             </div>
           </div>
         </div>
+
+        <div></div>
       </div>
     </div>
   );
