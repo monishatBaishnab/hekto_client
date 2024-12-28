@@ -10,7 +10,7 @@ const followApi = baseApi.injectEndpoints({
           body: followData,
         };
       },
-      invalidatesTags: ['shop'],
+      invalidatesTags: ['shops'],
     }),
   }),
 });

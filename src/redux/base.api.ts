@@ -5,7 +5,7 @@ import { RootState } from './store';
 export const tagTypes = ['courses', 'categories', 'users', 'shops'];
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'https://hekto-server.vercel.app/api/v1',
+  baseUrl: 'http://localhost:3000/api/v1',
   credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;

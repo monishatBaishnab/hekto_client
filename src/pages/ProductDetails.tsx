@@ -292,7 +292,19 @@ const ProductDetails = () => {
             </div>
           ) : (
             <div className="space-y-5">
-              <h3 className="text-2xl font-bold text-h-black">Reviews</h3>
+              <div className="flex items-center justify-between">
+                <h3 className="text-2xl font-bold text-h-black">Reviews</h3>
+                <span className="flex items-center gap-1 text-sm text-h-black">
+                  <Rating
+                    style={{ maxWidth: 80 }}
+                    value={Number(avgRatings)}
+                    readOnly
+                  />
+                  <span className="ml-0.5 text-xs text-athens-gray-600">
+                    ({totalReview})
+                  </span>
+                </span>
+              </div>
               <h4 className="text-athens-gray-700">No Review Found</h4>
             </div>
           )}
