@@ -77,13 +77,13 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground bg-white;
   }
 }
 
 @layer utilities {
   .container {
-    @apply max-w-screen-xl mx-auto px-5 sm:px-10 py-24;
+    @apply max-w-screen-xl mx-auto px-5 sm:px-10 py-10;
   }
   .scrollbar-hidden {
     scrollbar-width: none; /* Firefox */

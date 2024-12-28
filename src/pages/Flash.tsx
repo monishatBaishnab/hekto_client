@@ -11,16 +11,16 @@ const Flash = () => {
     isFetching: pFetching,
   } = useFetchAllProductsQuery([
     { name: 'page', value: '1' },
-    { name: 'limit', value: '4' },
+    { name: 'limit', value: '5' },
   ]);
 
   return (
     <div className='space-y-10'>
       <PageHeader title="Flash Sale Products" />
       <div className="container !pt-0">
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
           {pLoading || pFetching ? (
-            Array.from({ length: 4 }).map((_, index) => (
+            Array.from({ length: 5 }).map((_, index) => (
               <CardSkeleton key={index} />
             ))
           ) : !flashSaleProducts || flashSaleProducts?.length < 1 ? (

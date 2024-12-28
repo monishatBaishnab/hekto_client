@@ -6,12 +6,10 @@ export const categories = [
   { key: "waterproof_headphones", label: "Waterproof Headphones" },
 ];
 export const pages = [
-  { kay: "shop", label: "Brows the Shop" },
-  { kay: "categories", label: "Category" },
+  { key: "/shops", label: "Brows the Shop" },
+  { key: "/products", label: "Products" },
 ];
 export const customer_cares = [
-  { key: "my_account", label: "My Account" },
-  { key: "discount", label: "Discount" },
-  { key: "returns", label: "Returns" },
-  { key: "orders_history", label: "Orders History" },
+  { key: "/login", label: "Login" },
+  { key: "/register", label: "Register" },
 ];

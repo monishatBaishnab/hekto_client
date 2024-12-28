@@ -1,10 +1,13 @@
-import { Facebook, Instagram, Twitter } from "lucide-react";
-import { Link } from "react-router-dom";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { categories, customer_cares, pages } from "@/constants/footer.constants";
+import { Facebook, Instagram, Twitter } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { customer_cares, pages } from '@/constants/footer.constants';
+import { useFetchAllCategoriesQuery } from '@/redux/features/categories/categories.api';
+import { TCategory } from '@/types';
 
 const Footer = () => {
+  const { data: categories } = useFetchAllCategoriesQuery([
+    { name: 'limit', value: '4' },
+  ]);
   return (
     <div>
       <div className="bg-[#EEEFFB]">
@@ -20,7 +23,7 @@ const Footer = () => {
               </div>
               <h2 className="text-3xl font-bold text-h-black">Hekto</h2>
             </Link>
-            <div className="flex max-w-[370px] items-center rounded-sm bg-white/45 p-0.5">
+            {/* <div className="flex max-w-[370px] items-center rounded-sm bg-white/45 p-0.5">
               <Input
                 placeholder="Enter Email Address"
                 className="hidden w-full rounded-none border-0 !shadow-none !outline-none !ring-0 sm:flex"
@@ -28,7 +31,7 @@ const Footer = () => {
               <Button variant="rose" className="rounded-[3px]">
                 Sign Up
               </Button>
-            </div>
+            </div> */}
             <div className="space-y-2 text-athens-gray-600">
               <p>Contact Info</p>
               <p>17 Princess Road, London, Greater London NW1 8JR, UK</p>
@@ -37,25 +40,27 @@ const Footer = () => {
           <div className="space-y-7">
             <h4 className="text-xl font-semibold text-h-black">Categories</h4>
             <div className="space-y-4">
-              {categories?.map((category) => (
+              {(categories?.data as TCategory[])?.map((category) => (
                 <Link
                   className="block text-athens-gray-600 transition-all hover:text-rose-600"
-                  key={category.key}
-                  to="/"
+                  key={category.id}
+                  to={`/products?category=${category?.id}`}
                 >
-                  {category.label}
+                  {category.name}
                 </Link>
               ))}
             </div>
           </div>
           <div className="space-y-7">
-            <h4 className="text-xl font-semibold text-h-black">Customer Care</h4>
+            <h4 className="text-xl font-semibold text-h-black">
+              Authentication
+            </h4>
             <div className="space-y-4">
               {customer_cares?.map((care) => (
                 <Link
                   className="block text-athens-gray-600 transition-all hover:text-rose-600"
                   key={care.key}
-                  to="/"
+                  to={care.key}
                 >
                   {care.label}
                 </Link>
@@ -68,8 +73,8 @@ const Footer = () => {
               {pages?.map((page) => (
                 <Link
                   className="block text-athens-gray-600 transition-all hover:text-rose-600"
-                  key={page.kay}
-                  to="/"
+                  key={page.key}
+                  to={page?.key}
                 >
                   {page.label}
                 </Link>

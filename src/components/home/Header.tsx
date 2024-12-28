@@ -37,7 +37,7 @@ const CarouselSlide = ({ slide }: { slide: TSlide }) => {
   };
   return (
     <motion.div
-      className="container absolute inset-x-0 top-0 flex h-full flex-wrap items-center justify-between gap-10 px-10"
+      className="container absolute inset-x-0 top-0 flex h-full flex-wrap items-center justify-between gap-10 !py-10 px-10"
       initial="initial"
       animate="animate"
       exit="exit"
@@ -85,18 +85,20 @@ const CarouselSlide = ({ slide }: { slide: TSlide }) => {
         </motion.div>
       </div>
       {/* Right Content */}
-      <div className="flex w-full shrink-0 items-center justify-center md:w-[calc(50%_-_20px)]">
-        <motion.div
-          className="size-3/4 rounded-full bg-rose-300/10"
-          variants={scaleVariants}
-          transition={{ duration: 0.8, delay: 0.4 }}
-        >
-          <img
-            src={slide.image}
-            alt={slide.title}
-            className="size-full object-contain"
-          />
-        </motion.div>
+      <div className="hidden size-full shrink-0 justify-end sm:flex md:w-[calc(50%_-_20px)]">
+        <div className="size-96">
+          <motion.div
+            className="size-3/4 rounded-full bg-rose-300/10"
+            variants={scaleVariants}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+            <img
+              src={slide.image}
+              alt={slide.title}
+              className="size-full object-contain"
+            />
+          </motion.div>
+        </div>
       </div>
     </motion.div>
   );
@@ -121,9 +123,9 @@ const Header = () => {
     <div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="relative h-[600px] w-full overflow-hidden bg-[#F2F0FF]"
+      className="relative h-[400px] w-full overflow-hidden bg-[#F2F0FF]"
     >
-      <div className="absolute -top-10 left-0 size-[250px] overflow-hidden">
+      <div className="absolute -top-10 left-0 size-[200px] overflow-hidden">
         <img
           className="size-full object-contain"
           src="https://i.ibb.co.com/G7CL54k/image-32.png"
@@ -138,30 +140,16 @@ const Header = () => {
             )
         )}
       </div>
-      {/* Navigation Buttons */}
-      <div className="container absolute inset-x-0 top-1/2 flex translate-y-1/2 items-center justify-between !p-0">
+      <div className="absolute inset-x-0 bottom-10 flex items-center justify-center gap-2">
         <Button
           variant="light"
-          className="hover:bg-rose-600 hover:text-white active:bg-rose-600"
+          className="rounded-md hover:bg-rose-600 hover:text-white active:bg-rose-600"
           size={'icon'}
-          disabled={current <= 0}
-          onClick={() =>
-            setCurrent((current - 1 + slides.length) % slides.length)
-          }
+          // disabled={current <= 0}
+          onClick={() => setCurrent((prev) => (prev - 1) % slides.length)}
         >
           <ArrowLeft />
         </Button>
-        <Button
-          variant="light"
-          className="hover:bg-rose-600 hover:text-white active:bg-rose-600"
-          size={'icon'}
-          disabled={current >= slides.length - 1}
-          onClick={() => setCurrent((current + 1) % slides.length)}
-        >
-          <ArrowRight />
-        </Button>
-      </div>
-      <div className="absolute inset-x-0 bottom-10 flex items-center justify-center gap-2">
         {slides.map((_, index) => (
           <button
             key={index}
@@ -176,6 +164,16 @@ const Header = () => {
             />
           </button>
         ))}
+
+        <Button
+          variant="light"
+          className="rounded-md hover:bg-rose-600 hover:text-white active:bg-rose-600"
+          size={'icon'}
+          // disabled={current >= slides.length - 1}
+          onClick={() => setCurrent((prev) => (prev + 1) % slides.length)}
+        >
+          <ArrowRight />
+        </Button>
       </div>
     </div>
   );

@@ -10,13 +10,13 @@ import { toast } from 'sonner';
 import ProductEmpty from '../empty/ProductEmpty';
 import { Link, useNavigate } from 'react-router-dom';
 import { addToRecent } from '@/redux/features/recent/recent.slice';
-import { Button } from '../ui/button';
+import { MoveRight } from 'lucide-react';
 
 export const CardSkeleton = () => {
   return (
-    <div className="group bg-white p-5 shadow-md">
+    <div className="group rounded-md bg-white p-5 shadow-md">
       {/* Skeleton Image Container */}
-      <div className="relative mb-5 h-[280px] w-full animate-pulse overflow-hidden rounded-lg bg-athens-gray-200 transition-all"></div>
+      <div className="relative mb-5 h-[200px] w-full animate-pulse overflow-hidden rounded-lg bg-athens-gray-200 transition-all"></div>
 
       {/* Skeleton Text Container */}
       <div className="space-y-2">
@@ -88,11 +88,11 @@ export const Card = ({ product }: { product: TProduct }) => {
   };
 
   return (
-    <div className="group bg-white p-5 shadow-md">
+    <div className="group rounded-md bg-white p-5 shadow-md">
       {AlertComponent}
       <div
         className={cn(
-          'transition-all relative overflow-hidden h-[280px] w-full mb-5',
+          'transition-all relative overflow-hidden h-[200px] w-full mb-5',
           'bg-athens-gray-50 p-7  group-hover:bg-dark-blue-100/70'
         )}
       >
@@ -117,6 +117,14 @@ export const Card = ({ product }: { product: TProduct }) => {
             product={product}
           />
         </div>
+        {/* Card Icons */}
+        <div
+          className={cn(
+            'absolute left-3 top-3 text-sm bg-electric-violet-700 rounded-md px-2 text-white pb-0.5'
+          )}
+        >
+          <span>Flash Sale</span>
+        </div>
       </div>
       <div className="space-y-2">
         <Link
@@ -126,7 +134,9 @@ export const Card = ({ product }: { product: TProduct }) => {
             'font-bold block text-deep-koamaru-900 text-lg text-center'
           )}
         >
-          {product.name}
+          {Number(product?.name?.length) > 17
+            ? product?.name?.slice(0, 17) + '..'
+            : product?.name}
         </Link>
         <div className="flex items-center justify-center gap-2.5">
           <span className="text-h-black">${product.price}</span>
@@ -144,39 +154,39 @@ export const Card = ({ product }: { product: TProduct }) => {
 const FPContainer = () => {
   const navigate = useNavigate();
   const {
-    data: trendingProducts,
-    isLoading: pLoading,
-    isFetching: pFetching,
+    data: flashProducts,
+    isLoading,
+    isFetching,
   } = useFetchAllProductsQuery([
     { name: 'page', value: '1' },
-    { name: 'limit', value: '4' },
+    { name: 'limit', value: '5' },
   ]);
 
   return (
     <div className="container !pt-0">
-      <div className="flex items-center justify-between">
-        <h2 className="mb-8 text-4xl font-bold text-h-black">Flash Sale</h2>
-        <Button
+      <div className="mb-8 flex items-center justify-between">
+        <h2 className="text-2xl font-bold text-h-black sm:text-4xl">
+          Flash Sale
+        </h2>
+        <button
           onClick={() => navigate('/flash')}
-          variant="light"
-          size="lg"
-          className="rounded-md"
+          className="flex items-center gap-3 rounded-md text-athens-gray-700 transition-all hover:text-athens-gray-900"
         >
-          See All
-        </Button>
+          See All <MoveRight className="size-5" />
+        </button>
       </div>
 
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {pLoading || pFetching ? (
-          Array.from({ length: 4 }).map((_, index) => (
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+        {isLoading || isFetching ? (
+          Array.from({ length: 5 }).map((_, index) => (
             <CardSkeleton key={index} />
           ))
-        ) : !trendingProducts || trendingProducts?.length < 1 ? (
+        ) : !flashProducts || flashProducts?.length < 1 ? (
           <div className="col-span-1 md:col-span-2 lg:col-span-3">
             <ProductEmpty action={<></>} />
           </div>
         ) : (
-          (trendingProducts?.data as TProduct[])?.map((product) => (
+          (flashProducts?.data as TProduct[])?.map((product) => (
             <Card key={product?.id} product={product} />
           ))
         )}
