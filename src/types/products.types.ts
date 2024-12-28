@@ -3,6 +3,7 @@ import { TReview } from './review.types';
 import { TShop } from './shop.types';
 
 export type TProduct = {
+  productCategory: any;
   id: string;
   shop_id: string;
   name: string;

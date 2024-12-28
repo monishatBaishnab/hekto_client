@@ -16,22 +16,27 @@ import {
   User,
   Settings as SettingsIcon,
   Users as UsersIcon,
-  MessagesSquare,
   ListOrdered,
+  UserPen,
+  CircleGauge,
 } from 'lucide-react';
 import Login from '@/pages/Login';
 import Register from '@/pages/Register';
-import AUsers from '@/pages/admin/AUsers';
-import AProducts from '@/pages/admin/AProducts';
-import AReviews from '@/pages/admin/AReviews';
-import AOrders from '@/pages/admin/AOrders';
-import AShops from '@/pages/admin/AShops';
 import Recent from '@/pages/Recent';
 import Flash from '@/pages/Flash';
 import Orders from '@/pages/user/Orders';
-import ACategories from '@/pages/admin/ACategories';
 import PasswordRecovery from '@/pages/PasswordRecovery';
 import Contact from '@/pages/Contact';
+import Dashboard from '@/pages/dashboard/Dashboard';
+import DProfile from '@/pages/dashboard/DProfile';
+import DProducts from '@/pages/dashboard/DProducts';
+import DCategories from '@/pages/dashboard/DCategories';
+import DReviews from '@/pages/dashboard/DReviews';
+import DOrders from '@/pages/dashboard/DOrders';
+import DUsers from '@/pages/dashboard/DUsers';
+import DStores from '@/pages/dashboard/DStores';
+import DSettings from '@/pages/dashboard/DSettings';
+
 
 export const vendor_profile_config = [
   {
@@ -95,46 +100,64 @@ export const user_profile_config = [
   },
 ];
 
-export const admin_route_config = [
+export const dashboard_route_config = [
   {
     path: '/',
-    element: <AUsers />,
+    element: <Dashboard />,
   },
   {
-    path: '/users',
-    label: 'Users',
-    element: <AUsers />,
-    icon: UsersIcon,
+    path: '/overview',
+    label: 'Dashboard',
+    element: <Dashboard />,
+    icon: CircleGauge,
   },
   {
-    path: '/shops',
-    label: 'Shops',
-    element: <AShops />,
-    icon: UsersIcon,
-  },
-  {
-    path: '/categories',
-    label: 'Categories',
-    element: <ACategories />,
-    icon: ListOrdered,
+    path: '/profile',
+    label: 'Profile',
+    element: <DProfile />,
+    icon: UserPen,
   },
   {
     path: '/products',
     label: 'Products',
-    element: <AProducts />,
+    element: <DProducts />,
+    icon: Layers,
+  },
+  {
+    path: '/categories',
+    label: 'Categories',
+    element: <DCategories />,
     icon: ListOrdered,
   },
   {
     path: '/reviews',
     label: 'Reviews',
-    element: <AReviews />,
-    icon: MessagesSquare,
+    element: <DReviews />,
+    icon: Star,
   },
   {
     path: '/orders',
     label: 'Orders',
-    element: <AOrders />,
+    element: <DOrders />,
     icon: ListOrdered,
+  },
+  {
+    path: '/users',
+    label: 'Users',
+    element: <DUsers />,
+    icon: UsersIcon,
+  },
+  {
+    path: '/shops',
+    label: 'Stores',
+    element: <DStores />,
+    icon: ListOrdered,
+  },
+  {
+    path: '/settings',
+    label: 'Settings',
+    element: <DSettings />,
+    icon: SettingsIcon,
   },
 ];
 

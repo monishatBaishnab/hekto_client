@@ -7,8 +7,8 @@ export const admin_profile_links = [
     icon: CircleGauge,
   },
   {
-    path: '/dashboard/posts',
-    label: 'Posts',
+    path: '/dashboard/products',
+    label: 'Products',
     icon: Layers,
   },
   {

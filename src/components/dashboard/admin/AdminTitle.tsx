@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { useAdminDashboardContext } from '@/layouts/AdminDashboard';
+import { useAdminDashboardContext } from '@/layouts/DashboardLayout';
 import { Menu } from 'lucide-react';
 
 const AdminTitle = ({ title }: { title: string }) => {

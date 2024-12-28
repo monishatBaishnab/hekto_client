@@ -1,3 +1,5 @@
+import { TProduct } from './products.types';
+
 export interface TReview {
   id: string;
   rating: number;
@@ -8,9 +10,7 @@ export interface TReview {
     email: string;
     address: string;
     profilePhoto: string;
-    createdAt:string;
+    createdAt: string;
   };
-  product: {
-    name: string;
-  };
+  product: TProduct;
 }
