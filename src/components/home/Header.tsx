@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '../ui/button';
 import { ArrowLeft, ArrowRight, Square } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { slides } from '@/constants/home.constants';
+import { useNavigate } from 'react-router-dom';
 
 type TSlide = {
   title: string;
@@ -15,6 +16,7 @@ type TSlide = {
 };
 
 const CarouselSlide = ({ slide }: { slide: TSlide }) => {
+  const navigate = useNavigate();
   // Animation Variants
   const slideVariants = {
     initial: { opacity: 0, x: -100 },
@@ -72,7 +74,12 @@ const CarouselSlide = ({ slide }: { slide: TSlide }) => {
           variants={buttonVariants}
           transition={{ duration: 0.8, delay: 1.2 }}
         >
-          <Button variant="rose" className="rounded-none" size={'lg'}>
+          <Button
+            onClick={() => navigate('/products')}
+            variant="rose"
+            className="rounded-none"
+            size={'lg'}
+          >
             Shop now
           </Button>
         </motion.div>
@@ -97,9 +104,25 @@ const CarouselSlide = ({ slide }: { slide: TSlide }) => {
 
 const Header = () => {
   const [current, setCurrent] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  // Auto-slide logic
+  useEffect(() => {
+    if (isHovered) return;
+
+    const timer = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % slides.length);
+    }, 5000);
+
+    // Clear the interval when the component unmounts or current changes
+    return () => clearInterval(timer);
+  }, [isHovered]);
 
   return (
-    <div className="relative h-[600px] w-full overflow-hidden bg-[#F2F0FF]">
+    <div
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="relative h-[600px] w-full overflow-hidden bg-[#F2F0FF]"
+    >
       <div className="absolute -top-10 left-0 size-[250px] overflow-hidden">
         <img
           className="size-full object-contain"

@@ -22,7 +22,7 @@ const PCardSkeleton = ({
   return (
     <div
       className={cn(
-        variant === 'grid' ? 'space-y-5' : 'flex items-center space-x-5',
+        variant === 'grid' ? '' : 'flex items-center space-x-5',
         'relative overflow-hidden rounded-md bg-athens-gray-50/40',
         'border border-dashed border-athens-gray-100 animate-pulse',
         classNames?.wrapper
@@ -32,13 +32,13 @@ const PCardSkeleton = ({
       <div
         className={cn(
           'bg-athens-gray-200',
-          variant === 'grid' ? 'h-[280px] w-full' : 'h-full w-[290px] shrink-0',
+          variant === 'grid' ? 'h-[220px] w-full' : 'h-full w-[290px] shrink-0',
           classNames?.imgWrapper
         )}
       ></div>
 
       {/* Content Skeleton */}
-      <div className="flex-1 space-y-3 px-5">
+      <div className="flex-1 space-y-3 p-5">
         {/* Title Skeleton */}
         <div className="h-6 w-3/4 rounded-md bg-athens-gray-200"></div>
 
@@ -67,15 +67,6 @@ const PCardSkeleton = ({
           </div>
         )}
       </div>
-
-      {/* Actions Skeleton */}
-      {variant === 'grid' && (
-        <div className="absolute bottom-3 left-3 flex flex-col gap-2 opacity-50">
-          <div className="size-8 rounded-full bg-athens-gray-200"></div>
-          <div className="size-8 rounded-full bg-athens-gray-200"></div>
-          <div className="size-8 rounded-full bg-athens-gray-200"></div>
-        </div>
-      )}
     </div>
   );
 };

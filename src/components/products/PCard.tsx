@@ -8,7 +8,6 @@ import {
 } from '@/components/ui/tooltip';
 import { Link } from 'react-router-dom';
 import { TProduct } from '@/types/products.types';
-import moment from 'moment';
 import { ReactNode } from 'react';
 import { useAppDispatch } from '@/redux/hooks';
 import { addToRecent } from '@/redux/features/recent/recent.slice';
@@ -70,7 +69,6 @@ type TPCard = {
 const PCard = ({
   varient = 'grid',
   disabledDesc = false,
-  disabledShop = false,
   classNames,
   product,
   actions,
@@ -100,8 +98,8 @@ const PCard = ({
         className={cn(
           'transition-all relative overflow-hidden',
           varient === 'grid'
-            ? 'h-[280px] w-full'
-            : 'h-full w-24 md:w-[290px] shrink-0',
+            ? 'h-[220px] w-full'
+            : 'h-[220px] w-24 md:w-[290px] shrink-0',
           'bg-athens-gray-50 p-7  group-hover:bg-dark-blue-100/70',
           classNames?.imgWrapper
         )}
@@ -123,20 +121,30 @@ const PCard = ({
         >
           {actions ? actions : null}
         </div>
+        {/* Discount */}
+        {product?.discount ? (
+          <div className={cn('absolute left-3 top-3')}>
+            <span className="rounded-md bg-rose-600 px-2 text-white line-through">
+              ${product?.discount + product.price}
+            </span>
+          </div>
+        ) : null}
       </div>
 
       {/* Main Body */}
-      <div className="w-full space-y-2 px-5">
+      <div
+        className={cn('w-full space-y-2 px-5', varient === 'list' && 'py-5')}
+      >
         <Link
           onClick={handleAddToRecent}
           to={`/products/${product?.id}`}
           className={cn(
-            varient === 'grid' ? 'text-lg' : 'text-lg sm:text-2xl',
+            varient === 'grid' ? 'text-base' : 'text-lg sm:text-2xl',
             'font-bold text-deep-koamaru-900'
           )}
         >
-          {Number(product?.name?.length) > 30
-            ? product?.name?.slice(0, 30)
+          {Number(product?.name?.length) > 20
+            ? product?.name?.slice(0, 20) + '..'
             : product?.name}
         </Link>
 
@@ -147,8 +155,8 @@ const PCard = ({
               : 'hidden sm:block text-athens-gray-600'
           )}
         >
-          {Number(product?.description?.length) > 255
-            ? product?.description?.slice(0, 255)
+          {Number(product?.description?.length) > 240
+            ? product?.description?.slice(0, 240)
             : product?.description}
         </p>
         {/* Card Info */}
@@ -157,12 +165,7 @@ const PCard = ({
           <div className="flex items-center gap-2">
             {/* Price */}
             <div className="flex items-center gap-2.5">
-              <span className="text-h-black">{product?.price}</span>
-              {product?.discount ? (
-                <span className="text-rose-600 line-through">
-                  ${product?.discount + product.price}
-                </span>
-              ) : null}
+              <span className="text-h-black">${product?.price}</span>
             </div>
 
             {/* Rating */}
@@ -191,37 +194,6 @@ const PCard = ({
 
         {/* Shop */}
         <div className="flex items-center justify-between border-t border-dashed border-athens-gray-100">
-          <div
-            className={cn(
-              varient === 'grid'
-                ? 'py-2'
-                : 'flex items-center justify-between pt-2',
-              disabledShop && 'hidden'
-            )}
-          >
-            <div
-              className={cn(
-                'items-center gap-2',
-                varient === 'list' ? 'hidden sm:flex' : 'flex'
-              )}
-            >
-              <div className="size-8 overflow-hidden rounded-md">
-                <img
-                  className="size-full object-cover"
-                  src={product?.shop?.logo}
-                  alt={product?.shop?.name}
-                />
-              </div>
-              <div className="">
-                <h5 className="-mb-1 font-bold text-h-black">
-                  {product?.shop?.name}
-                </h5>
-                <span className="text-xs text-athens-gray-600">
-                  {moment(product?.shop?.createdAt).format('DD MMM, YYYY')}
-                </span>
-              </div>
-            </div>
-          </div>
           <div
             className={cn(
               varient === 'grid' ? 'hidden' : 'flex items-center gap-2'

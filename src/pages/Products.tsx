@@ -7,7 +7,7 @@ const Products = () => {
       <PageHeader title="Products" />
 
       <div className="container">
-        <PContainer sidebar />
+        <PContainer fetchMode='pagination' sidebar />
       </div>
     </div>
   );

@@ -59,7 +59,10 @@ const Profile = () => {
             <div className="size-32 shrink-0 overflow-hidden rounded-md">
               <img
                 className="size-full object-cover"
-                src={profilePhoto}
+                src={
+                  profilePhoto ||
+                  'https://i.ibb.co.com/TPKTRBc/istockphoto-1300845620-612x612.jpg'
+                }
                 alt={name}
               />
             </div>

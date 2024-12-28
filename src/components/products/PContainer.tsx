@@ -6,7 +6,7 @@ import {
   SelectContent,
   SelectItem,
 } from '@/components/ui/select';
-import { Grid2X2, List, LoaderCircle } from 'lucide-react';
+import { Grid2X2, List } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import PCard from './PCard';
 import PFilters from './PFilters';
@@ -19,8 +19,10 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { addToCart } from '@/redux/features/cart/cart.slice';
 import { useAlert } from '@/hooks/useAlert';
 import { toast } from 'sonner';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import ProductEmpty from '../empty/ProductEmpty';
+import HPagination from '../HPagination';
+import HPaginationSkeleton from '../skeletons/HPaginationSkeleton';
 const sortOptions = [
   { key: 'createdAt', label: 'Default' },
   { key: 'name', label: 'Name' },
@@ -30,9 +32,14 @@ const sortOptions = [
 type PContainerProps = {
   sidebar?: boolean;
   limit?: number;
+  fetchMode?: 'infinity' | 'pagination';
 };
 
-const PContainer = ({ sidebar = false, limit }: PContainerProps) => {
+const PContainer = ({
+  sidebar = false,
+  fetchMode = 'infinity',
+}: PContainerProps) => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.auth.user);
   const carts = useAppSelector((state) => state.cart.carts);
@@ -44,12 +51,20 @@ const PContainer = ({ sidebar = false, limit }: PContainerProps) => {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState<string>('createdAt');
+  const [maxLimit, setMaxLimit] = useState<string>(sidebar ? '8' : '10');
   const [categories, setCategories] = useState<string[]>([]);
   const [minPrice, setMinPrice] = useState<string | number>(0);
   const [maxPrice, setMaxPrice] = useState<string | number>(1000);
   const [searchTerm, setSearchTerm] = useState<string>('');
 
   const [products, setProducts] = useState<TProduct[]>([]); // State for storing fetched products
+
+  const limitOptions = Array.from({ length: 4 })?.map((_, index) => {
+    return {
+      label: (index + 1) * (sidebar ? 8 : 10),
+      key: (index + 1) * (sidebar ? 8 : 10),
+    };
+  });
 
   // Fetching products data using the query hook
   const {
@@ -59,7 +74,7 @@ const PContainer = ({ sidebar = false, limit }: PContainerProps) => {
     isFetching,
   } = useFetchAllProductsQuery([
     { name: 'page', value: String(page) },
-    { name: 'limit', value: limit ? String(limit) : '3' },
+    { name: 'limit', value: maxLimit },
     { name: 'sortBy', value: sort },
     { name: 'sortOrder', value: 'desc' },
     { name: 'min_price', value: String(minPrice) },
@@ -67,7 +82,13 @@ const PContainer = ({ sidebar = false, limit }: PContainerProps) => {
     { name: 'searchTerm', value: String(searchTerm) },
     { name: 'categories', value: categories.join(', ') },
   ]);
+
+  const productsArr = fetchMode === 'infinity' ? products : productsData?.data;
+
   const handleAction = async (key: string, product: TProduct) => {
+    if (key === 'details') {
+      navigate(`/products/${product.id}`);
+    }
     if (!user) {
       toast.error('Please login first.');
       return;
@@ -106,8 +127,6 @@ const PContainer = ({ sidebar = false, limit }: PContainerProps) => {
       // Add product if no conflicts
       dispatch(addToCart(cartInfo));
       toast.success('Product added to the cart.');
-    } else if (key === 'compare') {
-      console.log('You clicked to compare the product.');
     }
   };
 
@@ -130,12 +149,14 @@ const PContainer = ({ sidebar = false, limit }: PContainerProps) => {
 
   // Effect to refetch products when filter values change
   useEffect(() => {
+    if (fetchMode === 'pagination') return;
     setPage(1);
     setProducts([]);
-  }, [categories, minPrice, maxPrice, searchTerm, sort]);
+  }, [categories, minPrice, maxPrice, searchTerm, sort, fetchMode]);
 
   // Effect to update products when new data is fetched
   useEffect(() => {
+    if (fetchMode === 'pagination') return;
     if (isSuccess && !isLoading) {
       if (page > 1) {
         setProducts((prev) => [...prev, ...(productsData?.data as TProduct[])]);
@@ -144,18 +165,17 @@ const PContainer = ({ sidebar = false, limit }: PContainerProps) => {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSuccess, isLoading, productsData]);
-  
+  }, [isSuccess, isLoading, productsData, fetchMode]);
+
   // Effect for infinite scroll: Load more products when the user reaches the bottom
   useEffect(() => {
+    if (fetchMode === 'pagination') return;
     if (page < totalPage) {
-      setTimeout(() => {
-        if (inView && isSuccess && !isFetching && !isLoading) {
-          setPage((prevPage) => prevPage + 1);
-        }
-      }, 500);
+      if (inView && isSuccess && !isFetching && !isLoading) {
+        setPage((prevPage) => prevPage + 1);
+      }
     }
-  }, [inView, page, totalPage, isSuccess, isLoading, isFetching]);
+  }, [inView, page, totalPage, isSuccess, isLoading, isFetching, fetchMode]);
 
   return (
     <div className="space-y-8">
@@ -166,11 +186,13 @@ const PContainer = ({ sidebar = false, limit }: PContainerProps) => {
           <h4 className="text-xl font-bold text-h-black">
             Your Next Favorite Product Awaits
           </h4>
-          <p className="text-athens-gray-600">Showing 116 Results</p>
+          <p className="text-athens-gray-600">
+            Showing Approx {productsData?.meta?.total} Results
+          </p>
         </div>
 
         {/* Sorting and View Mode */}
-        <div className="flex items-center gap-6">
+        <div className="flex flex-wrap items-center gap-2 sm:flex-nowrap md:gap-5">
           {/* Sort By Dropdown */}
           <div className="flex items-center gap-2">
             <span className="text-athens-gray-700">Sort By:</span>
@@ -181,6 +203,22 @@ const PContainer = ({ sidebar = false, limit }: PContainerProps) => {
               <SelectContent>
                 {sortOptions.map(({ key, label }) => (
                   <SelectItem key={label} value={key}>
+                    {label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-athens-gray-700">Show:</span>
+            <Select defaultValue={maxLimit} onValueChange={setMaxLimit}>
+              <SelectTrigger className="h-7 w-[100px] rounded-sm outline-none focus:ring-0">
+                <SelectValue placeholder="8" />
+              </SelectTrigger>
+              <SelectContent>
+                {limitOptions.map(({ key, label }) => (
+                  <SelectItem key={label} value={String(key)}>
                     {label}
                   </SelectItem>
                 ))}
@@ -224,11 +262,7 @@ const PContainer = ({ sidebar = false, limit }: PContainerProps) => {
       </div>
 
       {/* Product Grid */}
-      <div
-        className={cn(
-          'grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
-        )}
-      >
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
         {/* Sidebar Filters */}
         {sidebar && (
           <PFilters
@@ -245,34 +279,49 @@ const PContainer = ({ sidebar = false, limit }: PContainerProps) => {
           className={cn(
             viewMode === 'grid'
               ? sidebar
-                ? 'col-span-1 md:col-span-2  lg:col-span-3 '
-                : 'col-span-1 sm:col-span-2 md:col-span-3  lg:col-span-4'
+                ? 'col-span-1 md:col-span-2  lg:col-span-4'
+                : 'col-span-1 sm:col-span-2 md:col-span-3  lg:col-span-5'
               : sidebar
-                ? 'space-y-5 col-span-3'
-                : 'space-y-5 col-span-4'
+                ? 'space-y-5 col-span-4'
+                : 'space-y-5 col-span-5'
           )}
         >
           <div
             className={cn(
               viewMode === 'grid'
                 ? sidebar
-                  ? 'grid grid-cols-1 md:grid-cols-2 gap-5 lg:grid-cols-3'
-                  : 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 lg:grid-cols-4'
+                  ? 'grid grid-cols-1 md:grid-cols-2 gap-5 lg:grid-cols-4'
+                  : 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 lg:grid-cols-5'
                 : sidebar
-                  ? 'space-y-5 col-span-3'
-                  : 'space-y-5 col-span-4'
+                  ? 'space-y-5 col-span-4'
+                  : 'space-y-5 col-span-5'
             )}
           >
-            {isLoading ? (
-              Array.from({ length: 3 }).map((_, index) => (
-                <PCardSkeleton variant={viewMode} key={index} />
+            {isLoading || isFetching ? (
+              Array.from({ length: Number(maxLimit) }).map((_, index) => (
+                <PCardSkeleton
+                  disabledShop
+                  disabledDesc={viewMode === 'grid'}
+                  variant={viewMode}
+                  key={index}
+                />
               ))
-            ) : !products || products?.length < 1 ? (
-              <div className="col-span-1 md:col-span-2 lg:col-span-3">
+            ) : !productsArr || productsArr?.length < 1 ? (
+              <div
+                className={cn(
+                  viewMode === 'grid'
+                    ? sidebar
+                      ? 'col-span-1 md:col-span-2  lg:col-span-4'
+                      : 'col-span-1 sm:col-span-2 md:col-span-3  lg:col-span-5'
+                    : sidebar
+                      ? 'space-y-5 col-span-4'
+                      : 'space-y-5 col-span-5'
+                )}
+              >
                 <ProductEmpty action={<></>} />
               </div>
             ) : (
-              (products as TProduct[])?.map((product) => (
+              (productsArr as TProduct[])?.map((product) => (
                 <div>
                   <PCard
                     product={product}
@@ -291,14 +340,45 @@ const PContainer = ({ sidebar = false, limit }: PContainerProps) => {
               ))
             )}
           </div>
+
           {/* Loader for Infinite Scroll */}
-          {isFetching || canFetchMore ? (
+          {products?.length && (isFetching || canFetchMore) ? (
             <div
               ref={ref}
-              className="mt-5 flex h-20 w-full animate-pulse items-center justify-center bg-gradient-to-l from-white via-athens-gray-50 to-white"
+              className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5"
             >
-              <LoaderCircle className="size-10 animate-spin stroke-athens-gray-600" />
+              {Array.from({ length: 10 }).map((_, index) => (
+                <PCardSkeleton
+                  disabledShop
+                  disabledDesc={viewMode === 'grid'}
+                  variant={viewMode}
+                  key={index}
+                />
+              ))}
             </div>
+          ) : null}
+          {fetchMode === 'pagination' ? (
+            !productsArr?.length && isLoading ? (
+              <HPaginationSkeleton />
+            ) : (
+              <div
+                className={cn(
+                  'mt-5',
+                  sidebar
+                    ? 'col-span-1 md:col-span-2  lg:col-span-4'
+                    : 'col-span-1 sm:col-span-2 md:col-span-3  lg:col-span-5'
+                )}
+              >
+                <HPagination
+                  page={page}
+                  setPage={setPage}
+                  totalPage={Math.ceil(
+                    Number(productsData?.meta?.total) /
+                      Number(productsData?.meta?.limit)
+                  )}
+                />
+              </div>
+            )
           ) : null}
         </div>
       </div>

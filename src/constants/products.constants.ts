@@ -1,9 +1,9 @@
 import {
   ShoppingCart,
-  GitCompare,
   Trash2,
   FilePenLine,
   Copy,
+  Eye,
 } from 'lucide-react';
 
 export const price_ranges = [
@@ -20,9 +20,9 @@ export const user_actions = [
     icon: ShoppingCart,
   },
   {
-    key: 'compere',
-    label: 'Compere',
-    icon: GitCompare,
+    key: 'details',
+    label: 'Details',
+    icon: Eye,
   },
 ];
 

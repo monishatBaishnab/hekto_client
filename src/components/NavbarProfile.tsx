@@ -59,10 +59,13 @@ const NavbarProfile = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="outline-none">
-        <Avatar className="block size-9 cursor-pointer overflow-hidden rounded-full">
+        <Avatar className="block size-9 cursor-pointer overflow-hidden rounded-full border border-athens-gray-100 ">
           <AvatarImage
             className="size-full object-cover"
-            src={profilePhoto ?? 'CN'}
+            src={
+              profilePhoto ??
+              'https://i.ibb.co.com/TPKTRBc/istockphoto-1300845620-612x612.jpg'
+            }
             alt={name}
           />
           <AvatarFallback>CN</AvatarFallback>

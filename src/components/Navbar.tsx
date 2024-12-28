@@ -87,7 +87,7 @@ const Navbar = () => {
       });
   }, []);
   return (
-    <div className="h-[calc(80px_+_36px)]">
+    <div className="">
       {/* Top navbar */}
       <div className="bg-electric-violet-600">
         <div className="container flex flex-wrap items-center justify-center gap-2 !py-2 sm:justify-between">
