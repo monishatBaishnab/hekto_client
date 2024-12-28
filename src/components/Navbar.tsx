@@ -2,7 +2,6 @@ import client_route_config from '@/constants/routes.constants';
 import nav_links_generator from '@/utils/nav_links_generator';
 import { NavLink } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { Input } from './ui/input';
 import { Button } from './ui/button';
 import {
   ArrowUp,
@@ -10,7 +9,6 @@ import {
   Mail,
   Menu,
   Phone,
-  Search,
   ShoppingCart,
   User,
 } from 'lucide-react';
@@ -159,7 +157,10 @@ const Navbar = () => {
                 <h2 className="text-3xl font-bold text-h-black">Hekto</h2>
               </Link>
             </div>
+          </div>
 
+          {/* Search bar and buttons */}
+          <div className="flex items-center gap-5">
             {/* Navbar links */}
             <div className="hidden items-center gap-x-6 lg:flex">
               {nav_links
@@ -175,20 +176,6 @@ const Navbar = () => {
                     </NavLink>
                   ))
                 : null}
-            </div>
-          </div>
-
-          {/* Search bar and buttons */}
-          <div className="flex items-center gap-5">
-            {/* Search */}
-            <div className="flex max-w-[370px] items-center">
-              <Input
-                placeholder="Search"
-                className="hidden w-full rounded-none border border-r-0 border-athens-gray-100 !shadow-none !outline-none !ring-0 sm:flex"
-              />
-              <Button variant="rose" className="rounded-none">
-                <Search />
-              </Button>
             </div>
             {/* Small Navbar Dropdown */}
             <div className="block lg:hidden">

@@ -33,7 +33,11 @@ const HoverDropdownMenu = () => {
           <span className="hidden sm:block">Categories</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start">
+      <DropdownMenuContent
+        onMouseEnter={() => setOpen(true)}
+        onMouseLeave={() => setOpen(false)}
+        align="start"
+      >
         {isLoading || isFetching
           ? Array.from({ length: 6 }).map((_, id) => (
               <DropdownMenuItem className="cursor-pointer" key={id}>

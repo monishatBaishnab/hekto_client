@@ -11,6 +11,8 @@ import { TProduct } from '@/types/products.types';
 import { ReactNode } from 'react';
 import { useAppDispatch } from '@/redux/hooks';
 import { addToRecent } from '@/redux/features/recent/recent.slice';
+import { Rating } from '@smastrom/react-rating';
+import '@smastrom/react-rating/style.css';
 
 type TAction = {
   key: string;
@@ -170,20 +172,12 @@ const PCard = ({
 
             {/* Rating */}
             <div className="flex items-center gap-1">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M8.6792 1.37158C8.56689 1.14405 8.33515 1 8.0814 1C7.82765 1 7.59591 1.14405 7.48359 1.37158L5.57856 5.23098L1.31831 5.85368C1.06727 5.89037 0.858821 6.06637 0.780569 6.30771C0.702317 6.54905 0.767832 6.81389 0.949578 6.99091L4.03172 9.99291L3.30433 14.234C3.26143 14.4841 3.36426 14.7369 3.56958 14.886C3.7749 15.0352 4.04709 15.0548 4.2717 14.9367L8.0814 12.9332L11.8911 14.9367C12.1157 15.0548 12.3879 15.0352 12.5932 14.886C12.7985 14.7369 12.9014 14.4841 12.8585 14.234L12.1311 9.99291L15.2132 6.99091C15.395 6.81389 15.4605 6.54905 15.3822 6.30771C15.304 6.06637 15.0955 5.89037 14.8445 5.85368L10.5842 5.23098L8.6792 1.37158Z"
-                  fill="#FC9231"
+              <span className="flex items-center gap-1 text-sm text-h-black">
+                <Rating
+                  style={{ maxWidth: 80 }}
+                  value={Number(avgRatings)}
+                  readOnly
                 />
-              </svg>
-              <span className="text-sm text-h-black">
-                {avgRatings}
                 <span className="ml-0.5 text-xs text-athens-gray-600">
                   ({totalReview})
                 </span>

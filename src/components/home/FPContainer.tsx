@@ -54,6 +54,7 @@ export const Card = ({ product }: { product: TProduct }) => {
         productId: product.id,
         shopId: product.shop_id,
         product,
+        quantity: 1,
       };
 
       if (carts && carts.length > 0) {
@@ -73,8 +74,14 @@ export const Card = ({ product }: { product: TProduct }) => {
               return;
             }
           } else if (cart.productId === cartInfo.productId) {
-            toast.error('Product already added.');
-            return;
+            if (cart.quantity + cartInfo.quantity < 4) {
+              dispatch(addToCart(cartInfo));
+              toast.error('Product added to the cart.');
+              return;
+            } else {
+              toast.error('Cannot add more than 5 units of this product.');
+              return;
+            }
           }
         }
       }

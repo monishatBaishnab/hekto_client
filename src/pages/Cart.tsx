@@ -11,7 +11,12 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { useAlert } from '@/hooks/useAlert';
-import { clearCart, removeFromCart } from '@/redux/features/cart/cart.slice';
+import {
+  clearCart,
+  decreaseQty,
+  increaseQty,
+  removeFromCart,
+} from '@/redux/features/cart/cart.slice';
 import { useCreateOrderMutation } from '@/redux/features/order/order.api';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { TCategory } from '@/types';
@@ -19,6 +24,8 @@ import {
   CircleCheck,
   CircleX,
   LoaderCircle,
+  Minus,
+  Plus,
   TicketPercent,
   X,
 } from 'lucide-react';
@@ -52,9 +59,9 @@ const Cart = () => {
   };
 
   const handleCreateOrder = async () => {
-    const orderData = carts?.map(({ product }) => ({
+    const orderData = carts?.map(({ product, quantity }) => ({
       id: product?.id,
-      quantity: 1,
+      quantity,
       price: product?.price,
     }));
     const result = await creteOrder({
@@ -70,11 +77,12 @@ const Cart = () => {
   const handleCouponApply = () => {
     if (coupon === 'HEKTO24') {
       const price = carts?.reduce((price, cart) => {
-        return price + Number(cart.product.price);
+        return price + Number(cart.quantity) * Number(cart.product.price);
       }, 0);
 
       const discount = price * 0.1;
       setTotalPrice(price - discount);
+      toast.success('Coupon applied.');
     } else {
       toast.error('Enter valid coupon.');
     }
@@ -86,7 +94,7 @@ const Cart = () => {
 
   useEffect(() => {
     const price = carts?.reduce((price, cart) => {
-      return price + Number(1) * Number(cart.product.price);
+      return price + Number(cart.quantity) * Number(cart.product.price);
     }, 0);
     setTotalPrice(price);
   }, [carts]);
@@ -116,7 +124,7 @@ const Cart = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {carts?.map(({ product }) => {
+                {carts?.map(({ product, quantity }) => {
                   return (
                     <TableRow className="hover:bg-transparent" key={product.id}>
                       <TableCell>
@@ -151,7 +159,31 @@ const Cart = () => {
                       <TableCell className="text-center">
                         {product.price}
                       </TableCell>
-                      <TableCell className="text-center">1</TableCell>
+                      <TableCell className="text-center">
+                        <div className="flex items-center gap-2">
+                          <Button
+                            className="rounded-md"
+                            variant="light"
+                            size="icon"
+                            onClick={() => dispatch(decreaseQty(product.id))}
+                          >
+                            <Minus />
+                          </Button>
+                          <Input
+                            disabled
+                            value={quantity}
+                            className="w-20 text-center text-h-black outline-none focus:!ring-0 disabled:cursor-auto disabled:!text-h-black"
+                          />
+                          <Button
+                            className="rounded-md"
+                            variant="light"
+                            size="icon"
+                            onClick={() => dispatch(increaseQty(product.id))}
+                          >
+                            <Plus />
+                          </Button>
+                        </div>
+                      </TableCell>
                       <TableCell className="text-right">
                         {product.price}
                       </TableCell>

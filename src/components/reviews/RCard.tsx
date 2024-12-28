@@ -1,8 +1,9 @@
-import { Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ReactNode } from 'react';
 import { TReview } from '@/types/review.types';
 import moment from 'moment';
+import { Rating } from '@smastrom/react-rating';
+import '@smastrom/react-rating/style.css';
 
 type TRCard = {
   varient?: 'reply' | 'default';
@@ -44,17 +45,8 @@ const RCard = ({
               </span>
             </div>
           </div>
-          {/* {varient !== 'reply' && (
-            <div className="flex items-center gap-0.5">
-              <Star className="size-4 stroke-orange-400" />
-              <Star className="size-4 stroke-orange-400" />
-              <Star className="size-4 stroke-orange-400" />
-              <Star className="size-4 stroke-orange-400" />
-              <Star className="size-4 stroke-orange-400" />
-            </div>
-          )} */}
-          <div className="flex items-center gap-2">
-            <Star className="size-4 stroke-orange-400" /> {review.rating}
+          <div>
+            <Rating style={{ maxWidth:80 }} value={review?.rating} readOnly />;
           </div>
         </div>
 

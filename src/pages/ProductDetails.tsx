@@ -1,6 +1,6 @@
 import ProductEmpty from '@/components/empty/ProductEmpty';
 import HForm from '@/components/form/HForm';
-import HInput from '@/components/form/HInput';
+import HRating from '@/components/form/HRating';
 import HTextarea from '@/components/form/HTextarea';
 import { Card, CardSkeleton } from '@/components/home/FPContainer';
 import RCard from '@/components/reviews/RCard';
@@ -19,12 +19,16 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { TCategory } from '@/types';
 import { TOrder } from '@/types/order.types';
 import { TProduct } from '@/types/products.types';
-import { DollarSign, Tag } from 'lucide-react';
+import { DollarSign, Minus, Plus, Tag } from 'lucide-react';
 import moment from 'moment';
 import { FieldValues, SubmitHandler } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { toast } from 'sonner';
+import { Rating } from '@smastrom/react-rating';
+import '@smastrom/react-rating/style.css';
+import { useState } from 'react';
+import { Input } from '@/components/ui/input';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -39,7 +43,7 @@ const ProductDetails = () => {
   const { showAlert, AlertComponent } = useAlert();
   const { data: orders } = useFetchMyOrdersQuery([]);
   const [createReview] = useCreateReviewMutation();
-
+  const [quantity, setQuantity] = useState(1);
   const {
     data: products,
     isLoading: pLoading,
@@ -54,6 +58,17 @@ const ProductDetails = () => {
     {
       skip: !(product?.categories?.[0] as TCategory)?.id,
     }
+  );
+
+  const totalReview = Number(data?.data?.review?.length);
+  const totalRating = Number(
+    data?.data?.review?.reduce(
+      (sum: number, current: { rating: number }) => sum + current.rating,
+      0
+    )
+  );
+  const avgRatings = (totalReview > 0 ? totalRating / totalReview : 0).toFixed(
+    1
   );
 
   const filteredOrders = orders?.data?.find(
@@ -80,6 +95,7 @@ const ProductDetails = () => {
       productId: product.id,
       shopId: product.shop_id,
       product,
+      quantity,
     };
 
     if (carts && carts.length > 0) {
@@ -99,8 +115,14 @@ const ProductDetails = () => {
             return;
           }
         } else if (cart.productId === cartInfo.productId) {
-          toast.error('Product already added.');
-          return;
+          if (cart.quantity + cartInfo.quantity < 4) {
+            dispatch(addToCart(cartInfo));
+            toast.error('Product added to the cart.');
+            return;
+          } else {
+            toast.error('Cannot add more than 5 units of this product.');
+            return;
+          }
         }
       }
     }
@@ -148,7 +170,34 @@ const ProductDetails = () => {
               <p className="text-athens-gray-600">{product.description}</p>
             </div>
             <div>
-              <div className="mb-4">
+              <div className="mb-4 flex items-center gap-3">
+                <div className="flex items-center gap-2">
+                  <Button
+                    onClick={() =>
+                      setQuantity((prev) => (prev > 1 ? prev - 1 : prev))
+                    }
+                    className="rounded-md"
+                    variant="light"
+                    size="icon"
+                  >
+                    <Minus />
+                  </Button>
+                  <Input
+                    disabled
+                    value={quantity}
+                    className="w-20 text-center text-h-black outline-none focus:!ring-0 disabled:cursor-auto disabled:!text-h-black"
+                  />
+                  <Button
+                    onClick={() =>
+                      setQuantity((prev) => (prev < 5 ? prev + 1 : prev))
+                    }
+                    className="rounded-md"
+                    variant="light"
+                    size="icon"
+                  >
+                    <Plus />
+                  </Button>
+                </div>
                 <Button onClick={handleAddToCart}>Add to cart</Button>
               </div>
               <h5 className="mb-2 font-semibold text-athens-gray-950">
@@ -190,7 +239,7 @@ const ProductDetails = () => {
           </div>
         </div>
       </section>
-      <section className="container space-y-10 !py-0">
+      <section className="container grid grid-cols-1 gap-10 !py-0 md:grid-cols-2">
         <div>
           <div className="space-y-5">
             <div className="space-y-2">
@@ -206,11 +255,7 @@ const ProductDetails = () => {
             </div>
             <HForm onSubmit={handleCreateReview}>
               <div className="space-y-5">
-                <HInput
-                  disabled={!filteredOrders}
-                  name="rating"
-                  placeholder="Write your rating (4.5)"
-                />
+                <HRating disabled={!filteredOrders} name="rating" />
                 <HTextarea
                   disabled={!filteredOrders}
                   rows={8}
@@ -223,21 +268,38 @@ const ProductDetails = () => {
             </HForm>
           </div>
         </div>
-        {product?.review?.map ? (
-          <div className="space-y-5">
-            <h3 className="text-2xl font-bold text-h-black">Reviews</h3>
+        <div>
+          {product?.review?.length ? (
             <div className="space-y-5">
-              {product?.review?.map((item) => (
-                <RCard key={item.id} review={item} />
-              ))}
+              <div className="flex items-center justify-between">
+                <h3 className="text-2xl font-bold text-h-black">Reviews</h3>
+                <span className="flex items-center gap-1 text-sm text-h-black">
+                  <Rating
+                    style={{ maxWidth: 80 }}
+                    value={Number(avgRatings)}
+                    readOnly
+                  />
+                  <span className="ml-0.5 text-xs text-athens-gray-600">
+                    ({totalReview})
+                  </span>
+                </span>
+              </div>
+              <div className="space-y-5">
+                {product?.review?.map((item) => (
+                  <RCard key={item.id} review={item} />
+                ))}
+              </div>
             </div>
-          </div>
-        ) : null}
+          ) : (
+            <div className="space-y-5">
+              <h3 className="text-2xl font-bold text-h-black">Reviews</h3>
+              <h4 className="text-athens-gray-700">No Review Found</h4>
+            </div>
+          )}
+        </div>
       </section>
       <section className="container space-y-10">
-        <h3 className="text-2xl font-bold text-h-black">
-          More From This Category
-        </h3>
+        <h3 className="text-2xl font-bold text-h-black">Relevant Products</h3>
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {pLoading || pFetching ? (
             Array.from({ length: 4 }).map((_, index) => (
