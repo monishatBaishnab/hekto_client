@@ -25,7 +25,8 @@ const use_role_options = [
 const Register = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [register, { isError, isSuccess, isLoading, data }] = useRegisterMutation();
+  const [register, { isError, isSuccess, isLoading, data }] =
+    useRegisterMutation();
   const [role, setRole] = useState('USER');
 
   const handleSubmit: SubmitHandler<FieldValues> = (data) => {
@@ -73,14 +74,14 @@ const Register = () => {
       dispatch(login({ user, token: data.data.token }));
       navigate('/');
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isError, isSuccess, data, dispatch]);
 
   return (
     <div>
       <PageHeader title="My Account" />
 
-      <div className="container flex items-center justify-center">
+      <div className="container flex items-center justify-center !py-5">
         <div className="w-full space-y-6 border border-athens-gray-100 p-7 md:w-2/3 lg:w-1/2">
           <div className="space-y-1.5">
             <h4 className="text-center text-xl font-bold text-h-black">

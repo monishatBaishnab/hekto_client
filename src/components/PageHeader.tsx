@@ -14,7 +14,7 @@ const PageHeader = ({ title }: { title: string }) => {
   const paths = pathname?.split('/').filter((path) => path !== '');
   return (
     <div className="bg-athens-gray-50">
-      <div className="container space-y-3">
+      <div className="container space-y-3 !py-10">
         <h3 className="text-3xl font-bold text-h-black">{title}</h3>
         <Breadcrumb>
           <BreadcrumbList>
