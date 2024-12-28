@@ -31,6 +31,7 @@ import Flash from '@/pages/Flash';
 import Orders from '@/pages/user/Orders';
 import ACategories from '@/pages/admin/ACategories';
 import PasswordRecovery from '@/pages/PasswordRecovery';
+import Contact from '@/pages/Contact';
 
 export const vendor_profile_config = [
   {
@@ -166,6 +167,11 @@ const client_route_config = [
     path: '/shop',
     label: 'Shop',
     element: <Shop />,
+  },
+  {
+    path: '/contact',
+    label: 'Contact',
+    element: <Contact />,
   },
   {
     path: '/login',

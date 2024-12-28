@@ -33,7 +33,7 @@ export const CardSkeleton = () => {
   );
 };
 
-export const Card = ({ product }: { product: TProduct }) => {
+export const Card = ({ product, isFlash=false }: { product: TProduct; isFlash?:boolean }) => {
   const dispatch = useAppDispatch();
   const carts = useAppSelector((state) => state.cart.carts);
 
@@ -124,14 +124,14 @@ export const Card = ({ product }: { product: TProduct }) => {
             product={product}
           />
         </div>
-        {/* Card Icons */}
-        <div
+        {/* Flash */}
+        {isFlash && <div
           className={cn(
             'absolute left-3 top-3 text-sm bg-electric-violet-700 rounded-md px-2 text-white pb-0.5'
           )}
         >
           <span>Flash Sale</span>
-        </div>
+        </div>}
       </div>
       <div className="space-y-2">
         <Link

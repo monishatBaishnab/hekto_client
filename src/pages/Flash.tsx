@@ -24,12 +24,12 @@ const Flash = () => {
               <CardSkeleton key={index} />
             ))
           ) : !flashSaleProducts || flashSaleProducts?.length < 1 ? (
-            <div className="col-span-1 md:col-span-2 lg:col-span-3">
+            <div className="col-span-1 md:col-span-2 lg:col-span-5">
               <ProductEmpty action={<></>} />
             </div>
           ) : (
             (flashSaleProducts?.data as TProduct[])?.map((product) => (
-              <Card key={product?.id} product={product} />
+              <Card isFlash key={product?.id} product={product} />
             ))
           )}
         </div>

@@ -19,7 +19,12 @@ const HInput = ({
   disabled = false,
   required = false,
 }: THInput) => {
-  const { register } = useFormContext();
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
+  // Extract the error message for the current field
+  const error = errors[name]?.message as string | undefined;
   return (
     <div className="space-y-2">
       {label && <Label htmlFor={name}>{label}</Label>}
@@ -33,6 +38,7 @@ const HInput = ({
         placeholder={placeholder}
         className="h-12 px-4 text-athens-gray-950 outline-none !ring-0 focus:ring-0"
       />
+      {error && <p className="text-sm text-red-600">{error}</p>}
     </div>
   );
 };

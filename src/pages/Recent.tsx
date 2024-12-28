@@ -11,9 +11,9 @@ const Recent = () => {
     <div>
       <PageHeader title="Recent Viewed Products" />
       <div className="container space-y-10">
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
           {recentProducts?.length < 1 ? (
-            <div className="col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-4">
+            <div className="col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-5">
               <ProductEmpty action={<></>} />
             </div>
           ) : (

@@ -15,6 +15,7 @@ type TFormConfig = {
 type TPHFormProps = {
   onSubmit: SubmitHandler<FieldValues>;
   children: ReactNode;
+  reset?: boolean;
 } & TFormConfig;
 
 const HForm = ({
@@ -22,6 +23,7 @@ const HForm = ({
   children,
   defaultValues,
   resolver,
+  reset = false,
 }: TPHFormProps) => {
   const formConfig: TFormConfig = {};
 
@@ -35,7 +37,8 @@ const HForm = ({
 
   const submit: SubmitHandler<FieldValues> = (data) => {
     onSubmit(data);
-    // methods.reset();
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    reset ? methods.reset() : null;
   };
 
   // Reset form when defaultValues change
