@@ -33,7 +33,6 @@ import DReviews from '@/pages/dashboard/DReviews';
 import DOrders from '@/pages/dashboard/DOrders';
 import DUsers from '@/pages/dashboard/DUsers';
 import DStores from '@/pages/dashboard/DStores';
-import DSettings from '@/pages/dashboard/DSettings';
 
 export const user_route_config = [
   {
@@ -78,6 +77,12 @@ export const admin_route_config = [
     icon: UserPen,
   },
   {
+    path: '/categories',
+    label: 'Categories',
+    element: <DCategories />,
+    icon: ListOrdered,
+  },
+  {
     path: '/products',
     label: 'Products',
     element: <DProducts />,
@@ -107,12 +112,6 @@ export const admin_route_config = [
     element: <DStores />,
     icon: ListOrdered,
   },
-  {
-    path: '/settings',
-    label: 'Settings',
-    element: <DSettings />,
-    icon: SettingsIcon,
-  },
 ];
 
 export const vendor_route_config = [
@@ -139,12 +138,6 @@ export const vendor_route_config = [
     icon: Layers,
   },
   {
-    path: '/categories',
-    label: 'Categories',
-    element: <DCategories />,
-    icon: ListOrdered,
-  },
-  {
     path: '/reviews',
     label: 'Reviews',
     element: <DReviews />,
@@ -155,12 +148,6 @@ export const vendor_route_config = [
     label: 'Orders',
     element: <DOrders />,
     icon: ListOrdered,
-  },
-  {
-    path: '/settings',
-    label: 'Settings',
-    element: <DSettings />,
-    icon: SettingsIcon,
   },
 ];
 

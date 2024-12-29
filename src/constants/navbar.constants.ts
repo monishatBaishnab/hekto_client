@@ -7,6 +7,11 @@ export const admin_profile_links = [
     icon: CircleGauge,
   },
   {
+    path: '/dashboard/profile',
+    label: 'Profile',
+    icon: User,
+  },
+  {
     path: '/dashboard/products',
     label: 'Products',
     icon: Layers,
@@ -20,11 +25,6 @@ export const admin_profile_links = [
     path: '/dashboard/orders',
     label: 'Orders',
     icon: ListOrdered,
-  },
-  {
-    path: '/dashboard/settings',
-    label: 'Settings',
-    icon: CircleGauge,
   },
 ];
 
