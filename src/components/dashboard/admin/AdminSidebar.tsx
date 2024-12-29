@@ -1,5 +1,6 @@
-import { dashboard_route_config } from '@/constants/routes.constants';
+import useRouter from '@/hooks/useRouter';
 import useUser from '@/hooks/useUser';
+import { useAdminDashboardContext } from '@/layouts/DashboardLayout';
 import { cn } from '@/lib/utils';
 import { logout } from '@/redux/features/auth/auth.slice';
 import { clearCart } from '@/redux/features/cart/cart.slice';
@@ -9,10 +10,11 @@ import { LogOut } from 'lucide-react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 const AdminSidebar = () => {
-  const sidebar_links = dashboard_route_config;
+  const { dashboard_config } = useRouter();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const userData = useUser();
+  const { setOpenDrawer } = useAdminDashboardContext() ?? {};
 
   const { role } = userData;
 
@@ -33,7 +35,7 @@ const AdminSidebar = () => {
     <div>
       {/* Profile Navigation Links */}
       <div className="space-y-1">
-        {sidebar_links
+        {dashboard_config
           ?.filter((config) => config.label && config.icon)
           ?.map(({ label, icon: Icon, path }) => {
             return (
@@ -45,6 +47,7 @@ const AdminSidebar = () => {
                     isActive ? 'bg-athens-gray-50 text-athens-gray-950' : ''
                   )
                 }
+                onClick={() => setOpenDrawer && setOpenDrawer(false)}
                 to={`/dashboard${path}`}
               >
                 {Icon && <Icon className="size-5" />}

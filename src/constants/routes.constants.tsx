@@ -7,8 +7,6 @@ import Products from '@/pages/Products';
 import Profile from '@/pages/user/Profile';
 import Shop from '@/pages/Shop';
 import ShopDetails from '@/pages/ShopDetails';
-import Listing from '@/pages/user/Listing';
-import Reviews from '@/pages/user/Reviews';
 import Settings from '@/pages/user/Settings';
 import {
   Layers,
@@ -37,8 +35,7 @@ import DUsers from '@/pages/dashboard/DUsers';
 import DStores from '@/pages/dashboard/DStores';
 import DSettings from '@/pages/dashboard/DSettings';
 
-
-export const vendor_profile_config = [
+export const user_route_config = [
   {
     path: '/',
     element: <Profile />,
@@ -50,57 +47,75 @@ export const vendor_profile_config = [
     icon: User,
   },
   {
-    path: '/listing',
-    label: 'My Listing',
-    element: <Listing />,
+    path: '/orders',
+    label: 'Orders',
+    element: <Orders />,
+    icon: ListOrdered,
+  },
+  {
+    path: '/settings',
+    label: 'Settings',
+    element: <Settings />,
+    icon: SettingsIcon,
+  },
+];
+
+export const admin_route_config = [
+  {
+    path: '/',
+    element: <Dashboard />,
+  },
+  {
+    path: '/overview',
+    label: 'Dashboard',
+    element: <Dashboard />,
+    icon: CircleGauge,
+  },
+  {
+    path: '/profile',
+    label: 'Profile',
+    element: <DProfile />,
+    icon: UserPen,
+  },
+  {
+    path: '/products',
+    label: 'Products',
+    element: <DProducts />,
     icon: Layers,
   },
   {
     path: '/reviews',
     label: 'Reviews',
-    element: <Reviews />,
+    element: <DReviews />,
     icon: Star,
   },
   {
     path: '/orders',
     label: 'Orders',
-    element: <Orders />,
+    element: <DOrders />,
+    icon: ListOrdered,
+  },
+  {
+    path: '/users',
+    label: 'Users',
+    element: <DUsers />,
+    icon: UsersIcon,
+  },
+  {
+    path: '/shops',
+    label: 'Stores',
+    element: <DStores />,
     icon: ListOrdered,
   },
   {
     path: '/settings',
     label: 'Settings',
-    element: <Settings />,
+    element: <DSettings />,
     icon: SettingsIcon,
   },
 ];
 
-export const user_profile_config = [
-  {
-    path: '/',
-    element: <Profile />,
-  },
-  {
-    path: '/profile',
-    label: 'Profile',
-    element: <Profile />,
-    icon: User,
-  },
-  {
-    path: '/orders',
-    label: 'Orders',
-    element: <Orders />,
-    icon: ListOrdered,
-  },
-  {
-    path: '/settings',
-    label: 'Settings',
-    element: <Settings />,
-    icon: SettingsIcon,
-  },
-];
-
-export const dashboard_route_config = [
+export const vendor_route_config = [
   {
     path: '/',
     element: <Dashboard />,
@@ -142,18 +157,6 @@ export const dashboard_route_config = [
     icon: ListOrdered,
   },
   {
-    path: '/users',
-    label: 'Users',
-    element: <DUsers />,
-    icon: UsersIcon,
-  },
-  {
-    path: '/shops',
-    label: 'Stores',
-    element: <DStores />,
-    icon: ListOrdered,
-  },
-  {
     path: '/settings',
     label: 'Settings',
     element: <DSettings />,
@@ -161,7 +164,7 @@ export const dashboard_route_config = [
   },
 ];
 
-const client_route_config = [
+export const client_route_config = [
   {
     path: '/',
     label: 'Home',
@@ -229,4 +232,3 @@ const client_route_config = [
     element: <Checkout />,
   },
 ];
-export default client_route_config;

@@ -26,9 +26,8 @@ const InfoWrapper = ({
   );
 };
 
-const settingContent = {
+const settingContent: Record<string, ReactNode> = {
   personal: <UserProfileForm />,
-  shop: <ShopProfileForm />,
 };
 
 type TMode = 'personal' | 'shop';
@@ -38,7 +37,9 @@ const DSettings = () => {
   const [mode, setMode] = useState<TMode>('personal');
   const [searchQueries] = useSearchParams();
   const modeFromQuery = searchQueries.get('mode');
-
+  if (userData.role === 'VENDOR') {
+    settingContent.shop = <ShopProfileForm />;
+  }
   useEffect(() => {
     if (modeFromQuery) {
       setMode(modeFromQuery as TMode);
@@ -64,7 +65,7 @@ const DSettings = () => {
           >
             Personal Info
           </Button>
-          {userData?.role !== 'CUSTOMER' ? (
+          {userData?.role === 'VENDOR' ? (
             <Button
               size="sm"
               variant="light"

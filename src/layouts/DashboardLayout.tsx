@@ -1,6 +1,8 @@
 import AdminSidebar from '@/components/dashboard/admin/AdminSidebar';
 import NavbarProfile from '@/components/NavbarProfile';
+import { Button } from '@/components/ui/button';
 import { DrawerContent, Drawer } from '@/components/ui/drawer';
+import { Menu } from 'lucide-react';
 import { createContext, useContext, useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 type TContext = {
@@ -39,7 +41,17 @@ const DashboardLayout = () => {
               <h2 className="text-2xl font-bold text-h-black">Hekto</h2>
             </Link>
           </div>
-          <NavbarProfile />
+          <div className='flex items-center gap-3'>
+            <Button
+              onClick={() => setOpen(true)}
+              size="icon"
+              variant="light"
+              // className="rounded-md lg:hidden"
+            >
+              <Menu />
+            </Button>
+            <NavbarProfile />
+          </div>
         </div>
         <div className="fixed bottom-0 top-16 hidden w-64 bg-white lg:block">
           <AdminSidebar />

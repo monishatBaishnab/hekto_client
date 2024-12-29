@@ -1,34 +1,22 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import client_route_config, {
-  dashboard_route_config,
-  user_profile_config,
-  vendor_profile_config,
-} from '@/constants/routes.constants';
 import Client from '@/layouts/Client';
 import UserDashboard from '@/layouts/UserDashboard';
-import { useAppSelector } from '@/redux/hooks';
 import routeGenerator from '@/utils/route_generator';
 import { useMemo } from 'react';
 import ProtectedRoute from './ProtectedRoute';
 import DashboardLayout from '@/layouts/DashboardLayout';
 import Empty from '@/pages/Empty';
+import useRouter from '@/hooks/useRouter';
 
 const Routes = () => {
-  const user = useAppSelector((state) => state.auth.user);
-
-  let profile_config = user_profile_config;
-
-  if (user?.role !== 'CUSTOMER') {
-    profile_config = vendor_profile_config;
-  }
-
+  const { dashboard_config, client_config, profile_config } = useRouter();
   const routes = useMemo(
     () =>
       createBrowserRouter([
         {
           path: '/',
           element: <Client />,
-          children: routeGenerator(client_route_config),
+          children: routeGenerator(client_config),
           errorElement: <Empty />,
         },
         {
@@ -48,7 +36,7 @@ const Routes = () => {
               <DashboardLayout />
             </ProtectedRoute>
           ),
-          children: routeGenerator(dashboard_route_config),
+          children: routeGenerator(dashboard_config),
           errorElement: <Empty />,
         },
       ]),

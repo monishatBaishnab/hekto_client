@@ -1,4 +1,3 @@
-import client_route_config from '@/constants/routes.constants';
 import nav_links_generator from '@/utils/nav_links_generator';
 import { NavLink } from 'react-router-dom';
 import { Link } from 'react-router-dom';
@@ -22,6 +21,7 @@ import {
 import useUser from '@/hooks/useUser';
 import NavbarProfile from './NavbarProfile';
 import NavCategories from './NavCategories';
+import useRouter from '@/hooks/useRouter';
 
 // Generate the class names of nav links based on "isActive"
 const generate_link_class = (isActive: boolean): string => {
@@ -34,14 +34,15 @@ const generate_link_class = (isActive: boolean): string => {
 
 const Navbar = () => {
   const userData = useUser();
+  const { client_config } = useRouter();
   const { role, isLoading, isFetching } = userData;
   let nav_links: {
     label: string;
     path: string;
   }[] = [];
 
-  if (client_route_config) {
-    nav_links = nav_links_generator(client_route_config);
+  if (client_config) {
+    nav_links = nav_links_generator(client_config);
   }
 
   const [scroll, setScroll] = useState(false);

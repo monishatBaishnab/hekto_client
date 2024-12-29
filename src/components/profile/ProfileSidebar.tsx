@@ -1,7 +1,5 @@
-import {
-  user_profile_config,
-  vendor_profile_config,
-} from '@/constants/routes.constants';
+
+import useRouter from '@/hooks/useRouter';
 import useUser from '@/hooks/useUser';
 import { cn } from '@/lib/utils';
 import { logout } from '@/redux/features/auth/auth.slice';
@@ -15,6 +13,7 @@ const ProfileSidebar = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const userData = useUser();
+  const {profile_config} = useRouter();
 
   const { name, profilePhoto, email, role } = userData;
 
@@ -31,9 +30,6 @@ const ProfileSidebar = () => {
       navigate('/login');
     }
   };
-
-  const sidebar_links =
-    role !== 'CUSTOMER' ? vendor_profile_config : user_profile_config;
 
   return (
     <div className="hidden shrink-0 space-y-4 lg:block lg:w-64">
@@ -54,7 +50,7 @@ const ProfileSidebar = () => {
 
       {/* Profile Navigation Links */}
       <div className="space-y-2">
-        {sidebar_links
+        {profile_config
           ?.filter((config) => config.label && config.icon)
           ?.map(({ label, icon: Icon, path }) => {
             return (

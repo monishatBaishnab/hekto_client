@@ -1,9 +1,5 @@
 import { Drawer, DrawerContent, DrawerHeader } from '@/components/ui/drawer';
 import { Link, useNavigate } from 'react-router-dom';
-import {
-  vendor_profile_config,
-  user_profile_config,
-} from '@/constants/routes.constants';
 import useUser from '@/hooks/useUser';
 import { logout } from '@/redux/features/auth/auth.slice';
 import { useAppDispatch } from '@/redux/hooks';
@@ -12,6 +8,7 @@ import { cn } from '@/lib/utils';
 import { LogOut } from 'lucide-react';
 import { clearCart } from '@/redux/features/cart/cart.slice';
 import { clearRecent } from '@/redux/features/recent/recent.slice';
+import useRouter from '@/hooks/useRouter';
 
 const ProfileDrawer = ({
   open,
@@ -23,6 +20,7 @@ const ProfileDrawer = ({
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const userData = useUser();
+  const { profile_config } = useRouter();
 
   const { role } = userData;
 
@@ -39,9 +37,6 @@ const ProfileDrawer = ({
       navigate('/login');
     }
   };
-
-  const sidebar_links =
-    role !== 'CUSTOMER' ? vendor_profile_config : user_profile_config;
 
   return (
     <Drawer open={open} onOpenChange={setOpen} direction="left">
@@ -60,7 +55,7 @@ const ProfileDrawer = ({
         </DrawerHeader>
         <div className="w-full p-5">
           <div className="space-y-2">
-            {sidebar_links
+            {profile_config
               ?.filter((config) => config.label && config.icon)
               ?.map(({ label, icon: Icon, path }) => {
                 return (
