@@ -17,7 +17,6 @@ import {
 import { TReview } from '@/types/review.types';
 import { toast } from 'sonner';
 import DTableImage from '@/components/dashboard/DTableImage';
-import { TCategory } from '@/types';
 
 const actions = [
   {

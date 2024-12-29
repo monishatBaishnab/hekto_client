@@ -5,7 +5,7 @@ import { Label } from '../ui/label';
 type THInput = {
   name: string;
   label?: string;
-  type?: 'text' | 'email' | 'password' | 'number';
+  type?: 'text' | 'email' | 'password' | 'file' | 'number';
   placeholder: string;
   disabled?: boolean;
   required?: boolean;
@@ -36,7 +36,7 @@ const HInput = ({
         name={name}
         type={type}
         placeholder={placeholder}
-        className="h-12 px-4 text-athens-gray-950 outline-none !ring-0 focus:ring-0"
+        className="flex h-12 items-center px-4 text-athens-gray-950 outline-none !ring-0 focus:ring-0"
       />
       {error && <p className="text-sm text-red-600">{error}</p>}
     </div>

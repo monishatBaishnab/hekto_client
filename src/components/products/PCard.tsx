@@ -145,8 +145,10 @@ const PCard = ({
             'font-bold text-deep-koamaru-900'
           )}
         >
-          {Number(product?.name?.length) > 20
-            ? product?.name?.slice(0, 20) + '..'
+          {varient === 'grid'
+            ? Number(product?.name?.length) > 20
+              ? product?.name?.slice(0, 20) + '..'
+              : product?.name
             : product?.name}
         </Link>
 

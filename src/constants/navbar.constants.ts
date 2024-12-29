@@ -2,7 +2,7 @@ import { CircleGauge, Layers, Star, ListOrdered, User } from 'lucide-react';
 
 export const admin_profile_links = [
   {
-    path: '/dashboard',
+    path: '/dashboard/overview',
     label: 'Dashboard',
     icon: CircleGauge,
   },
