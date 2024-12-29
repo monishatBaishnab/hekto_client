@@ -17,6 +17,7 @@ import {
 import { TReview } from '@/types/review.types';
 import { toast } from 'sonner';
 import DTableImage from '@/components/dashboard/DTableImage';
+import useUser from '@/hooks/useUser';
 
 const actions = [
   {
@@ -28,14 +29,21 @@ const actions = [
 
 const DReviews = () => {
   const [page, setPage] = useState(1);
+  const { role, shop } = useUser();
+
+  const queries = [
+    { name: 'page', value: String(page) },
+    { name: 'limit', value: '6' },
+  ];
+
+  if (role === 'VENDOR') {
+    queries?.push({ name: 'shop_id', value: shop?.id as string });
+  }
   const {
     data: reviews,
     isLoading,
     isFetching,
-  } = useFetchAllReviewQuery([
-    { name: 'page', value: String(page) },
-    { name: 'limit', value: '6' },
-  ]);
+  } = useFetchAllReviewQuery(queries);
   const [deleteReview] = useDeleteReviewMutation();
 
   const handleAction = async (key: string, review: TReview) => {

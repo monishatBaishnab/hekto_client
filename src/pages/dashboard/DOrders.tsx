@@ -13,16 +13,24 @@ import { TOrder } from '@/types/order.types';
 
 import moment from 'moment';
 import DTableImage from '@/components/dashboard/DTableImage';
+import useUser from '@/hooks/useUser';
 const DOrders = () => {
   const [page, setPage] = useState(1);
+  const { role, shop } = useUser();
+
+  const queries = [
+    { name: 'page', value: String(page) },
+    { name: 'limit', value: '6' },
+  ];
+
+  if (role === 'VENDOR') {
+    queries?.push({ name: 'shop_id', value: shop?.id as string });
+  }
   const {
     data: orders,
     isLoading,
     isFetching,
-  } = useFetchAllOrdersQuery([
-    { name: 'page', value: String(page) },
-    { name: 'limit', value: '6' },
-  ]);
+  } = useFetchAllOrdersQuery(queries);
 
   return (
     <div className="space-y-7">

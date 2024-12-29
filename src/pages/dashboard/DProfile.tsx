@@ -29,31 +29,27 @@ import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
   const navigate = useNavigate();
+  const { role, shop, name, profilePhoto, email, address } = useUser();
 
-  const userData = useUser();
+  const queries = [
+    { name: 'page', value: '1' },
+    { name: 'limit', value: '3' },
+  ];
+
+  if (role === 'VENDOR') {
+    queries?.push({ name: 'shop_id', value: shop?.id as string });
+  }
   const {
     data: products,
     isLoading,
     isFetching,
-  } = useFetchAllProductsQuery(
-    [
-      { name: 'page', value: '1' },
-      { name: 'limit', value: '2' },
-      { name: 'shop_id', value: String(userData?.shop?.id) },
-    ],
-    { skip: !userData?.shop?.id }
-  );
+  } = useFetchAllProductsQuery(queries, { skip: !!shop?.id });
 
   const {
     data: orders,
     isLoading: oLoading,
     isFetching: oFetching,
-  } = useFetchAllOrdersQuery([
-    { name: 'page', value: '1' },
-    { name: 'limit', value: '3' },
-  ]);
-
-  const { name, profilePhoto, email, address, role, shop } = userData;
+  } = useFetchAllOrdersQuery(queries, { skip: !!shop?.id });
 
   const profile_info = [
     {
@@ -141,7 +137,7 @@ const Profile = () => {
         </div>
 
         <div className="space-y-5">
-          {!userData?.shop?.id || isLoading || isFetching ? (
+          {!shop?.id || isLoading || isFetching ? (
             Array.from({ length: 2 }).map((_, index) => (
               <PCardSkeleton
                 disabledDesc
@@ -188,9 +184,7 @@ const Profile = () => {
       {/* Recent Orders */}
       <div className="w-full space-y-8">
         <div className="flex items-center justify-between">
-          <h3 className="text-xl font-semibold text-h-black">
-            Recent Orders
-          </h3>
+          <h3 className="text-xl font-semibold text-h-black">Recent Orders</h3>
           <button
             onClick={() => navigate('/dashboard/orders')}
             className="flex items-center gap-1 text-athens-gray-600 hover:text-athens-gray-800"

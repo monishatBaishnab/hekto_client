@@ -19,6 +19,7 @@ import { TCategory } from '@/types';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import DTableImage from '@/components/dashboard/DTableImage';
+import useUser from '@/hooks/useUser';
 
 const actions = [
   {
@@ -30,14 +31,22 @@ const actions = [
 
 const DProducts = () => {
   const [page, setPage] = useState(1);
+  const { role, shop } = useUser();
+
+  const queries = [
+    { name: 'page', value: String(page) },
+    { name: 'limit', value: '6' },
+  ];
+
+  if (role === 'VENDOR') {
+    queries?.push({ name: 'shop_id', value: shop?.id as string });
+  }
+  
   const {
     data: products,
     isLoading,
     isFetching,
-  } = useFetchAllProductsQuery([
-    { name: 'page', value: String(page) },
-    { name: 'limit', value: '6' },
-  ]);
+  } = useFetchAllProductsQuery(queries);
   const [deleteProduct] = useDeleteProductMutation();
 
   const handleAction = async (key: string, product: TProduct) => {
