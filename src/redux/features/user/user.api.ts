@@ -49,6 +49,15 @@ const userApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ['users'],
     }),
+    fetchStates: builder.query({
+      query: () => {
+        return {
+          url: `/users/states`,
+          method: 'GET',
+        };
+      },
+      providesTags: ['states'],
+    }),
   }),
 });
 
@@ -56,5 +65,6 @@ export const {
   useFetchAllUserQuery,
   useFetchProfileInfoQuery,
   useUpdateProfileMutation,
-  useUpdateUserStatusMutation
+  useUpdateUserStatusMutation,
+  useFetchStatesQuery
 } = userApi;

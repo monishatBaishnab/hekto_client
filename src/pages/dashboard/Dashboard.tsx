@@ -10,12 +10,14 @@ import {
 } from '@/components/ui/table';
 import useUser from '@/hooks/useUser';
 import { useFetchAllOrdersQuery } from '@/redux/features/order/order.api';
+import { useFetchStatesQuery } from '@/redux/features/user/user.api';
 import { TOrder } from '@/types/order.types';
 import {
   BadgePercent,
   ChevronRight,
   PackageOpen,
   ShoppingCart,
+  Users,
 } from 'lucide-react';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
@@ -23,6 +25,7 @@ import { useNavigate } from 'react-router-dom';
 const Dashboard = () => {
   const navigate = useNavigate();
   const { role, shop } = useUser();
+  const { data: states, isLoading, isFetching } = useFetchStatesQuery([]);
   const orderQueries = [
     { name: 'page', value: '1' },
     { name: 'limit', value: '3' },
@@ -36,44 +39,100 @@ const Dashboard = () => {
     data: orders,
     isLoading: oLoading,
     isFetching: oFetching,
-  } = useFetchAllOrdersQuery(orderQueries, {skip: !!shop?.id});
+  } = useFetchAllOrdersQuery(orderQueries, { skip: !!shop?.id });
   return (
     <div className="space-y-7">
       <h2 className="text-2xl font-semibold text-h-black">Site Overview</h2>
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
-        {/* Product */}
-        <div className="flex items-center justify-between gap-3 rounded-md border border-athens-gray-100 p-4">
-          <div className="space-y-1">
-            <h4 className="text-athens-gray-800">Total Products</h4>
-            <h2 className="text-2xl font-bold text-h-black">20</h2>
-          </div>
-          <div className="flex items-center justify-center rounded-lg border border-green-100 bg-green-50 p-4">
-            <PackageOpen className="size-7 text-blue-500" />
-          </div>
+      {isLoading || isFetching ? (
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {Array.from({ length: 4 }).map((_, id) => (
+            <div
+              key={id}
+              className="flex items-center justify-between gap-3 rounded-md border border-athens-gray-100 p-4"
+            >
+              <div className="space-y-1">
+                <h4 className="text-athens-gray-800">
+                  {/* Skeleton loader for title */}
+                  <div className="h-4 w-32 animate-pulse rounded-md bg-gray-300"></div>
+                </h4>
+                <h2 className="text-2xl font-bold text-h-black">
+                  {/* Skeleton loader for value */}
+                  <div className="h-8 w-24 animate-pulse rounded-md bg-gray-300"></div>
+                </h2>
+              </div>
+              <div className="flex items-center justify-center rounded-lg border border-green-100 bg-green-50 p-4">
+                {/* Skeleton loader for icon */}
+                <div className="size-12 animate-pulse rounded-lg bg-gray-300"></div>
+              </div>
+            </div>
+          ))}
         </div>
-        {/* Sales */}
-        <div className="flex items-center justify-between gap-3 rounded-md border border-athens-gray-100 p-4">
-          <div className="space-y-1">
-            <h4 className="text-athens-gray-800">Total Sales</h4>
-            <h2 className="text-2xl font-bold text-h-black">340</h2>
+      ) : (
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {/* Product */}
+          <div className="flex items-center justify-between gap-3 rounded-md border border-athens-gray-100 p-4">
+            <div className="space-y-1">
+              <h4 className="text-athens-gray-800">Total Products</h4>
+              <h2 className="text-2xl font-bold text-h-black">
+                {states?.data?.total_products}
+              </h2>
+            </div>
+            <div className="flex items-center justify-center rounded-lg border border-green-100 bg-green-50 p-4">
+              <PackageOpen className="size-7 text-blue-500" />
+            </div>
           </div>
-          <div className="flex items-center justify-center rounded-lg border border-green-100 bg-green-50 p-4">
-            <ShoppingCart className="size-7 text-green-500" />
+          {/* Sales */}
+          <div className="flex items-center justify-between gap-3 rounded-md border border-athens-gray-100 p-4">
+            <div className="space-y-1">
+              <h4 className="text-athens-gray-800">Total Sales</h4>
+              <h2 className="text-2xl font-bold text-h-black">
+                {states?.data?.total_sales}
+              </h2>
+            </div>
+            <div className="flex items-center justify-center rounded-lg border border-green-100 bg-green-50 p-4">
+              <ShoppingCart className="size-7 text-green-500" />
+            </div>
           </div>
+          {/* Revenue */}
+          <div className="flex items-center justify-between gap-3 rounded-md border border-athens-gray-100 p-4">
+            <div className="space-y-1">
+              <h4 className="text-athens-gray-800">Total Revenue</h4>
+              <h2 className="text-2xl font-bold text-h-black">
+                ${states?.data?.total_revenue}
+              </h2>
+            </div>
+            <div className="flex items-center justify-center rounded-lg border border-purple-100 bg-purple-50 p-4">
+              <BadgePercent className="size-7 text-purple-500" />
+            </div>
+          </div>
+          {/* Revenue */}
+          {role === 'ADMIN' && (
+            <div className="flex items-center justify-between gap-3 rounded-md border border-athens-gray-100 p-4">
+              <div className="space-y-1">
+                <h4 className="text-athens-gray-800">Total Users</h4>
+                <h2 className="text-2xl font-bold text-h-black">
+                  {states?.data?.total_users}
+                </h2>
+              </div>
+              <div className="flex items-center justify-center rounded-lg border border-pink-100 bg-pink-50 p-4">
+                <Users className="size-7 text-pink-500" />
+              </div>
+            </div>
+          )}
         </div>
-        {/* Revenue */}
-        <div className="flex items-center justify-between gap-3 rounded-md border border-athens-gray-100 p-4">
-          <div className="space-y-1">
-            <h4 className="text-athens-gray-800">Total Revenue</h4>
-            <h2 className="text-2xl font-bold text-h-black">$2,340</h2>
-          </div>
-          <div className="flex items-center justify-center rounded-lg border border-purple-100 bg-purple-50 p-4">
-            <BadgePercent className="size-7 text-purple-500" />
-          </div>
-        </div>
-      </div>
+      )}
 
-      <SalesReport />
+      {isLoading || isFetching ? (
+        <div className="space-y-4">
+          <div className="h-6 w-24 animate-pulse rounded-md bg-gray-300"></div>
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+            <div className="h-[400px] w-full animate-pulse rounded-md bg-gray-200"></div>
+            <div className="h-[400px] w-full animate-pulse rounded-md bg-gray-200"></div>
+          </div>
+        </div>
+      ) : (
+        <SalesReport statistics={states?.data?.orders_by_date} />
+      )}
 
       {/* Recent Sales */}
       <div className="w-full space-y-8">

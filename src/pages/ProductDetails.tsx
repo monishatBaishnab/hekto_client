@@ -29,6 +29,7 @@ import { Rating } from '@smastrom/react-rating';
 import '@smastrom/react-rating/style.css';
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
+import Slider from 'react-slick';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -142,18 +143,49 @@ const ProductDetails = () => {
     }
   };
 
+  const slideSettings = () => {
+    return {
+      customPaging: function (index: number) {
+        const image = product?.images[index]; // Get the product image based on the index
+        return (
+          <div className="size-16 overflow-hidden">
+            <img
+              src={image}
+              alt={`Thumbnail for ${product?.name}`}
+              className="size-full rounded-md border border-athens-gray-100 bg-white object-contain p-2"
+            />
+          </div>
+        );
+      },
+      dots: true,
+      dotsClass: 'slick-dots slick-thumb !-bottom-20 !space-x-14',
+      infinite: true,
+      speed: 500,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+    };
+  };
+
   return (
     <div>
       {AlertComponent}
       <section>
         <div className="container grid grid-cols-1 gap-7 md:grid-cols-2">
           <div>
-            <div className="h-60 w-full overflow-hidden border border-slate-200 bg-slate-50 p-5 sm:h-96">
-              <img
-                className="size-full object-contain"
-                src={product?.images}
-                alt={product?.name}
-              />
+            <div className="mb-20 border border-slate-200 bg-slate-50">
+              <div className="">
+                <Slider {...slideSettings()}>
+                  {product?.images?.map((image) => (
+                    <div className="h-[400px] w-full overflow-hidden rounded-md p-5">
+                      <img
+                        className="size-full object-contain"
+                        src={image}
+                        alt={product?.name}
+                      />
+                    </div>
+                  ))}
+                </Slider>
+              </div>
             </div>
           </div>
           <div className="space-y-3">

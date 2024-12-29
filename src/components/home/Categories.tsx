@@ -42,7 +42,7 @@ function Categories() {
     data: categories,
     isLoading: cLoading,
     isFetching: cFetching,
-  } = useFetchAllCategoriesQuery([{ name: 'limit', value: '6' }]);
+  } = useFetchAllCategoriesQuery([]);
   const settings = {
     infinite: true,
     speed: 500,

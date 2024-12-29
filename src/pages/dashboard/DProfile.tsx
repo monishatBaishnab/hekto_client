@@ -29,7 +29,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { role, shop, name, profilePhoto, email, address } = useUser();
+  const { role, shop, bio, name, profilePhoto, email, address } = useUser();
 
   const queries = [
     { name: 'page', value: '1' },
@@ -105,7 +105,7 @@ const Profile = () => {
                 </span>
               ))}
             </div>
-            <p className="text-athens-gray-600">{shop?.description}</p>
+            <p className="text-athens-gray-600">{bio}</p>
           </div>
         </div>
 

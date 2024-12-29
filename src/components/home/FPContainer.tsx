@@ -105,7 +105,7 @@ export const Card = ({ product, isFlash=false }: { product: TProduct; isFlash?:b
       >
         <img
           className="size-full object-contain"
-          src={product.images}
+          src={product.images?.[0]}
           alt={product.name}
         />
 
@@ -149,7 +149,7 @@ export const Card = ({ product, isFlash=false }: { product: TProduct; isFlash?:b
           <span className="text-h-black">${product.price}</span>
           {product?.discount ? (
             <span className="text-rose-600 line-through">
-              ${product?.discount + product.price}
+              ${(product?.discount + product.price).toFixed(2)}
             </span>
           ) : null}
         </div>

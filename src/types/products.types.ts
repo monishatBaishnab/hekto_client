@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { TCategory } from './categories.types';
 import { TReview } from './review.types';
 import { TShop } from './shop.types';
@@ -11,7 +12,7 @@ export type TProduct = {
   quantity: number;
   availableQuantity: number;
   description: string;
-  images: string;
+  images: string[];
   discount: number;
   isDeleted: boolean;
   createdAt: string;

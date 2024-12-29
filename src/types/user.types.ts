@@ -7,10 +7,10 @@ export type TUser = {
   updatedAt?: Date;
   role: string;
   email: string;
+  bio?: string;
   password: string;
   address: string | null;
   profilePhoto?: string | null;
   shop?: TShop | null;
   status?: string;
 };
-

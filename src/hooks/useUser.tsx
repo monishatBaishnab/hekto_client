@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 const useUser = () => {
   const user = useAppSelector((state) => state.auth.user);
   const [userInfo, setUserInfo] = useState<Partial<TUser>>({});
+
   const {
     data: profileInfo,
     isLoading,
@@ -13,7 +14,7 @@ const useUser = () => {
     isSuccess,
     refetch,
   } = useFetchProfileInfoQuery(user?.id as string, { skip: !user?.id });
-  
+
   useEffect(() => {
     if (isSuccess && !isLoading && !isFetching) {
       setUserInfo(profileInfo?.data);

@@ -108,7 +108,7 @@ const PCard = ({
       >
         <img
           className="size-full object-contain"
-          src={product?.images}
+          src={product?.images?.[0]}
           alt={product?.name}
         />
 
@@ -127,7 +127,7 @@ const PCard = ({
         {product?.discount ? (
           <div className={cn('absolute left-3 top-3')}>
             <span className="rounded-md bg-rose-600 px-2 text-white line-through">
-              ${product?.discount + product.price}
+              ${(product?.discount + product.price).toFixed(2)}
             </span>
           </div>
         ) : null}
