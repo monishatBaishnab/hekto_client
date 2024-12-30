@@ -6,7 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Trash2 } from 'lucide-react';
+import { FolderOpen, Trash2 } from 'lucide-react';
 import TableAction from '@/components/dashboard/admin/TableAction';
 import HPagination from '@/components/HPagination';
 import { useState } from 'react';
@@ -69,82 +69,94 @@ const DReviews = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {isLoading || isFetching
-              ? Array.from({ length: 5 }).map((_, rowIndex) => (
-                  <TableRow key={rowIndex}>
+            {isLoading || isFetching ? (
+              Array.from({ length: 5 }).map((_, rowIndex) => (
+                <TableRow key={rowIndex}>
+                  <TableCell>
+                    <div className="flex gap-2">
+                      <div className="size-10 animate-pulse rounded-lg bg-athens-gray-300"></div>
+                      <div className="space-y-1">
+                        <div className="h-4 w-24 animate-pulse rounded bg-athens-gray-300"></div>
+                        <div className="h-3 w-32 animate-pulse rounded bg-athens-gray-300"></div>
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex gap-2">
+                      <div className="size-10 animate-pulse rounded-lg bg-athens-gray-300"></div>
+                      <div className="space-y-1">
+                        <div className="h-4 w-24 animate-pulse rounded bg-athens-gray-300"></div>
+                        <div className="h-3 w-32 animate-pulse rounded bg-athens-gray-300"></div>
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex w-full items-center justify-center">
+                      <div className="h-4 w-16 animate-pulse rounded bg-athens-gray-300"></div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex w-full items-center justify-end">
+                      <div className="h-4 w-16 animate-pulse rounded bg-athens-gray-300"></div>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : reviews?.data?.length ? (
+              reviews?.data?.map((review: TReview) => {
+                return (
+                  <TableRow key={review.id}>
                     <TableCell>
-                      <div className="flex gap-2">
-                        <div className="size-10 animate-pulse rounded-lg bg-athens-gray-300"></div>
-                        <div className="space-y-1">
-                          <div className="h-4 w-24 animate-pulse rounded bg-athens-gray-300"></div>
-                          <div className="h-3 w-32 animate-pulse rounded bg-athens-gray-300"></div>
-                        </div>
-                      </div>
+                      <DTableImage
+                        image={review?.product.images?.[0] as string}
+                        title={review?.product.name}
+                        helper={
+                          review?.product?.productCategory?.[0]?.category?.name
+                        }
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <DTableImage
+                        image={review?.user.profilePhoto as string}
+                        title={review?.user.name}
+                        helper={review?.user?.email}
+                      />
+                    </TableCell>
+                    <TableCell className="text-center">
+                      {review?.rating}
                     </TableCell>
                     <TableCell className="text-right">
-                      <div className="flex gap-2">
-                        <div className="size-10 animate-pulse rounded-lg bg-athens-gray-300"></div>
-                        <div className="space-y-1">
-                          <div className="h-4 w-24 animate-pulse rounded bg-athens-gray-300"></div>
-                          <div className="h-3 w-32 animate-pulse rounded bg-athens-gray-300"></div>
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex w-full items-center justify-center">
-                        <div className="h-4 w-16 animate-pulse rounded bg-athens-gray-300"></div>
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex w-full items-center justify-end">
-                        <div className="h-4 w-16 animate-pulse rounded bg-athens-gray-300"></div>
-                      </div>
+                      <TableAction<TReview>
+                        onClick={handleAction}
+                        item={review}
+                        actions={actions}
+                      />
                     </TableCell>
                   </TableRow>
-                ))
-              : reviews?.data?.map((review: TReview) => {
-                  return (
-                    <TableRow key={review.id}>
-                      <TableCell>
-                        <DTableImage
-                          image={review?.product.images as string}
-                          title={review?.product.name}
-                          helper={
-                            review?.product?.productCategory?.[0]?.category
-                              ?.name
-                          }
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <DTableImage
-                          image={review?.user.profilePhoto as string}
-                          title={review?.user.name}
-                          helper={review?.user?.email}
-                        />
-                      </TableCell>
-                      <TableCell className="text-center">
-                        {review?.rating}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <TableAction<TReview>
-                          onClick={handleAction}
-                          item={review}
-                          actions={actions}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+                );
+              })
+            ) : (
+              <TableRow>
+                <TableCell colSpan={4} className="hover:bg-white">
+                  <div className="flex flex-col items-center justify-center py-5 text-base font-medium text-athens-gray-700">
+                    <FolderOpen className="size-10 stroke-athens-gray-500" />
+                    <span>No data found</span>
+                  </div>
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </div>
-      <HPagination
-        page={page}
-        setPage={setPage}
-        totalPage={Math.ceil(
-          Number(reviews?.meta?.total) / Number(reviews?.meta?.limit)
-        )}
-      />
+      {reviews?.data?.length ? (
+        <HPagination
+          page={page}
+          setPage={setPage}
+          totalPage={Math.ceil(
+            Number(reviews?.meta?.total) / Number(reviews?.meta?.limit)
+          )}
+        />
+      ) : null}
     </div>
   );
 };

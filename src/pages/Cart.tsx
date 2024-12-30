@@ -23,6 +23,7 @@ import { TCategory } from '@/types';
 import {
   CircleCheck,
   CircleX,
+  FolderOpen,
   LoaderCircle,
   Minus,
   Plus,
@@ -124,72 +125,88 @@ const Cart = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {carts?.map(({ product, quantity }) => {
-                  return (
-                    <TableRow className="hover:bg-transparent" key={product.id}>
-                      <TableCell>
-                        <div className="relative inline-flex items-center gap-3">
-                          <div className="size-16 overflow-hidden rounded-md bg-athens-gray-50 p-2">
-                            <img
-                              className="size-full object-contain"
-                              src={product.images}
-                              alt={product.name}
-                            />
-                            <div className="absolute -left-2 -top-2">
-                              <button
-                                onClick={() => handleRemoveFromCart(product.id)}
-                                className="rounded-full bg-white p-1 text-athens-gray-700 transition-all hover:text-athens-gray-900"
-                              >
-                                <X className="size-4" />
-                              </button>
+                {!carts?.length ? (
+                  <TableRow>
+                    <TableCell colSpan={4} className="hover:bg-white">
+                      <div className="flex flex-col items-center justify-center py-5 text-base font-medium text-athens-gray-700">
+                        <FolderOpen className="size-10 stroke-athens-gray-500" />
+                        <span>No data found</span>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  carts?.map(({ product, quantity }) => {
+                    return (
+                      <TableRow
+                        className="hover:bg-transparent"
+                        key={product.id}
+                      >
+                        <TableCell>
+                          <div className="relative inline-flex items-center gap-3">
+                            <div className="size-16 overflow-hidden rounded-md bg-athens-gray-50 p-2">
+                              <img
+                                className="size-full object-contain"
+                                src={product.images?.[0]}
+                                alt={product.name}
+                              />
+                              <div className="absolute -left-2 -top-2">
+                                <button
+                                  onClick={() =>
+                                    handleRemoveFromCart(product.id)
+                                  }
+                                  className="rounded-full bg-white p-1 text-athens-gray-700 transition-all hover:text-athens-gray-900"
+                                >
+                                  <X className="size-4" />
+                                </button>
+                              </div>
+                            </div>
+                            <div>
+                              <h6 className="font-medium text-h-black">
+                                {product.name.length > 20
+                                  ? product.name.slice(0, 20) + ' ...'
+                                  : product.name}
+                              </h6>
+                              <p className="text-sm text-athens-gray-600">
+                                {(product.categories[0] as TCategory).name}
+                              </p>
                             </div>
                           </div>
-                          <div>
-                            <h6 className="font-medium text-h-black">
-                              {product.name.length > 20
-                                ? product.name.slice(0, 20) + ' ...'
-                                : product.name}
-                            </h6>
-                            <p className="text-sm text-athens-gray-600">
-                              {(product.categories[0] as TCategory).name}
-                            </p>
+                        </TableCell>
+                        <TableCell className="text-center">
+                          {product.price}
+                        </TableCell>
+                        <TableCell className="text-center">
+                          <div className="flex items-center gap-2">
+                            <Button
+                              className="rounded-md"
+                              variant="light"
+                              size="icon"
+                              onClick={() => dispatch(decreaseQty(product.id))}
+                            >
+                              <Minus />
+                            </Button>
+                            <Input
+                              disabled
+                              value={quantity}
+                              className="w-20 text-center text-h-black outline-none focus:!ring-0 disabled:cursor-auto disabled:!text-h-black"
+                            />
+                            <Button
+                              className="rounded-md"
+                              variant="light"
+                              size="icon"
+                              onClick={() => dispatch(increaseQty(product.id))}
+                            >
+                              <Plus />
+                            </Button>
                           </div>
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-center">
-                        {product.price}
-                      </TableCell>
-                      <TableCell className="text-center">
-                        <div className="flex items-center gap-2">
-                          <Button
-                            className="rounded-md"
-                            variant="light"
-                            size="icon"
-                            onClick={() => dispatch(decreaseQty(product.id))}
-                          >
-                            <Minus />
-                          </Button>
-                          <Input
-                            disabled
-                            value={quantity}
-                            className="w-20 text-center text-h-black outline-none focus:!ring-0 disabled:cursor-auto disabled:!text-h-black"
-                          />
-                          <Button
-                            className="rounded-md"
-                            variant="light"
-                            size="icon"
-                            onClick={() => dispatch(increaseQty(product.id))}
-                          >
-                            <Plus />
-                          </Button>
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        {product.price}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {product.price}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })
+                )}
               </TableBody>
             </Table>
           ) : (

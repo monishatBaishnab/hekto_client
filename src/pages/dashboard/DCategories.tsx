@@ -6,7 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { LoaderCircle, Plus, Trash2 } from 'lucide-react';
+import { FolderOpen, LoaderCircle, Plus, Trash2 } from 'lucide-react';
 import HPagination from '@/components/HPagination';
 import { useState } from 'react';
 import { toast } from 'sonner';
@@ -91,78 +91,91 @@ const DCategories = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {isLoading
-              ? Array.from({ length: 5 }).map((_, rowIndex) => (
-                  <TableRow key={rowIndex}>
+            {isLoading ? (
+              Array.from({ length: 5 }).map((_, rowIndex) => (
+                <TableRow key={rowIndex}>
+                  <TableCell>
+                    {/* Skeleton for DTableImage */}
+                    <div className="flex gap-2">
+                      <div className="size-10 animate-pulse rounded-lg bg-athens-gray-300"></div>
+                      <div className="space-y-1">
+                        <div className="h-4 w-24 animate-pulse rounded bg-athens-gray-300"></div>
+                        <div className="h-3 w-32 animate-pulse rounded bg-athens-gray-300"></div>
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <div className="flex w-full items-center justify-center">
+                      <div className="h-4 w-16 animate-pulse rounded bg-athens-gray-300"></div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <div className="flex w-full items-center justify-center">
+                      <div className="h-4 w-16 animate-pulse rounded bg-athens-gray-300"></div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <div className="flex w-full items-center justify-end">
+                      <div className="h-4 w-16 animate-pulse rounded bg-athens-gray-300"></div>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : !categories?.data?.length ? (
+              <TableRow>
+                <TableCell colSpan={4} className="hover:bg-white">
+                  <div className="flex flex-col items-center justify-center py-5 text-base font-medium text-athens-gray-700">
+                    <FolderOpen className="size-10 stroke-athens-gray-500" />
+                    <span>No data found</span>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ) : (
+              categories?.data?.map((category: TCategory) => {
+                return (
+                  <TableRow key={category.id}>
                     <TableCell>
-                      {/* Skeleton for DTableImage */}
-                      <div className="flex gap-2">
-                        <div className="size-10 animate-pulse rounded-lg bg-athens-gray-300"></div>
-                        <div className="space-y-1">
-                          <div className="h-4 w-24 animate-pulse rounded bg-athens-gray-300"></div>
-                          <div className="h-3 w-32 animate-pulse rounded bg-athens-gray-300"></div>
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-center">
-                      <div className="flex w-full items-center justify-center">
-                        <div className="h-4 w-16 animate-pulse rounded bg-athens-gray-300"></div>
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-center">
-                      <div className="flex w-full items-center justify-center">
-                        <div className="h-4 w-16 animate-pulse rounded bg-athens-gray-300"></div>
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-center">
-                      <div className="flex w-full items-center justify-end">
-                        <div className="h-4 w-16 animate-pulse rounded bg-athens-gray-300"></div>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))
-              : categories?.data?.map((category: TCategory) => {
-                  return (
-                    <TableRow key={category.id}>
-                      <TableCell>
-                        <DTableImage
-                          image={category.image as string}
-                          title={category.name}
-                          helper={`Products: 
+                      <DTableImage
+                        image={category.image as string}
+                        title={category.name}
+                        helper={`Products: 
                               ${
                                 category?.categoryProduct?._count
                                   ? category?.categoryProduct?._count
                                   : 0
                               }`}
-                        />
-                      </TableCell>
-                      <TableCell className="text-right">
-                        {moment(category?.createdAt).format('DD MMM, YYYY')}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        {moment(category?.updatedAt).format('DD MMM, YYYY')}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <TableAction<TCategory>
-                          onClick={() => {}}
-                          item={category}
-                          actions={actions}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+                      />
+                    </TableCell>
+                    <TableCell className="text-right">
+                      {moment(category?.createdAt).format('DD MMM, YYYY')}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      {moment(category?.updatedAt).format('DD MMM, YYYY')}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <TableAction<TCategory>
+                        onClick={() => {}}
+                        item={category}
+                        actions={actions}
+                      />
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            )}
           </TableBody>
         </Table>
       </div>
 
-      <HPagination
-        page={page}
-        setPage={setPage}
-        totalPage={Math.ceil(
-          Number(categories?.meta?.total) / Number(categories?.meta?.limit)
-        )}
-      />
+      {categories?.data?.length ? (
+        <HPagination
+          page={page}
+          setPage={setPage}
+          totalPage={Math.ceil(
+            Number(categories?.meta?.total) / Number(categories?.meta?.limit)
+          )}
+        />
+      ) : null}
 
       <Dialog open={open}>
         <DialogContent className="max-w-screen-sm">

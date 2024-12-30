@@ -13,4 +13,5 @@ export type TUser = {
   profilePhoto?: string | null;
   shop?: TShop | null;
   status?: string;
+  followers?: number;
 };

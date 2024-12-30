@@ -33,7 +33,8 @@ const settingContent: Record<string, ReactNode> = {
 type TMode = 'personal' | 'shop';
 
 const DProfile = () => {
-  const { role, shop, bio, name, profilePhoto, email, address } = useUser();
+  const { role, shop, bio, followers, name, profilePhoto, email, address } =
+    useUser();
 
   const [mode, setMode] = useState<TMode>('personal');
   const [searchQueries] = useSearchParams();
@@ -70,7 +71,7 @@ const DProfile = () => {
       icon: MapPin,
     },
   ];
-
+  // console.log;
   return (
     <div className="space-y-10">
       <div className="space-y-7">
@@ -103,9 +104,11 @@ const DProfile = () => {
                   </span>
                 ) : null}
               </h4>
-              <span className="rounded-md border border-athens-gray-100 px-2 py-1 text-sm font-medium text-athens-gray-800">
-                32 Followers
-              </span>
+              {role === 'VENDOR' && (
+                <span className="rounded-md border border-athens-gray-100 px-2 py-1 text-sm font-medium text-athens-gray-800">
+                  {followers} Followers
+                </span>
+              )}
             </div>
             <div className="flex flex-wrap items-center gap-4">
               {profile_info?.map(({ icon: Icon, label }) => (

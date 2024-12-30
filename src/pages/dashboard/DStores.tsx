@@ -6,7 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Ban, Circle } from 'lucide-react';
+import { Ban, Circle, FolderOpen } from 'lucide-react';
 import TableAction from '@/components/dashboard/admin/TableAction';
 import { TUser } from '@/types/user.types';
 import HPagination from '@/components/HPagination';
@@ -53,7 +53,7 @@ const DStores = () => {
       <h2 className="text-2xl font-semibold text-h-black">Vendor Stores</h2>
       <div className="block">
         <Table>
-          <TableHeader className='bg-athens-gray-100'>
+          <TableHeader className="bg-athens-gray-100">
             <TableRow>
               <TableHead>Shop</TableHead>
               <TableHead className="text-center">Owner</TableHead>
@@ -62,87 +62,100 @@ const DStores = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {isLoading || isFetching
-              ? Array.from({ length: 5 }).map((_, rowIndex) => (
-                  <TableRow key={rowIndex}>
-                    <TableCell>
-                      <div className="flex gap-2">
-                        <div className="size-10 animate-pulse rounded-lg bg-athens-gray-300"></div>
-                        <div className="space-y-1">
-                          <div className="h-4 w-24 animate-pulse rounded bg-athens-gray-300"></div>
-                          <div className="h-3 w-32 animate-pulse rounded bg-athens-gray-300"></div>
-                        </div>
+            {isLoading || isFetching ? (
+              Array.from({ length: 5 }).map((_, rowIndex) => (
+                <TableRow key={rowIndex}>
+                  <TableCell>
+                    <div className="flex gap-2">
+                      <div className="size-10 animate-pulse rounded-lg bg-athens-gray-300"></div>
+                      <div className="space-y-1">
+                        <div className="h-4 w-24 animate-pulse rounded bg-athens-gray-300"></div>
+                        <div className="h-3 w-32 animate-pulse rounded bg-athens-gray-300"></div>
                       </div>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex w-full items-center justify-center">
-                        <div className="h-4 w-16 animate-pulse rounded bg-athens-gray-300"></div>
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex w-full items-center justify-center">
-                        <div className="h-4 w-16 animate-pulse rounded bg-athens-gray-300"></div>
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex w-full items-center justify-end">
-                        <div className="h-4 w-16 animate-pulse rounded bg-athens-gray-300"></div>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))
-              : shops?.data?.map((shop: TShop) => {
-                  let actions = [
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex w-full items-center justify-center">
+                      <div className="h-4 w-16 animate-pulse rounded bg-athens-gray-300"></div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex w-full items-center justify-center">
+                      <div className="h-4 w-16 animate-pulse rounded bg-athens-gray-300"></div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex w-full items-center justify-end">
+                      <div className="h-4 w-16 animate-pulse rounded bg-athens-gray-300"></div>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : !shops?.data?.length ? (
+              <TableRow>
+                <TableCell colSpan={4} className="hover:bg-white">
+                  <div className="flex flex-col items-center justify-center py-5 text-base font-medium text-athens-gray-700">
+                    <FolderOpen className="size-10 stroke-athens-gray-500" />
+                    <span>No data found</span>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ) : (
+              shops?.data?.map((shop: TShop) => {
+                let actions = [
+                  {
+                    key: 'block',
+                    label: 'Block',
+                    icon: Ban,
+                  },
+                ];
+                if (shop.status === 'BLOCKED') {
+                  actions = [
                     {
-                      key: 'block',
-                      label: 'Block',
-                      icon: Ban,
+                      key: 'unblock',
+                      label: 'Unblock',
+                      icon: Circle,
                     },
                   ];
-                  if (shop.status === 'BLOCKED') {
-                    actions = [
-                      {
-                        key: 'unblock',
-                        label: 'Unblock',
-                        icon: Circle,
-                      },
-                    ];
-                  }
-                  return (
-                    <TableRow key={shop.id}>
-                      <TableCell>
-                        <DTableImage
-                          image={shop.logo as string}
-                          title={shop.name}
-                          helper={(shop.user as TUser)?.email}
-                        />
-                      </TableCell>
-                      <TableCell className="text-center">
-                        {(shop?.user as TUser)?.name}
-                      </TableCell>
-                      <TableCell className="text-center">
-                        {shop?.status}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <TableAction<TShop>
-                          onClick={handleAction}
-                          item={shop}
-                          actions={actions}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+                }
+                return (
+                  <TableRow key={shop.id}>
+                    <TableCell>
+                      <DTableImage
+                        image={shop.logo as string}
+                        title={shop.name}
+                        helper={(shop.user as TUser)?.email}
+                      />
+                    </TableCell>
+                    <TableCell className="text-center">
+                      {(shop?.user as TUser)?.name}
+                    </TableCell>
+                    <TableCell className="text-center">
+                      {shop?.status}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <TableAction<TShop>
+                        onClick={handleAction}
+                        item={shop}
+                        actions={actions}
+                      />
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            )}
           </TableBody>
         </Table>
       </div>
-      <HPagination
-        page={page}
-        setPage={setPage}
-        totalPage={Math.ceil(
-          Number(shops?.meta?.total) / Number(shops?.meta?.limit)
-        )}
-      />
+      {shops?.data?.length ? (
+        <HPagination
+          page={page}
+          setPage={setPage}
+          totalPage={Math.ceil(
+            Number(shops?.meta?.total) / Number(shops?.meta?.limit)
+          )}
+        />
+      ) : null}
     </div>
   );
 };
