@@ -63,7 +63,7 @@ const HoverDropdownMenu = () => {
               >
                 <div className="flex items-center gap-2 pr-4">
                   <div className="flex items-center">
-                    <div className="size-9 overflow-hidden rounded-full">
+                    <div className="size-5 overflow-hidden">
                       <img src={category?.image} alt={category?.name} />
                     </div>
                   </div>

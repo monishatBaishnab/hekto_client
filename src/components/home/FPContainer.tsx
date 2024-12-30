@@ -34,16 +34,10 @@ export const CardSkeleton = () => {
   );
 };
 
-export const Card = ({
-  product,
-  isFlash = false,
-}: {
-  product: TProduct;
-  isFlash?: boolean;
-}) => {
+export const Card = ({ product }: { product: TProduct }) => {
   const dispatch = useAppDispatch();
   const carts = useAppSelector((state) => state.cart.carts);
-
+  const navigate = useNavigate();
   const user = useAppSelector((state) => state.auth.user);
   const { showAlert, AlertComponent } = useAlert();
   const handleAddToRecent = () => {
@@ -51,6 +45,9 @@ export const Card = ({
   };
 
   const handleAction = async (key: string, product: TProduct) => {
+    if (key === 'details') {
+      navigate(`/products/${product.id}`);
+    }
     if (!user) {
       toast.error('Please login first.');
       return;
@@ -138,7 +135,7 @@ export const Card = ({
           />
         </div>
         {/* Flash */}
-        {isFlash && (
+        {product?.flash_sale && (
           <div
             className={cn(
               'absolute left-3 top-3 text-sm bg-electric-violet-700 rounded-md px-2 text-white pb-0.5'
@@ -183,29 +180,42 @@ export const Card = ({
   );
 };
 
-const FPContainer = () => {
+const FPContainer = ({
+  title,
+  query,
+  path,
+}: {
+  title: string;
+  query: 'flash_sale' | 'featured';
+  path?: string;
+}) => {
   const navigate = useNavigate();
   const {
-    data: flashProducts,
+    data: products,
     isLoading,
     isFetching,
   } = useFetchAllProductsQuery([
     { name: 'page', value: '1' },
     { name: 'limit', value: '5' },
+    { name: query, value: 'true' },
   ]);
+
+  if (!products?.data?.length) {
+    return;
+  }
 
   return (
     <div className="container !pt-0">
       <div className="mb-8 flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-h-black sm:text-3xl">
-          Flash Sale
-        </h2>
-        <button
-          onClick={() => navigate('/flash')}
-          className="flex items-center gap-3 rounded-md text-athens-gray-700 transition-all hover:text-athens-gray-900"
-        >
-          See All <MoveRight className="size-5" />
-        </button>
+        <h2 className="text-2xl font-bold text-h-black sm:text-3xl">{title}</h2>
+        {path ? (
+          <button
+            onClick={() => navigate('/flash')}
+            className="flex items-center gap-3 rounded-md text-athens-gray-700 transition-all hover:text-athens-gray-900"
+          >
+            See All <MoveRight className="size-5" />
+          </button>
+        ) : null}
       </div>
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
@@ -213,12 +223,12 @@ const FPContainer = () => {
           Array.from({ length: 5 }).map((_, index) => (
             <CardSkeleton key={index} />
           ))
-        ) : !flashProducts || flashProducts?.length < 1 ? (
+        ) : !products || products?.length < 1 ? (
           <div className="col-span-1 md:col-span-2 lg:col-span-3">
             <ProductEmpty action={<></>} />
           </div>
         ) : (
-          (flashProducts?.data as TProduct[])?.map((product) => (
+          (products?.data as TProduct[])?.map((product) => (
             <Card key={product?.id} product={product} />
           ))
         )}

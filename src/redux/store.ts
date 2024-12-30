@@ -14,6 +14,7 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist';
+import { invalidateTagsOnLogoutMiddleware } from './middlewares/invalidateTagTypes';
 
 // Persist configuration for authentication
 const authPersistConfig = {
@@ -54,7 +55,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER], // Ignore redux-persist actions
       },
-    }).concat(baseApi.middleware), // Add API middleware
+    }).concat(baseApi.middleware, invalidateTagsOnLogoutMiddleware), // Add API middleware
 });
 
 // Infer the RootState and AppDispatch types

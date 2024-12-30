@@ -12,6 +12,8 @@ export type TProduct = {
   quantity: number;
   availableQuantity: number;
   description: string;
+  flash_sale: boolean;
+  featured: boolean;
   images: string[];
   discount: number;
   isDeleted: boolean;

@@ -46,7 +46,7 @@ const DashboardLayout = () => {
               onClick={() => setOpen(true)}
               size="icon"
               variant="light"
-              // className="rounded-md lg:hidden"
+              className="rounded-md lg:hidden"
             >
               <Menu />
             </Button>

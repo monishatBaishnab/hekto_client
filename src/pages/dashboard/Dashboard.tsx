@@ -27,20 +27,16 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { role, shop } = useUser();
   const { data: states, isLoading, isFetching } = useFetchStatesQuery([]);
-  const orderQueries = [
-    { name: 'page', value: '1' },
-    { name: 'limit', value: '3' },
-  ];
-
-  if (role === 'VENDOR') {
-    orderQueries?.push({ name: 'shop_id', value: shop?.id as string });
-  }
 
   const {
     data: orders,
     isLoading: oLoading,
     isFetching: oFetching,
-  } = useFetchAllOrdersQuery(orderQueries, { skip: !!shop?.id });
+  } = useFetchAllOrdersQuery([
+    { name: 'page', value: '1' },
+    { name: 'limit', value: '3' },
+    ...(shop?.id ? [{ name: 'shop_id', value: shop.id }] : []),
+  ]);
   return (
     <div className="space-y-7">
       <h2 className="text-2xl font-semibold text-h-black">Site Overview</h2>

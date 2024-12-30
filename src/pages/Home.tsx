@@ -5,8 +5,10 @@ import { Button } from '@/components/ui/button';
 import { CircleCheck } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import Categories from '@/components/home/Categories';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
+  const navigate = useNavigate();
   return (
     <div>
       <div>
@@ -21,7 +23,9 @@ const Home = () => {
           <Categories />
         </div>
 
-        <FPContainer />
+        <FPContainer title='Featured Products' query='featured' />
+
+        <FPContainer title='Flash Sale' path={'/flash'} query='flash_sale' />
 
         <div className="bg-athens-gray-50">
           <div className="container flex flex-wrap items-center justify-center gap-7 !py-5">
@@ -53,7 +57,7 @@ const Home = () => {
                   </li>
                 ))}
               </ul>
-              <Button className="rounded-none" size="lg" variant="rose">
+              <Button onClick={() => navigate('/products')} className="rounded-none" size="lg" variant="rose">
                 Shop Now
               </Button>
             </div>

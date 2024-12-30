@@ -27,12 +27,13 @@ import PasswordRecovery from '@/pages/PasswordRecovery';
 import Contact from '@/pages/Contact';
 import Dashboard from '@/pages/dashboard/Dashboard';
 import DProfile from '@/pages/dashboard/DProfile';
-import DProducts from '@/pages/dashboard/DProducts';
+import DVendorProducts from '@/pages/dashboard/DVendorProducts';
 import DCategories from '@/pages/dashboard/DCategories';
 import DReviews from '@/pages/dashboard/DReviews';
 import DOrders from '@/pages/dashboard/DOrders';
 import DUsers from '@/pages/dashboard/DUsers';
 import DStores from '@/pages/dashboard/DStores';
+import DAdminProducts from '@/pages/dashboard/DAdminProducts';
 
 export const user_route_config = [
   {
@@ -85,7 +86,7 @@ export const admin_route_config = [
   {
     path: '/products',
     label: 'Products',
-    element: <DProducts />,
+    element: <DAdminProducts />,
     icon: Layers,
   },
   {
@@ -134,7 +135,7 @@ export const vendor_route_config = [
   {
     path: '/products',
     label: 'Products',
-    element: <DProducts />,
+    element: <DVendorProducts />,
     icon: Layers,
   },
   {

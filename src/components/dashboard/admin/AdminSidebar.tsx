@@ -59,7 +59,7 @@ const AdminSidebar = () => {
         {/* Button for logout */}
         <button
           onClick={handleLogout}
-          className="group flex w-full items-center gap-2 rounded-md px-3 py-2.5 text-athens-gray-600 transition-all hover:bg-rose-50 hover:text-rose-600 active:bg-athens-gray-100/70"
+          className="group flex w-full items-center gap-2 rounded-md px-5 py-2.5 text-athens-gray-600 transition-all hover:bg-rose-50 hover:text-rose-600 active:bg-athens-gray-100/70"
         >
           <LogOut className="size-5" />
           Logout

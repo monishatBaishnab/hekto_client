@@ -48,6 +48,7 @@ const Register = () => {
       userData.email = data.email;
       userData.password = data.password;
       userData.role = data.role;
+      userData.bio = data.description;
       shopData.name = data.shop_name;
       shopData.description = data.shop_description;
     }
