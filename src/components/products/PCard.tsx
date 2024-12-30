@@ -37,13 +37,13 @@ const CardActions = ({ variant, actions, product, onClick }: TCardActions) => {
           <button
             onClick={() => onClick(key, product)}
             key={label}
-            className="rounded-md border-0 p-2 outline-0 transition-all hover:bg-white/70 active:bg-white"
+            className="rounded-md border-0 bg-white p-2 outline-0 transition-all active:bg-white"
           >
             <Icon className="size-4" />
           </button>
         </TooltipTrigger>
         <TooltipContent
-          className="bg-white/90 text-athens-gray-800"
+          className="bg-white text-athens-gray-950"
           align="center"
           side={variant === 'grid' ? 'right' : 'top'}
         >
@@ -173,16 +173,14 @@ const PCard = ({
             </div>
 
             {/* Rating */}
-            <div className="flex items-center gap-1">
-              <span className="flex items-center gap-1 text-sm text-h-black">
-                <Rating
-                  style={{ maxWidth: 80 }}
-                  value={Number(avgRatings)}
-                  readOnly
-                />
-                <span className="ml-0.5 text-xs text-athens-gray-600">
-                  ({totalReview})
-                </span>
+            <div className="flex items-center gap-1 text-h-black">
+              <Rating
+                style={{ maxWidth: 80 }}
+                value={Number(avgRatings)}
+                readOnly
+              />
+              <span className="ml-0.5 text-xs text-athens-gray-600">
+                ({totalReview})
               </span>
             </div>
           </div>

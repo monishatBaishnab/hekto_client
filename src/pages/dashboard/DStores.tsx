@@ -44,7 +44,7 @@ const DStores = () => {
       formData.append('data', JSON.stringify({ status: 'ACTIVE' }));
       const result = await updateShop({ formData, id: shop.id });
       if (result?.data?.success) {
-        toast.success(`Shop ${key}.`);
+        toast.success(`Shop ${key}ed.`);
       }
     }
   };

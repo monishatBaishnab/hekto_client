@@ -51,7 +51,7 @@ const PFilters = ({
   return (
     <div className="space-y-10">
       <div className="space-y-5">
-        <h4 className="border-b-2 border-b-h-black pb-1 text-lg font-bold text-h-black">
+        <h4 className="border-b-2 border-b-athens-gray-100 pb-1 text-lg font-bold text-h-black">
           Search by keyword
         </h4>
 
@@ -62,7 +62,7 @@ const PFilters = ({
         />
       </div>
       <div className="space-y-5">
-        <h4 className="border-b-2 border-b-h-black pb-1 text-lg font-bold text-h-black">
+        <h4 className="border-b-2 border-b-athens-gray-100 pb-1 text-lg font-bold text-h-black">
           Categories
         </h4>
         <div className="space-y-1">
@@ -81,7 +81,7 @@ const PFilters = ({
         </div>
       </div>
       <div className="space-y-5">
-        <h4 className="border-b-2 border-b-h-black pb-1 text-lg font-bold text-h-black">
+        <h4 className="border-b-2 border-b-athens-gray-100 pb-1 text-lg font-bold text-h-black">
           Price Range
         </h4>
         <RadioGroup onValueChange={handlePriceRangeChange}>

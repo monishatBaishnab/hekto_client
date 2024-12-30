@@ -31,13 +31,14 @@ const sortOptions = [
 
 type PContainerProps = {
   sidebar?: boolean;
-  limit?: number;
+  limit?: string;
   fetchMode?: 'infinity' | 'pagination';
 };
 
 const PContainer = ({
   sidebar = false,
   fetchMode = 'infinity',
+  limit,
 }: PContainerProps) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -51,7 +52,9 @@ const PContainer = ({
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState<string>('createdAt');
-  const [maxLimit, setMaxLimit] = useState<string>(sidebar ? '8' : '10');
+  const [maxLimit, setMaxLimit] = useState<string>(
+    limit ? limit : sidebar ? '8' : '10'
+  );
   const [categories, setCategories] = useState<string[]>([]);
   const [minPrice, setMinPrice] = useState<string | number>(0);
   const [maxPrice, setMaxPrice] = useState<string | number>(1000);
@@ -61,8 +64,8 @@ const PContainer = ({
 
   const limitOptions = Array.from({ length: 4 })?.map((_, index) => {
     return {
-      label: (index + 1) * (sidebar ? 8 : 10),
-      key: (index + 1) * (sidebar ? 8 : 10),
+      label: (index + 1) * (limit ? Number(limit) : sidebar ? 8 : 10),
+      key: (index + 1) * (limit ? Number(limit) : sidebar ? 8 : 10),
     };
   });
 

@@ -3,12 +3,10 @@ import FPContainer from '@/components/home/FPContainer';
 import PContainer from '@/components/products/PContainer';
 import { Button } from '@/components/ui/button';
 import { CircleCheck } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import Categories from '@/components/home/Categories';
 
 const Home = () => {
-  const navigate = useNavigate();
   return (
     <div>
       <div>
@@ -16,7 +14,7 @@ const Home = () => {
 
         {/* Categories */}
         <div className="container">
-          <h2 className="mb-8 text-2xl font-bold text-h-black sm:text-4xl">
+          <h2 className="mb-8 text-2xl font-bold text-h-black sm:text-3xl">
             Popular Categories
           </h2>
 
@@ -62,12 +60,12 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="container space-y-14">
-          <h2 className="text-center text-2xl font-bold text-h-black sm:text-4xl">
+        <div className="container space-y-10">
+          {/* <h2 className="text-2xl font-bold text-h-black sm:text-3xl">
             Only for you
-          </h2>
+          </h2> */}
 
-          <PContainer fetchMode="infinity" />
+          <PContainer limit={"20"} fetchMode="infinity" />
         </div>
 
         <div className="bg-[url(https://i.ibb.co.com/bHVHjfW/Rectangle-102.png)]">
@@ -85,7 +83,6 @@ const Home = () => {
                 />
               </div>
               <Button
-                onClick={() => navigate('/products')}
                 variant="rose"
                 size="lg"
               >

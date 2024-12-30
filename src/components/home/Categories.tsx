@@ -98,7 +98,7 @@ function Categories() {
     ],
   };
   return (
-    <div className="px-10">
+    <div>
       <Slider {...settings} className="gap-5">
         {cLoading || cFetching
           ? Array.from({ length: 6 }).map((_, index) => (
@@ -112,7 +112,7 @@ function Categories() {
                     onClick={() => navigate(`/products?category=${id}`)}
                     className="flex size-full cursor-pointer flex-col items-center rounded-lg bg-athens-gray-50 p-4 transition-all hover:bg-athens-gray-100/70 active:bg-athens-gray-50"
                   >
-                    <div className="size-16">
+                    <div className="size-10 overflow-hidden">
                       <img
                         className="size-full object-contain"
                         src={image}

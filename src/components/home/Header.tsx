@@ -85,8 +85,8 @@ const CarouselSlide = ({ slide }: { slide: TSlide }) => {
         </motion.div>
       </div>
       {/* Right Content */}
-      <div className="hidden size-full shrink-0 justify-end sm:flex md:w-[calc(50%_-_20px)]">
-        <div className="size-96">
+      <div className="hidden size-full shrink-0 justify-end sm:flex  md:w-[calc(50%_-_20px)]">
+        <div className="flex size-96 items-center">
           <motion.div
             className="size-3/4 rounded-full bg-rose-300/10"
             variants={scaleVariants}
@@ -123,7 +123,7 @@ const Header = () => {
     <div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="relative h-[400px] w-full overflow-hidden bg-[#F2F0FF]"
+      className="relative h-[500px] w-full overflow-hidden bg-[#F2F0FF]"
     >
       <div className="absolute -top-10 left-0 size-[200px] overflow-hidden">
         <img

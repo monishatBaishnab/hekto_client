@@ -47,21 +47,21 @@ const Login = () => {
   const handleCredentialsUpdate = (role: string) => {
     if (role === 'admin') {
       const values = {
-        email: 'monishat@vendor.com',
+        email: 'monishat@admin.com',
         password: '123',
       };
       setDefaultValues(values);
       setActiveKey(role);
     } else if (role === 'vendor') {
       const values = {
-        email: 'monishat@vendor.com',
+        email: 'moinul@islam.com',
         password: '123',
       };
       setDefaultValues(values);
       setActiveKey(role);
     } else if (role === 'customer') {
       const values = {
-        email: 'monishat@customer.com',
+        email: 'abdul@khaled.com',
         password: '123',
       };
       setDefaultValues(values);

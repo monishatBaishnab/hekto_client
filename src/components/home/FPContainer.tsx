@@ -11,6 +11,7 @@ import ProductEmpty from '../empty/ProductEmpty';
 import { Link, useNavigate } from 'react-router-dom';
 import { addToRecent } from '@/redux/features/recent/recent.slice';
 import { MoveRight } from 'lucide-react';
+import { Rating } from '@smastrom/react-rating';
 
 export const CardSkeleton = () => {
   return (
@@ -33,7 +34,13 @@ export const CardSkeleton = () => {
   );
 };
 
-export const Card = ({ product, isFlash=false }: { product: TProduct; isFlash?:boolean }) => {
+export const Card = ({
+  product,
+  isFlash = false,
+}: {
+  product: TProduct;
+  isFlash?: boolean;
+}) => {
   const dispatch = useAppDispatch();
   const carts = useAppSelector((state) => state.cart.carts);
 
@@ -93,7 +100,13 @@ export const Card = ({ product, isFlash=false }: { product: TProduct; isFlash?:b
       console.log('You clicked to compare the product.');
     }
   };
-
+  const totalReview = Number(product?.review?.length);
+  const totalRating = Number(
+    product?.review?.reduce((sum, current) => sum + current.rating, 0)
+  );
+  const avgRatings = (totalReview > 0 ? totalRating / totalReview : 0).toFixed(
+    1
+  );
   return (
     <div className="group rounded-md bg-white p-5 shadow-md">
       {AlertComponent}
@@ -125,13 +138,15 @@ export const Card = ({ product, isFlash=false }: { product: TProduct; isFlash?:b
           />
         </div>
         {/* Flash */}
-        {isFlash && <div
-          className={cn(
-            'absolute left-3 top-3 text-sm bg-electric-violet-700 rounded-md px-2 text-white pb-0.5'
-          )}
-        >
-          <span>Flash Sale</span>
-        </div>}
+        {isFlash && (
+          <div
+            className={cn(
+              'absolute left-3 top-3 text-sm bg-electric-violet-700 rounded-md px-2 text-white pb-0.5'
+            )}
+          >
+            <span>Flash Sale</span>
+          </div>
+        )}
       </div>
       <div className="space-y-2">
         <Link
@@ -153,6 +168,16 @@ export const Card = ({ product, isFlash=false }: { product: TProduct; isFlash?:b
             </span>
           ) : null}
         </div>
+        <div className="flex items-center justify-center gap-1 text-h-black">
+          <Rating
+            style={{ maxWidth: 80 }}
+            value={Number(avgRatings)}
+            readOnly
+          />
+          <span className="ml-0.5 text-xs text-athens-gray-600">
+            ({totalReview})
+          </span>
+        </div>
       </div>
     </div>
   );
@@ -172,7 +197,7 @@ const FPContainer = () => {
   return (
     <div className="container !pt-0">
       <div className="mb-8 flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-h-black sm:text-4xl">
+        <h2 className="text-2xl font-bold text-h-black sm:text-3xl">
           Flash Sale
         </h2>
         <button

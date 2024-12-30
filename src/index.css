@@ -94,3 +94,31 @@
     display: none; /* Chrome, Safari, Edge, and Opera */
   }
 }
+
+/* Targeting the dashboard-sidebar */
+#dashboard-sidebar {
+  overflow-y: auto; /* Ensure scrolling is enabled */
+}
+
+/* Customizing the scrollbar */
+#dashboard-sidebar::-webkit-scrollbar {
+  width: 5px; /* Width of the scrollbar */
+  height: 5px; /* Height of the scrollbar */
+}
+
+/* Track */
+#dashboard-sidebar::-webkit-scrollbar-track {
+  background: #f0f0f0; /* Track color */
+  border-radius: 10px; /* Optional: Rounded edges */
+}
+
+/* Thumb */
+::-webkit-scrollbar-thumb {
+  background: #cfcfcf; /* Scrollbar color */
+  border-radius: 50px; 
+}
+
+/* Thumb on hover */
+#dashboard-sidebar::-webkit-scrollbar-thumb:hover {
+  background: #bbbbbb; /* Hover color */
+}

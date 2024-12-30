@@ -34,7 +34,7 @@ const AdminSidebar = () => {
   return (
     <div>
       {/* Profile Navigation Links */}
-      <div className="space-y-1">
+      <div id='dashboard-sidebar' className="h-[calc(100vh_-_66px)] space-y-1 overflow-y-auto">
         {dashboard_config
           ?.filter((config) => config.label && config.icon)
           ?.map(({ label, icon: Icon, path }) => {
@@ -43,7 +43,7 @@ const AdminSidebar = () => {
                 key={path}
                 className={({ isActive }) =>
                   cn(
-                    'group rounded-md px-3 py-2.5 flex items-center gap-2 text-athens-gray-600 transition-all hover:bg-athens-gray-50 active:bg-athens-gray-100/70 hover:text-athens-gray-950',
+                    'group px-5 py-2.5 flex items-center gap-2 text-athens-gray-600 transition-all hover:bg-athens-gray-50 active:bg-athens-gray-100/70 hover:text-athens-gray-950',
                     isActive ? 'bg-athens-gray-50 text-athens-gray-950' : ''
                   )
                 }
