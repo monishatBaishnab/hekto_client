@@ -10,7 +10,7 @@ const DTableImage = ({
   return (
     <div className="flex gap-2">
       <div className="size-10 overflow-hidden rounded-lg">
-        <img className="size-full object-cover" src={image} alt={title} />
+        <img className="size-full object-contain" src={image} alt={title} />
       </div>
       <div className="space-y-1">
         <h6 className="font-medium text-h-black">{title}</h6>

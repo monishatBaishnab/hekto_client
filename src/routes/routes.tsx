@@ -7,9 +7,11 @@ import ProtectedRoute from './ProtectedRoute';
 import DashboardLayout from '@/layouts/DashboardLayout';
 import Empty from '@/pages/Empty';
 import useRouter from '@/hooks/useRouter';
+import { user_route_config } from '@/constants/routes.constants';
 
 const Routes = () => {
   const { dashboard_config, client_config, profile_config } = useRouter();
+  
   const routes = useMemo(
     () =>
       createBrowserRouter([
@@ -26,7 +28,7 @@ const Routes = () => {
               <UserDashboard />
             </ProtectedRoute>
           ),
-          children: routeGenerator(profile_config),
+          children: routeGenerator(user_route_config),
           errorElement: <Empty />,
         },
         {

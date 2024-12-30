@@ -10,7 +10,7 @@ import {
   useFetchAllUserQuery,
   useUpdateUserStatusMutation,
 } from '@/redux/features/user/user.api';
-import { FolderOpen, ShieldCheck, Trash2 } from 'lucide-react';
+import { FolderOpen, Trash2 } from 'lucide-react';
 import TableAction from '@/components/dashboard/admin/TableAction';
 import { TUser } from '@/types/user.types';
 import HPagination from '@/components/HPagination';
@@ -18,13 +18,9 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import moment from 'moment';
 import DTableImage from '@/components/dashboard/DTableImage';
+import useUser from '@/hooks/useUser';
 
 const actions = [
-  {
-    key: 'admin',
-    label: 'Admin',
-    icon: ShieldCheck,
-  },
   {
     key: 'delete',
     label: 'Delete',
@@ -33,6 +29,7 @@ const actions = [
 ];
 
 const DUsers = () => {
+  const { id } = useUser();
   const [page, setPage] = useState(1);
   const {
     data: users,
@@ -45,6 +42,7 @@ const DUsers = () => {
   const [updateStatus] = useUpdateUserStatusMutation();
 
   const handleAction = async (key: string, user: TUser) => {
+    if (user.id === id) return;
     if (key === 'delete') {
       const updatedData = await updateStatus({
         payload: { isDeleted: true },
@@ -53,19 +51,6 @@ const DUsers = () => {
 
       if (updatedData?.data?.success) {
         toast.success('User Deleted.');
-      }
-    } else if (key === 'admin') {
-      if (user.role === 'ADMIN') {
-        toast.error('This user role already admin.');
-        return;
-      }
-      const updatedData = await updateStatus({
-        payload: { role: 'ADMIN' },
-        id: user.id,
-      });
-
-      if (updatedData?.data?.success) {
-        toast.success('User Role Updated.');
       }
     }
   };

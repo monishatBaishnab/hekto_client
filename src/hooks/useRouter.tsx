@@ -28,9 +28,9 @@ type TConfig = (
 const useRouter = () => {
   const { role } = useUser();
   let profile_routes: TConfig = [];
-  let routes = vendor_route_config;
-  if (role === 'ADMIN') {
-    routes = admin_route_config;
+  let routes = admin_route_config;
+  if (role === 'VENDOR') {
+    routes = vendor_route_config;
   } else if (role === 'CUSTOMER') {
     profile_routes = user_route_config;
   }

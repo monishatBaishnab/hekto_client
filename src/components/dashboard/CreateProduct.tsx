@@ -9,12 +9,13 @@ import { Button } from '../ui/button';
 import HInput from '../form/HInput';
 import HForm from '../form/HForm';
 import { FieldValues } from 'react-hook-form';
-import HFile from '../form/HFile';
 import { useFetchAllCategoriesQuery } from '@/redux/features/categories/categories.api';
 import { TCategory } from '@/types';
 import HSelect from '../form/HSelect';
 import { TProduct } from '@/types/products.types';
 import HTextarea from '../form/HTextarea';
+import HMultiFile from '../form/HMultiFile';
+import HSubmitButton from '../form/HSubmitButton';
 
 type TCreateProduct = {
   title: string;
@@ -22,6 +23,7 @@ type TCreateProduct = {
   setOpen: (key: boolean) => void;
   onSubmit: (data: FieldValues) => void;
   product?: TProduct | undefined;
+  isLoading?: boolean;
 };
 
 const CreateProduct = ({
@@ -30,6 +32,7 @@ const CreateProduct = ({
   setOpen,
   onSubmit,
   product,
+  isLoading,
 }: TCreateProduct) => {
   const {
     data: categories,
@@ -42,11 +45,11 @@ const CreateProduct = ({
       value: category?.id,
       label: category?.name,
     }));
-
+  console.log(product?.images);
   const formData = {
     name: product?.name,
     price: product?.price,
-    images: product?.images,
+    prev_images: product?.images,
     quantity: product?.quantity,
     description: product?.description,
     discount: product?.discount,
@@ -97,7 +100,8 @@ const CreateProduct = ({
                       name="description"
                       rows={7}
                     />
-                    <HFile name="images" />
+                    <HMultiFile label='Previous Images' disabled name="prev_images" />
+                    <HMultiFile name="images" />
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -108,12 +112,7 @@ const CreateProduct = ({
                   >
                     Cancel
                   </Button>
-                  <Button
-                    type="submit"
-                    className="bg-red-500 hover:bg-red-400 active:bg-red-500"
-                  >
-                    Continue
-                  </Button>
+                  <HSubmitButton title="Continue" isLoading={isLoading} />
                 </div>
               </div>
             </HForm>
