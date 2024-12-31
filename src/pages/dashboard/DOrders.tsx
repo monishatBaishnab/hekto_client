@@ -93,7 +93,6 @@ const DOrders = () => {
               </TableRow>
             ) : (
               orders?.data?.map((order: TOrder) => {
-                console.log(order);
                 return (
                   <TableRow key={order.id}>
                     <TableCell>

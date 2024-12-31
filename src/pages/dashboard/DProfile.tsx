@@ -71,7 +71,7 @@ const DProfile = () => {
       icon: MapPin,
     },
   ];
-  // console.log;
+
   return (
     <div className="space-y-10">
       <div className="space-y-7">

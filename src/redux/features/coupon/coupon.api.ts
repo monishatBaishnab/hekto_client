@@ -11,7 +11,7 @@ const couponApi = baseApi.injectEndpoints({
         }
 
         return {
-          url: '/coupons',
+          url: '/coupons/',
           method: 'GET',
           params,
         };
@@ -22,6 +22,16 @@ const couponApi = baseApi.injectEndpoints({
       query: (payload) => {
         return {
           url: `/coupons`,
+          method: 'POST',
+          body: payload,
+        };
+      },
+      invalidatesTags: ['coupons', 'products'],
+    }),
+    applyCoupon: builder.mutation({
+      query: (payload) => {
+        return {
+          url: `/coupons/apply`,
           method: 'POST',
           body: payload,
         };
@@ -52,6 +62,8 @@ const couponApi = baseApi.injectEndpoints({
 
 export const {
   useFetchAllCouponsQuery,
+  useApplyCouponMutation,
   useCreateCouponsMutation,
+  useUpdateCouponsMutation,
   useDeleteCouponsMutation,
 } = couponApi;

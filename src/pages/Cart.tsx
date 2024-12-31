@@ -1,6 +1,12 @@
 import ProductEmpty from '@/components/empty/ProductEmpty';
 import PageHeader from '@/components/PageHeader';
 import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import {
   Table,
@@ -17,19 +23,28 @@ import {
   increaseQty,
   removeFromCart,
 } from '@/redux/features/cart/cart.slice';
+import {
+  useApplyCouponMutation,
+  useFetchAllCouponsQuery,
+} from '@/redux/features/coupon/coupon.api';
 import { useCreateOrderMutation } from '@/redux/features/order/order.api';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { TCategory } from '@/types';
+import { TCoupon } from '@/types/coupon.types';
+
 import {
   CircleCheck,
   CircleX,
+  DollarSign,
   FolderOpen,
   LoaderCircle,
   Minus,
+  Percent,
   Plus,
   TicketPercent,
   X,
 } from 'lucide-react';
+import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -40,8 +55,18 @@ const Cart = () => {
   const { AlertComponent, showAlert } = useAlert();
   const carts = useAppSelector((state) => state.cart.carts);
   const [creteOrder, { isLoading }] = useCreateOrderMutation();
-  const [coupon, setCoupon] = useState('');
   const [totalPrice, setTotalPrice] = useState(0);
+  const [applyCoupon] = useApplyCouponMutation();
+  const price = carts?.reduce((price, cart) => {
+    return price + Number(cart.quantity) * Number(cart.product.price);
+  }, 0);
+
+  const shopId = carts?.[0]?.shopId;
+
+  const { data: coupons } = useFetchAllCouponsQuery([
+    { name: 'shop_id', value: shopId as string },
+    { name: 'active', value: 'true' },
+  ]);
 
   const handleClearCart = async () => {
     if (!carts?.length) {
@@ -75,17 +100,24 @@ const Cart = () => {
     }
   };
 
-  const handleCouponApply = () => {
-    if (coupon === 'HEKTO24') {
-      const price = carts?.reduce((price, cart) => {
-        return price + Number(cart.quantity) * Number(cart.product.price);
-      }, 0);
+  const handleCouponApply = async (coupon: TCoupon) => {
+    const apply = await applyCoupon({ shop_id: shopId, id: coupon.id });
+    const toastId = toast.loading('Applying Coupon', { id: coupon.id });
 
-      const discount = price * 0.1;
+    if (apply.data?.success) {
+      const discount =
+        coupon.discount_by === 'AMOUNT'
+          ? Number(coupon.discount)
+          : (totalPrice / 100) * Number(coupon.discount);
+
       setTotalPrice(price - discount);
-      toast.success('Coupon applied.');
-    } else {
-      toast.error('Enter valid coupon.');
+
+      toast.success('Coupon Applied', { id: toastId });
+    } else if (apply?.error) {
+      toast.error(
+        (apply?.error as { data: { message: string } })?.data?.message,
+        { id: toastId }
+      );
     }
   };
 
@@ -94,9 +126,6 @@ const Cart = () => {
   };
 
   useEffect(() => {
-    const price = carts?.reduce((price, cart) => {
-      return price + Number(cart.quantity) * Number(cart.product.price);
-    }, 0);
     setTotalPrice(price);
   }, [carts]);
 
@@ -278,34 +307,12 @@ const Cart = () => {
               <span className="text-sm text-athens-gray-700">
                 Shipping & taxes calculated at checkout
               </span>
-            </div>
-            <div className="flex items-center gap-1">
-              <TicketPercent className="size-3 text-rose-600" />
-              <span className="text-sm text-athens-gray-700">
-                User Coupon{' '}
-                <span className="font-medium text-rose-600">HEKTO24</span> for
-                10% Discount.
-              </span>
-            </div>
-            <div className="flex items-center gap-5">
-              <Input
-                onChange={(e) => setCoupon(e.target.value)}
-                className="h-10 rounded-none focus:outline-none focus:!ring-0"
-              />
-              <Button
-                onClick={handleCouponApply}
-                variant="light"
-                className="w-full rounded-none"
-                size="lg"
-              >
-                Apply Coupon
-              </Button>
-            </div>
+            </div>{' '}
             <Button
               onClick={handleCreateOrder}
               disabled={!carts?.length}
               variant="rose"
-              className="w-full rounded-none"
+              className="w-full"
               size="lg"
             >
               {isLoading ? (
@@ -317,15 +324,59 @@ const Cart = () => {
                 </>
               )}
             </Button>
-            <Button
-              disabled={!carts?.length}
-              onClick={handleClearCart}
-              variant="light"
-              className="w-full rounded-none"
-              size="lg"
-            >
-              <CircleX /> Clear Cart
-            </Button>
+            <div className="grid grid-cols-2 gap-3">
+              <DropdownMenu>
+                <DropdownMenuTrigger className="w-full outline-none">
+                  <Button variant="light" className="w-full" size="lg">
+                    <TicketPercent className="mt-0.5 size-5 text-rose-600" />
+                    Apply Coupon
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="center">
+                  {coupons?.data?.map((coupon: TCoupon) => (
+                    <DropdownMenuItem
+                      key={coupon.id}
+                      onClick={() => handleCouponApply(coupon)}
+                      className="cursor-pointer"
+                    >
+                      <div className="flex w-full  items-center justify-between gap-5 p-1">
+                        <div>
+                          <h6 className="flex items-center gap-0.5 font-medium text-athens-gray-950">
+                            {coupon.discount_by == 'AMOUNT' && (
+                              <DollarSign className="size-4" />
+                            )}
+                            <span className="-mt-0.5 block">
+                              {coupon.discount}
+                            </span>
+                            {coupon.discount_by == 'PERCENTAGE' && (
+                              <Percent className="size-3.5" />
+                            )}
+                          </h6>
+                          <h6 className="flex items-center gap-0.5 text-sm text-athens-gray-600">
+                            {moment(coupon?.end_date).format('Do MMMM')}
+                          </h6>
+                        </div>
+                        <div>
+                          <h6 className="rounded-md border border-rose-100 bg-rose-50 px-2 py-1 text-xs text-rose-600">
+                            {coupon.coupon}
+                          </h6>
+                        </div>
+                      </div>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              <Button
+                disabled={!carts?.length}
+                onClick={handleClearCart}
+                variant="light"
+                className="w-full"
+                size="lg"
+              >
+                <CircleX /> Clear Cart
+              </Button>
+            </div>
           </div>
         </div>
       </div>

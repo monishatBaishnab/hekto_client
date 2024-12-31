@@ -2,10 +2,18 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { RootState } from './store';
 
-export const tagTypes = ['courses', 'categories', 'users', 'shops', 'states', 'coupons'];
+export const tagTypes = [
+  'courses',
+  'categories',
+  'users',
+  'shops',
+  'states',
+  'coupons',
+];
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'https://hekto-server.vercel.app/api/v1',
+  // baseUrl: 'https://hekto-server.vercel.app/api/v1',
+  baseUrl: 'http://localhost:3000/api/v1',
   credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;

@@ -114,7 +114,6 @@ const DVendorProducts = () => {
       return;
     } else if (!product || isDuplicate) {
       const createdData = await createProduct(formData);
-      console.log(createdData);
       if (createdData?.data?.success) {
         setOpenModal(false);
         toast.success('Product Created.');

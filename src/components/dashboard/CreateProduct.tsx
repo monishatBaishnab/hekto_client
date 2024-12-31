@@ -45,7 +45,7 @@ const CreateProduct = ({
       value: category?.id,
       label: category?.name,
     }));
-  console.log(product?.images);
+
   const formData = {
     name: product?.name,
     price: product?.price,

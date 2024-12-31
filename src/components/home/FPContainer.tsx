@@ -93,8 +93,6 @@ export const Card = ({ product }: { product: TProduct }) => {
       // Add product if no conflicts
       dispatch(addToCart(cartInfo));
       toast.success('Product added to the cart.');
-    } else if (key === 'compare') {
-      console.log('You clicked to compare the product.');
     }
   };
   const totalReview = Number(product?.review?.length);

@@ -83,7 +83,6 @@ const Login = () => {
 
       <div className="container flex items-center justify-center gap-2 !p-0 !pt-5">
         {config?.map(({ label, key }) => {
-          console.log(activeKey, key);
           return (
             <Button
               key={key}

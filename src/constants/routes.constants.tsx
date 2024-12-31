@@ -17,6 +17,7 @@ import {
   ListOrdered,
   UserPen,
   CircleGauge,
+  TicketPercent,
 } from 'lucide-react';
 import Login from '@/pages/Login';
 import Register from '@/pages/Register';
@@ -34,6 +35,7 @@ import DOrders from '@/pages/dashboard/DOrders';
 import DUsers from '@/pages/dashboard/DUsers';
 import DStores from '@/pages/dashboard/DStores';
 import DAdminProducts from '@/pages/dashboard/DAdminProducts';
+import DCoupons from '@/pages/dashboard/DCoupons';
 
 export const user_route_config = [
   {
@@ -90,6 +92,12 @@ export const admin_route_config = [
     icon: Layers,
   },
   {
+    path: '/coupons',
+    label: 'Coupons',
+    element: <DCoupons />,
+    icon: TicketPercent,
+  },
+  {
     path: '/reviews',
     label: 'Reviews',
     element: <DReviews />,
@@ -137,6 +145,12 @@ export const vendor_route_config = [
     label: 'Products',
     element: <DVendorProducts />,
     icon: Layers,
+  },
+  {
+    path: '/coupons',
+    label: 'Coupons',
+    element: <DCoupons />,
+    icon: TicketPercent,
   },
   {
     path: '/reviews',
